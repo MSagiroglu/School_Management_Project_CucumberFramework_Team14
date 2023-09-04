@@ -142,7 +142,7 @@ public class ReusableMethods {
     public static void webElementResmi(String userStoryNumber,WebElement element, String elementName) {
         String tarih = new SimpleDateFormat("_hh_mm_ss_ddMMyyyy").format(new Date());
 
-        String dosyaYolu = "reportsandimages/images/us_"+userStoryNumber+"_images/webelement/" + tarih +"_"+elementName+ ".png";
+        String dosyaYolu = "projectImages/us_"+userStoryNumber+"_images/webelement/" + tarih +"_"+elementName+ ".png";
         TakesScreenshot ts = (TakesScreenshot) Driver.getDriver();
         try {
             FileUtils.copyFile(element.getScreenshotAs(OutputType.FILE), new File(dosyaYolu));

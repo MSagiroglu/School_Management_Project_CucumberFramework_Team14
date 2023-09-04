@@ -9,6 +9,7 @@ public class US001 {
     @Given("Kullanici Admin olarak giris yapar.")
     public void kullaniciAdminOlarakGirisYapar() {
         ReusableMethods.login("AdminUsername", "AdminPassword");
+        ReusableMethods.tumSayfaResmi("01","Admin Sayfası");
         ReusableMethods.logout();
     }
 }

@@ -25,7 +25,7 @@ public class Home_Page {
     @FindBy(xpath = "//a[normalize-space()='Contact']")
     public WebElement contactButton;//--> Anasayfadaki Contact butonu
     @FindBy(xpath = "//input[@id='name']")
-    public WebElement contactNameField;//--> Anasayfadaki Name alanı
+    public WebElement contactNameField;//--> Anasayfadaki Contact Kısmındaki Name alanı
     @FindBy(xpath = "//button[normalize-space()='Menu']")
     public WebElement menuButton;//--> Anasayfadaki Menu butonu
     @FindBy(xpath = "//a[normalize-space()='Logout']")

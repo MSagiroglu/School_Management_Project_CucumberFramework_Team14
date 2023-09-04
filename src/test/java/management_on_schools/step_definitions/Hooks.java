@@ -14,6 +14,8 @@ public class Hooks {
     @Before
     public void setUp() throws Exception {
         Driver.getDriver().get(ConfigReader.getProperty("managementOnSchoolsUrl"));
+
+
     }
     @After//import io.cucumber.java.After;
     public void tearDown(Scenario scenario) throws Exception {
