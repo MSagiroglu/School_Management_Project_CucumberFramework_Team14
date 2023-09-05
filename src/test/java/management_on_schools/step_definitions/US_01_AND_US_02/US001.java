@@ -1,6 +1,7 @@
 package management_on_schools.step_definitions.US_01_AND_US_02;
 
 import com.github.javafaker.Faker;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -27,9 +28,9 @@ public class US001 {
     static String ssnNumber = faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(10, 99) + "-" + faker.number().numberBetween(1000, 9999);
     @Given("Kullanici Admin olarak giris yapar.")
     public void kullaniciAdminOlarakGirisYapar() {
-        ReusableMethods.login("AdminUsername", "AdminPassword");
-        ReusableMethods.tumSayfaResmi("01","Admin Sayfası");
-        ReusableMethods.logout();
+        ReusableMethods.login("ViceDeanUsername", "ViceDeanPassword");
+        //ReusableMethods.tumSayfaResmi("01","Admin Sayfası");
+        //ReusableMethods.logout();
     }
 
     @Given("Guest User Anasayfada register butonuna tiklar")
@@ -58,7 +59,9 @@ public class US001 {
         if(data==null){
             homePage.registerNameField.sendKeys(name, Keys.TAB, surname, Keys.TAB, birthPlace, Keys.TAB, phoneNumber, Keys.TAB,Keys.SPACE,Keys.TAB, birthDate, Keys.TAB,  ssnNumber, Keys.TAB, userName, Keys.TAB, password,Keys.TAB, Keys.ENTER);
         } else if (data.equalsIgnoreCase("name")) {
-            us01Page.surname.sendKeys(surname, Keys.TAB, birthPlace, Keys.TAB, phoneNumber, Keys.TAB,Keys.SPACE,Keys.TAB, birthDate, Keys.TAB,  ssnNumber, Keys.TAB, userName, Keys.TAB, password,Keys.TAB, Keys.ENTER);
+            homePage.registerNameField.sendKeys(Keys.TAB,surname, Keys.TAB, birthPlace, Keys.TAB, phoneNumber, Keys.TAB,Keys.SPACE,Keys.TAB, birthDate, Keys.TAB,  ssnNumber, Keys.TAB, userName, Keys.TAB, password,Keys.TAB, Keys.ENTER);
         }
     }
+
+
 }
