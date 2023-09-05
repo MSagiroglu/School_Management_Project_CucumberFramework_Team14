@@ -52,4 +52,13 @@ public class US001 {
 
 
     }
+
+    @When("Guest User Register sayfasındaki gerekli datayi {string} girmeden alanları doldurur.")
+    public void guestUserRegisterSayfasındakiGerekliDatayiGirmedenAlanlarıDoldurur(String data) {
+        if(data==null){
+            homePage.registerNameField.sendKeys(name, Keys.TAB, surname, Keys.TAB, birthPlace, Keys.TAB, phoneNumber, Keys.TAB,Keys.SPACE,Keys.TAB, birthDate, Keys.TAB,  ssnNumber, Keys.TAB, userName, Keys.TAB, password,Keys.TAB, Keys.ENTER);
+        } else if (data.equalsIgnoreCase("name")) {
+            us01Page.surname.sendKeys(surname, Keys.TAB, birthPlace, Keys.TAB, phoneNumber, Keys.TAB,Keys.SPACE,Keys.TAB, birthDate, Keys.TAB,  ssnNumber, Keys.TAB, userName, Keys.TAB, password,Keys.TAB, Keys.ENTER);
+        }
+    }
 }
