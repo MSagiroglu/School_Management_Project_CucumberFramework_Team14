@@ -28,7 +28,7 @@ public class US001 {
     static String ssnNumber = faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(10, 99) + "-" + faker.number().numberBetween(1000, 9999);
     @Given("Kullanici Admin olarak giris yapar.")
     public void kullaniciAdminOlarakGirisYapar() {
-        ReusableMethods.login("ViceDeanUsername", "ViceDeanPassword");
+        ReusableMethods.login("AdminUsername", "AdminPassword");
         //ReusableMethods.tumSayfaResmi("01","Admin Sayfası");
         //ReusableMethods.logout();
     }
@@ -42,8 +42,8 @@ public class US001 {
         homePage.registerNameField.sendKeys(name, Keys.TAB, surname, Keys.TAB, birthPlace, Keys.TAB, phoneNumber, Keys.TAB,Keys.SPACE,Keys.TAB, birthDate, Keys.TAB,  ssnNumber, Keys.TAB, userName, Keys.TAB, password,Keys.TAB, Keys.ENTER);
     }
 
-    @Then("Aday ogrncinin kaydının basarili bir şekilde gerçeklestigi dogrulanır.")
-    public void adayOgrncininKaydınınBasariliBirSekildeGerceklestigiDogrulanır() {
+    @Then("Aday ogrencinin kaydının basarili bir şekilde gerçeklestigi dogrulanır.")
+    public void adayOgrencininKaydınınBasariliBirSekildeGerceklestigiDogrulanır() {
         String expectedMessage = "Guest User registered.";
         ReusableMethods.waitForVisibility(us01Page.alertMessage, 5);
         String actualMessage = us01Page.alertMessage.getText();
@@ -56,12 +56,46 @@ public class US001 {
 
     @When("Guest User Register sayfasındaki gerekli datayi {string} girmeden alanları doldurur.")
     public void guestUserRegisterSayfasındakiGerekliDatayiGirmedenAlanlarıDoldurur(String data) {
-        if(data==null){
-            homePage.registerNameField.sendKeys(name, Keys.TAB, surname, Keys.TAB, birthPlace, Keys.TAB, phoneNumber, Keys.TAB,Keys.SPACE,Keys.TAB, birthDate, Keys.TAB,  ssnNumber, Keys.TAB, userName, Keys.TAB, password,Keys.TAB, Keys.ENTER);
-        } else if (data.equalsIgnoreCase("name")) {
+        if (data.equalsIgnoreCase("name")) {
             homePage.registerNameField.sendKeys(Keys.TAB,surname, Keys.TAB, birthPlace, Keys.TAB, phoneNumber, Keys.TAB,Keys.SPACE,Keys.TAB, birthDate, Keys.TAB,  ssnNumber, Keys.TAB, userName, Keys.TAB, password,Keys.TAB, Keys.ENTER);
+            ReusableMethods.scrollHome();
+            ReusableMethods.tumSayfaResmi("01","Guest User name required.");
+        } else if (data.equalsIgnoreCase("surname")) {
+            homePage.registerNameField.sendKeys(name, Keys.TAB,Keys.TAB, birthPlace, Keys.TAB, phoneNumber, Keys.TAB,Keys.SPACE,Keys.TAB, birthDate, Keys.TAB,  ssnNumber, Keys.TAB, userName, Keys.TAB, password,Keys.TAB, Keys.ENTER);
+            ReusableMethods.scrollHome();
+            ReusableMethods.tumSayfaResmi("01","Guest User surname required.");
+        }
+        else if (data.equalsIgnoreCase("birth place")) {
+            homePage.registerNameField.sendKeys(name, Keys.TAB,surname,Keys.TAB, Keys.TAB, phoneNumber, Keys.TAB,Keys.SPACE,Keys.TAB, birthDate, Keys.TAB,  ssnNumber, Keys.TAB, userName, Keys.TAB, password,Keys.TAB, Keys.ENTER);
+            ReusableMethods.scrollHome();
+            ReusableMethods.tumSayfaResmi("01","Guest User birth place required.");
+        }else if (data.equalsIgnoreCase("phone number")) {
+            homePage.registerNameField.sendKeys(name, Keys.TAB,surname,Keys.TAB,birthPlace, Keys.TAB,Keys.TAB,Keys.SPACE,Keys.TAB, birthDate, Keys.TAB,  ssnNumber, Keys.TAB, userName, Keys.TAB, password,Keys.TAB, Keys.ENTER);
+            ReusableMethods.tumSayfaResmi("01","Guest User phone number required.");
+        }else if (data.equalsIgnoreCase("birth date")) {
+            homePage.registerNameField.sendKeys(name, Keys.TAB,surname,Keys.TAB,birthPlace, Keys.TAB,Keys.TAB,Keys.SPACE,Keys.TAB, birthDate, Keys.TAB,  ssnNumber, Keys.TAB, userName, Keys.TAB, password,Keys.TAB, Keys.ENTER);
+            ReusableMethods.tumSayfaResmi("01","Guest User phone number required.");
         }
     }
 
 
-}
+    @Then("Aday ogrencinin kaydının gerçeklesmedigi dogrulanır.")
+    public void adayOgrencininKaydınınGerceklesmedigiDogrulanır() {
+        String actualMessage = us01Page.requiredMessage.getText();
+        String expectedMessage ;
+        if (actualMessage.equalsIgnoreCase("required")) {
+            expectedMessage = "Required";
+            Assert.assertEquals(expectedMessage, actualMessage);
+            ReusableMethods.tumSayfaResmi("01","Guest User Register işlemi tamamlanmadı.");
+        } else if (actualMessage.equalsIgnoreCase("Enter your password")) {
+            expectedMessage = "Enter your password";
+            Assert.assertEquals(expectedMessage, actualMessage);
+        } else if (actualMessage.equalsIgnoreCase("Minimum 12 character (XXX-XXX-XXXX)")) {
+            expectedMessage = "Minimum 12 character (XXX-XXX-XXXX)";
+            Assert.assertEquals(expectedMessage, actualMessage);
+        }
+
+    }
+
+    }
+
