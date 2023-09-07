@@ -15,6 +15,7 @@ import org.junit.runner.RunWith;
         features = "src/test/resources/features",
         glue = {"management_on_schools/step_definitions"},
         tags = "@Us22Tc04",//-->  and kulansaydık her iki tag'a sahip olan Scenario yu çalıştırır.
+
         //--> Eğer Feature'ın tag'ini @all yaparsak o featurenin tüm testlerini çalıştırır ise
         dryRun = false, //-->true seçersek scenarioları kontrol eder browser'ı çalıştırmaz
         monochrome = false
