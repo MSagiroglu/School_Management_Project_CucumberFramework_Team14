@@ -32,7 +32,7 @@ public class US_01Page {
     public WebElement registerButton;
     @FindBy(xpath = "//div[@role='alert']")
     public WebElement alertMessage;
-    @FindBy(xpath = "//div[@class='invalid-feedback']")//--> Register sayfasınfdaki Required mseajı
+    @FindBy(xpath = "//div[normalize-space()='Required']")//--> Register sayfasınfdaki Required mseajı
     public WebElement requiredMessage;
 
 
