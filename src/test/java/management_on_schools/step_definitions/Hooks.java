@@ -1,6 +1,7 @@
 package management_on_schools.step_definitions;
 
 
+import io.cucumber.java.AfterAll;
 import management_on_schools.utilities.ConfigReader;
 import management_on_schools.utilities.Driver;
 import io.cucumber.java.After;
@@ -14,8 +15,6 @@ public class Hooks {
     @Before
     public void setUp() throws Exception {
         Driver.getDriver().get(ConfigReader.getProperty("managementOnSchoolsUrl"));
-
-
     }
     @After//import io.cucumber.java.After;
     public void tearDown(Scenario scenario) throws Exception {
@@ -26,5 +25,7 @@ public class Hooks {
         }
         Driver.closeDriver();
     }
+
+
     //Bu method fail olan scenario'larda fail olan kısmın resmini rapora ekleyecektir.
 }

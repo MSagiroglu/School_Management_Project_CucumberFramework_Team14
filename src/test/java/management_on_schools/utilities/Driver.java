@@ -62,7 +62,6 @@ public class Driver {
 
     public static void closeDriver() {
         if (driver != null) {//-->Driver'a değer atanmışsa, boş değilse
-            ReusableMethods.bekle(15);
             driver.close();
             driver = null; //--> Driver'ı kapattıktan sonra boşalt
         }
@@ -71,7 +70,6 @@ public class Driver {
 
     public static void quitDriver() {
         if (driver != null) {//-->Driver'a değer atanmışsa, boş değilse
-            ReusableMethods.bekle(15);
             driver.quit();
             driver = null; //--> Driver'ı kapattıktan sonra boşalt
         }
