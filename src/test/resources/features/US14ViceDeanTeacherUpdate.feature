@@ -35,6 +35,25 @@ Feature: US_14_Ogretmen_Guncelleme
     And quit driver
 
 
+    Scenario: tc02_Teacher_Update
+      And click to "editButton"
+      And choose a lesson
+      And enter random "name"
+      And enter random "surname"
+      And enter random "birthPlace"
+      And enter random "email"
+      And enter random "phoneNumber"
+      And enter random "SSN"
+      And click to "gender"
+      And enter random "dateOfBirth"
+      And enter random "userName"
+      And enter random "password"
+      And click to "submit"
+      And warning for "teacherUpdatedSuccessfulMessage"
+      And quit driver
+
+
+
 
 
 
