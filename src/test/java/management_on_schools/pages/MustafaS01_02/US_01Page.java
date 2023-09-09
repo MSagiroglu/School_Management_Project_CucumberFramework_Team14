@@ -1,6 +1,7 @@
 package management_on_schools.pages.MustafaS01_02;
 
 import management_on_schools.utilities.Driver;
+import org.apache.commons.compress.archivers.zip.X000A_NTFS;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -34,7 +35,19 @@ public class US_01Page {
     public WebElement alertMessage;
     @FindBy(xpath = "//div[normalize-space()='Required']")//--> Register sayfasınfdaki Required mseajı
     public WebElement requiredMessage;
+    @FindBy(xpath = "//div[normalize-space()='Minimum 11 character (XXX-XX-XXXX)']")//--> Register sayfasınfdaki Minimum 11 character (XXX-XX-XXXX) mseajı
+    public WebElement requiredMessageSSSmin;
+    @FindBy(xpath = "//div[normalize-space()='Enter your password']")//--> Register sayfasınfdaki Enter your password mseajı
+    public WebElement requiredPassword;
+    @FindBy(xpath = "//div[normalize-space()='At least 8 characters']")//--> Register sayfasınfdaki At least 8 characters mesajı
+    public WebElement requiredAtLeast8Password;
 
+    @FindBy(xpath = "//div[normalize-space()='One uppercase character']")//--> Register sayfasınfdaki One uppercase character mesajı
+    public WebElement requiredUpperCasePassword;
+    @FindBy(xpath = "//div[normalize-space()='One lowercase character']")//--> Register sayfasınfdaki One lowercase character mesajı
+    public WebElement requiredLowerCasePassword;
+    @FindBy(xpath = "//div[normalize-space()='One number']")//--> Register sayfasınfdaki One number mesajı
+    public WebElement requiredNumberPassword;
 
 
 }
