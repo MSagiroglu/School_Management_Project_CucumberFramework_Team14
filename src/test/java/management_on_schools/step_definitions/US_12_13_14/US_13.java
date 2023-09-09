@@ -66,6 +66,9 @@ public class US_13 {
             case "lessonProgramAssignmet":
                 ReusableMethods.scroll(us_12Page.lessonProgramAssignmetButton);
                 break;
+            case "editButton":
+                us_14Page.editButtonBox.click();
+                break;
 
         }
 
@@ -166,6 +169,9 @@ public class US_13 {
                 break;
             case "lesson":
                 assrt = us_12Page.lessonV.isDisplayed();
+                break;
+            case "teacherUpdatedSuccessfulMessage" :
+                assrt = us_14Page.teacherUpdatedMessage.isEnabled();
                 break;
 
         }
@@ -268,6 +274,17 @@ public class US_13 {
         Driver.quitDriver();
     }
 
+    @And("choose lessons")
+    public void chooseLessons() {
+        ReusableMethods.bekle(3);
+        Actions actions = new Actions(Driver.getDriver());
+        ReusableMethods.bekle(3);
+        actions.click(us_13Page.ChooseLesson).build().perform();
+        ReusableMethods.bekle(3);
+        actions.click(us_13Page.ChooseLesson).sendKeys("English" + Keys.ARROW_DOWN, Keys.ENTER).build().perform();
+        ReusableMethods.bekle(3);
+    }
+
     @And("enter specific {string} to {string}")
     public void enterSpecificTo(String string, String string2) {
         switch (string2) {
@@ -312,6 +329,10 @@ public class US_13 {
     }
 
 
+    @And("is advisor teacher")
+    public void isAdvisorTeacher() {
+        Assert.assertTrue(us_13Page.isAdvisorTeacher.isSelected());
+    }
 }
 
 

@@ -1,14 +1,12 @@
-
 @us13ui
-
-Feature: US_13_Ogretmen_Olusturma
+Feature: US_13 Vice Dean Ogretmen Olusturma
 
   Background:
     Given Vice Dean olarak giris yapar
     And click to "menu"
     And click to "teacherManagementMenu"
 
-  Scenario: tc_01_Ders_secimi
+  Scenario: TC_01 Ogretmen kaydi yapilabilmelidir
     And choose a lesson
     And enter random "name"
     And enter random "surname"
@@ -25,7 +23,7 @@ Feature: US_13_Ogretmen_Olusturma
     Then quit driver
 
 
-  Scenario: tc_02_Ders_secimiN
+  Scenario: TC_02 Ders secimi yapilmadan kayit olunamamalidir
     And enter random "name"
     And enter random "surname"
     And enter random "birthPlace"
@@ -41,7 +39,7 @@ Feature: US_13_Ogretmen_Olusturma
     Then quit driver
 
 
-  Scenario: tc_03_Name
+  Scenario: TC_03 Name girilmeden kayit olunamamalidir
     And choose a lesson
     And enter random "surname"
     And enter random "birthPlace"
@@ -56,7 +54,7 @@ Feature: US_13_Ogretmen_Olusturma
     And warning for "nameRequired"
     Then quit driver
 
-  Scenario: tc_04_NameN
+  Scenario: TC_04 Gecersiz (tek karakter) name ile kayit olunamamalidir
     And choose a lesson
     And enter specific "A" to "name"
     And enter random "surname"
@@ -72,7 +70,7 @@ Feature: US_13_Ogretmen_Olusturma
     And warning for "invalidNameWarning"
     Then quit driver
 
-  Scenario: tc_05_Surname
+  Scenario: TC_05 Surname girilmeden kayit olunamamalidir
     And choose a lesson
     And enter random "name"
     And enter random "birthPlace"
@@ -88,7 +86,7 @@ Feature: US_13_Ogretmen_Olusturma
     Then quit driver
 
 
-  Scenario: tc_06_BirthPlace
+  Scenario: TC_06 Birth Place girilmeden kayit olunamamalidir
     And choose a lesson
     And enter random "name"
     And enter random "surname"
@@ -104,7 +102,7 @@ Feature: US_13_Ogretmen_Olusturma
     Then quit driver
 
 
-  Scenario: tc_07_Email
+  Scenario: TC_07 Email girilmeden kayit olunamamalidir
     And choose a lesson
     And enter random "name"
     And enter random "surname"
@@ -120,7 +118,7 @@ Feature: US_13_Ogretmen_Olusturma
     Then quit driver
 
 
-  Scenario: tc_08_EmailN
+  Scenario: TC_08 Gecersiz email (5 karakter altinda) ile kayit olunamamalidir
     And choose a lesson
     And enter random "name"
     And enter random "surname"
@@ -137,7 +135,7 @@ Feature: US_13_Ogretmen_Olusturma
     Then quit driver
 
 
-  Scenario: tc_09_EmailN2
+  Scenario: TC_09 Gecersiz email ('@' iceren gecersiz deger) ile kayit olunamamalidir
     And choose a lesson
     And enter random "name"
     And enter random "surname"
@@ -154,7 +152,7 @@ Feature: US_13_Ogretmen_Olusturma
     Then quit driver
 
 
-  Scenario: tc_10_Phone
+  Scenario: TC_10 Phone girilmeden kayit olunamamalidir
     And choose a lesson
     And enter random "name"
     And enter random "surname"
@@ -169,7 +167,7 @@ Feature: US_13_Ogretmen_Olusturma
     And warning for "phoneNumberRequired"
     Then quit driver
 
-  Scenario: tc_11_PhoneN
+  Scenario: TC_11 Gecersiz phone (12 karakterden az) ile kayit olunamamalidir
     And choose a lesson
     And enter random "name"
     And enter random "surname"
@@ -185,7 +183,7 @@ Feature: US_13_Ogretmen_Olusturma
     And warning for "phoneNumber12Message"
     Then quit driver
 
-  Scenario: tc_12_isAdvisorTeacher
+  Scenario: TC_12 Is Advisor Teacher secilerek kayit olusturulabilmelidir
     And choose a lesson
     And enter random "name"
     And enter random "surname"
@@ -202,7 +200,7 @@ Feature: US_13_Ogretmen_Olusturma
     And warning for "teacherSavedMessage"
     Then quit driver
 
-  Scenario: tc_13_Gender
+  Scenario: TC_13 Gender secilmeden kayit olunamamalidir
     And choose a lesson
     And enter random "name"
     And enter random "surname"
@@ -217,7 +215,7 @@ Feature: US_13_Ogretmen_Olusturma
     And warning for "invalidGender"
     Then quit driver
 
-  Scenario: tc_14_DateOfBirth
+  Scenario: TC_14 Date of birth girilmeden kayit olunamamalidir
     And choose a lesson
     And enter random "name"
     And enter random "surname"
@@ -232,7 +230,7 @@ Feature: US_13_Ogretmen_Olusturma
     And warning for "dateOfBirthRequired"
     Then quit driver
 
-  Scenario: tc_15_DateOfBirthN
+  Scenario: TC_15 Gecersiz date of birth (gelecek zaman) ile kayit olunamamalidir
     And choose a lesson
     And enter random "name"
     And enter random "surname"
@@ -248,7 +246,7 @@ Feature: US_13_Ogretmen_Olusturma
     And warning for "dogumGunuGecmisBirTarihOlmali"
     Then quit driver
 
-  Scenario: tc_16_SSN
+  Scenario: TC_16 SSN girilmeden kayit olunamamalidir
     And choose a lesson
     And enter random "name"
     And enter random "surname"
@@ -263,7 +261,7 @@ Feature: US_13_Ogretmen_Olusturma
     And warning for "sSNRequired"
     Then quit driver
 
-  Scenario: tc_17_NSSN
+  Scenario: TC_17 Gecersiz SSN (- icermeyen) ile kayit olunamamalidir
     And choose a lesson
     And enter random "name"
     And enter random "surname"
@@ -279,7 +277,7 @@ Feature: US_13_Ogretmen_Olusturma
     And warning for "pleaseEnterValidSSNNumberMessage"
     Then quit driver
 
-  Scenario: tc_18N2SSN
+  Scenario: TC_18 Gecersiz SSN (11 karakter altinda deger) ile kayit olunamamalidir
     And choose a lesson
     And enter random "name"
     And enter random "surname"
@@ -296,7 +294,7 @@ Feature: US_13_Ogretmen_Olusturma
     Then quit driver
 
 
-  Scenario: tc_19_UserName
+  Scenario: TC_19 Username girilmeden kayit olunamamalidir
     And choose a lesson
     And enter random "name"
     And enter random "surname"
@@ -311,7 +309,7 @@ Feature: US_13_Ogretmen_Olusturma
     And warning for "usernameRequired"
     Then quit driver
 
-  Scenario: tc_20Password
+  Scenario: TC_20 Password girilmeden kayit olunamamalidir
     And choose a lesson
     And enter random "name"
     And enter random "surname"
@@ -327,7 +325,7 @@ Feature: US_13_Ogretmen_Olusturma
     Then quit driver
 
 
-  Scenario: tc_21PasswordN
+  Scenario: TC_21 Gecersiz password (8 karakterden az deger) ile kayit olunamamalidir
     And choose a lesson
     And enter random "name"
     And enter random "surname"
@@ -344,7 +342,7 @@ Feature: US_13_Ogretmen_Olusturma
     Then quit driver
 
 
-  Scenario: tc_22PasswordN2
+  Scenario: TC_22 Gecersiz password (numara icermeyen deger) ile kayit olunamamalidir
     And choose a lesson
     And enter random "name"
     And enter random "surname"
@@ -360,7 +358,7 @@ Feature: US_13_Ogretmen_Olusturma
     And warning for "passwordOneNumber"
     Then quit driver
 
-  Scenario: tc_23PasswordN3
+  Scenario: TC_23 Gecersiz password (kucuk harf icermeyen deger) ile kayit olunamamalidir
     And choose a lesson
     And enter random "name"
     And enter random "surname"
@@ -375,6 +373,84 @@ Feature: US_13_Ogretmen_Olusturma
     And click to "submit"
     And warning for "passwordOneLowerCaseCharacter"
     Then quit driver
+
+  Scenario: TC_24 Gecersiz password (buyuk harf icermeyen deger) ile kayit olunamamalidir
+    And choose a lesson
+    And enter random "name"
+    And enter random "surname"
+    And enter random "birthPlace"
+    And enter random "email"
+    And enter random "phoneNumber"
+    And enter random "SSN"
+    And enter random "dateOfBirth"
+    And click to "gender"
+    And enter random "userName"
+    And enter specific "abcd1324" to "password"
+    And click to "submit"
+    And warning for "passwordOneUpperCaseCharacter"
+    Then quit driver
+
+  Scenario: TC_25 Birden fazla ders secilebilmelidir
+    And choose a lesson
+    And choose lessons
+    And enter random "name"
+    And enter random "surname"
+    And enter random "birthPlace"
+    And enter random "email"
+    And enter random "phoneNumber"
+    And enter random "SSN"
+    And enter random "dateOfBirth"
+    And click to "gender"
+    And enter random "userName"
+    And enter random "password"
+    And click to "submit"
+    And warning for "teacherSavedMessage"
+    Then quit driver
+
+
+  Scenario: TC_26 Is Advisor Teacher secilebilmelidir
+    And choose a lesson
+    And enter random "name"
+    And enter random "surname"
+    And enter random "birthPlace"
+    And enter random "email"
+    And enter random "phoneNumber"
+    And enter random "SSN"
+    And enter random "dateOfBirth"
+    And click to "gender"
+    And enter random "userName"
+    And enter random "password"
+    And click to "isAdvisorTeacher"
+    And click to "submit"
+    And is advisor teacher
+    Then quit driver
+
+
+  Scenario: TC_27 Gecersiz name (sayisal deger iceren) ile kayit olunamamalidir
+    And choose a lesson
+    And enter specific "123" to "name"
+    And enter random "surname"
+    And enter random "birthPlace"
+    And enter random "email"
+    And enter random "phoneNumber"
+    And enter random "SSN"
+    And enter random "dateOfBirth"
+    And click to "gender"
+    And enter random "userName"
+    And enter random "password"
+    And click to "submit"
+    And warning for "invalidNameWarning"
+    Then quit driver
+
+
+
+
+
+
+
+
+
+
 
 
 
