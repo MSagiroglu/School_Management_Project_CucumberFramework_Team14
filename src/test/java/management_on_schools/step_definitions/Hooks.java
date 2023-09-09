@@ -23,7 +23,12 @@ public class Hooks {
             scenario.attach(ts.getScreenshotAs(OutputType.BYTES), "image/jpeg",  scenario.getName());
             Driver.quitDriver();
         }
-        Driver.closeDriver();
+        //Driver.closeDriver();
+    }
+
+    @AfterAll
+    public static void tearDownAll() {
+        Driver.quitDriver();
     }
 
 

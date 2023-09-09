@@ -7,47 +7,46 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import management_on_schools.pages.Home_Page;
 import management_on_schools.pages.MustafaS01_02.US_01Page;
+import management_on_schools.pages.MustafaS01_02.US_02Page;
 import management_on_schools.utilities.ConfigReader;
 import management_on_schools.utilities.Driver;
 import management_on_schools.utilities.ReusableMethods;
 import org.junit.Assert;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
+import java.util.List;
 
-public class US001 {
+
+public class US001_US002 {
     Home_Page homePage = new Home_Page();
-     US_01Page us01Page = new US_01Page();
+    US_01Page us01Page = new US_01Page();
+    US_02Page us02Page = new US_02Page();
     Actions action = new Actions(Driver.getDriver());
-     Faker faker = new Faker();
-     String name = "Team14" + faker.name().firstName() + faker.number().numberBetween(1, 10);
-     String surname = name;
-     String birthPlace = name;
-     String userName = name;
-     String password = name + "1";
-    String birthDate = faker.number().numberBetween(1, 30) + "." + faker.number().numberBetween(1, 12) + "." + faker.number().numberBetween(1900, 2020);
-     String phoneNumber = faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(1000, 9999);
-     String ssnNumber = faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(10, 99) + "-" + faker.number().numberBetween(1000, 9999);
-     String registeredPhone = ConfigReader.getProperty("RegiteredPhone");
-     String registeredSsn = ConfigReader.getProperty("RegiteredSsn");
-     String phoneNumberWithLetter = ConfigReader.getProperty("PhoneNumberWithLetter");
-     String invalidDateOfBirth = ConfigReader.getProperty("InvalidDateOfBirth");
-     String ssnNumberWithCharacter = ConfigReader.getProperty("SsnNumberWithCharacter");
-     String ssnNumberNo11Character = ConfigReader.getProperty("SsnNumberNo11Character");
-     String ssnNumberMore11Character = ConfigReader.getProperty("SsnNumberMore11Character");
-     String ssnNumberWithLetter = ConfigReader.getProperty("SsnNumberWithLetter");
-     String registerdUserName = ConfigReader.getProperty("RegiteredUserName");
-     String passwordLessThan8 = ConfigReader.getProperty("PasswordLessThan8");
-     String passwordWithNoUpperCase = ConfigReader.getProperty("PasswordWithNoUpperCase");
-     String passwordWithNoLowerCase = ConfigReader.getProperty("PasswordWithNoLowerCase");
-     String passwordWithNoNumber = ConfigReader.getProperty("PasswordWithNoNumber");
+    static Faker faker = new Faker();
+    static String name = "Team14 " + faker.number().numberBetween(1, 10);
+    static String surname = faker.name().lastName();
+    String birthPlace = name;
+    static String userName = "Team14" + faker.name().firstName() + faker.number().numberBetween(1, 10);
+    String password = name + "1";
+    String birthDate = faker.number().numberBetween(1, 28) + "." + faker.number().numberBetween(1, 12) + "." + faker.number().numberBetween(1900, 2020);
+    static String phoneNumber = faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(1000, 9999);
+    static String ssnNumber = faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(10, 99) + "-" + faker.number().numberBetween(1000, 9999);
+    String registeredPhone = ConfigReader.getProperty("RegiteredPhone");
+    String registeredSsn = ConfigReader.getProperty("RegiteredSsn");
+    String phoneNumberWithLetter = ConfigReader.getProperty("PhoneNumberWithLetter");
+    String invalidDateOfBirth = ConfigReader.getProperty("InvalidDateOfBirth");
+    String ssnNumberWithCharacter = ConfigReader.getProperty("SsnNumberWithCharacter");
+    String ssnNumberNo11Character = ConfigReader.getProperty("SsnNumberNo11Character");
+    String ssnNumberMore11Character = ConfigReader.getProperty("SsnNumberMore11Character");
+    String ssnNumberWithLetter = ConfigReader.getProperty("SsnNumberWithLetter");
+    String registerdUserName = ConfigReader.getProperty("RegiteredUserName");
+    String passwordLessThan8 = ConfigReader.getProperty("PasswordLessThan8");
+    String passwordWithNoUpperCase = ConfigReader.getProperty("PasswordWithNoUpperCase");
+    String passwordWithNoLowerCase = ConfigReader.getProperty("PasswordWithNoLowerCase");
+    String passwordWithNoNumber = ConfigReader.getProperty("PasswordWithNoNumber");
 
-    @Given("Kullanici Admin olarak giris yapar.")
-    public void kullaniciAdminOlarakGirisYapar() {
-        ReusableMethods.login("AdminUsername", "AdminPassword");
-        //ReusableMethods.tumSayfaResmi("01","Admin Sayfası");
-        //ReusableMethods.logout();
-    }
 
     @Given("Guest User Anasayfada register butonuna tiklar")
     public void guest_user_anasayfada_register_butonuna_tiklar() {
@@ -57,6 +56,13 @@ public class US001 {
     @When("Guest User Register sayfasındaki gerekli alanları doldurur.")
     public void guest_user_register_sayfasındaki_gerekli_alanları_doldurur() {
         homePage.registerNameField.sendKeys(name, Keys.TAB, surname, Keys.TAB, birthPlace, Keys.TAB, phoneNumber, Keys.TAB, Keys.SPACE, Keys.TAB, birthDate, Keys.TAB, ssnNumber, Keys.TAB, userName, Keys.TAB, password, Keys.TAB, Keys.ENTER);
+        System.out.println("name = " + name);
+        System.out.println("surname = " + surname);
+        System.out.println("phoneNumber = " + phoneNumber);
+        System.out.println("ssnNumber = " + ssnNumber);
+        System.out.println("userName = " + userName);
+
+
     }
 
     @Then("Aday ogrencinin kaydının basarili bir şekilde gerçeklestigi dogrulanır.")
@@ -285,6 +291,100 @@ public class US001 {
     public void sayfayiKapatir() {
         Driver.closeDriver();
     }
+
+
+    @Given("Admin Guest User Sayfasina giris yapar")
+    public void adminGuestUserSayfasinaGirisYapar() {
+        homePage.menuButton.click();
+        us02Page.guestUserButton.click();
+    }
+
+    List<WebElement> guestUserTable;
+    String actualName;
+    String actualPhone;
+    String actualSsn;
+    String actualUserName;
+    String arananName;
+    String expectedName, expectedPhone, expectedSsn, expectedUserName;
+    WebElement actualName1, actualPhone1, actualSsn1, actualUserName1;
+
+    @And("Admin Kayıt olan Guest user'a ait bilgileri görebilir.")
+    public void adminKayıtOlanGuestUserAAitBilgileriGorebilir() {
+
+        int pageCount = Integer.parseInt(us02Page.guestUserTableCount.getAttribute("textContent").split(" ")[3]);
+        System.out.println("pageCount = " + pageCount);
+        guestUserTable = us02Page.guestUserTable;
+        System.out.println("guestUserTable.get(i) = " + guestUserTable.get(1).getText());
+        arananName = userName;
+        System.out.println("arananName = " + arananName);
+
+        for (int i = 0; i < pageCount; i++) {
+            int t=1;
+            for (int j = 1; j < guestUserTable.size(); j++) {
+                guestUserTable = us02Page.guestUserTable;
+                if (guestUserTable.get(j).getText().equals(arananName)) {
+                    System.out.println("DAta bulundu ve assertion başladı");
+                    guestUserTable = us02Page.guestUserTable;
+                    ReusableMethods.tumSayfaResmi("01", "Admin Guest User'a ait bilgileri görebilir.");
+                    expectedName = name + " " + surname;
+                    System.out.println("expectedName = " + expectedName);
+                    expectedPhone = phoneNumber;
+                    System.out.println("expectedPhone = " + expectedPhone);
+                    expectedSsn = ssnNumber;
+                    System.out.println("expectedSsn = " + expectedSsn);
+                    expectedUserName = userName;
+                    System.out.println("expectedUserName = " + expectedUserName);
+                    actualName1 = guestUserTable.get(j - 3);
+                    ReusableMethods.waitForVisibility(actualName1, 5);
+                    actualName = actualName1.getText();
+                    System.out.println("actualName = " + actualName);
+                    actualPhone1 = guestUserTable.get(j - 2);
+                    ReusableMethods.waitForVisibility(actualPhone1, 5);
+                    actualPhone = actualPhone1.getText();
+                    System.out.println("actualPhone = " + actualPhone);
+                    actualSsn1 = guestUserTable.get(j - 1);
+                    ReusableMethods.waitForVisibility(actualSsn1, 5);
+                    actualSsn = actualSsn1.getText();
+                    System.out.println("actualSsn = " + actualSsn);
+                    actualUserName1 = guestUserTable.get(j);
+                    ReusableMethods.waitForVisibility(actualUserName1, 5);
+                    actualUserName = actualUserName1.getText();
+                    System.out.println("actualUserName = " + actualUserName);
+                    Assert.assertEquals(expectedName, actualName);
+                    System.out.println("NAME DOĞRULANDI");
+                    Assert.assertEquals(expectedPhone, actualPhone);
+                    System.out.println("PHONE DOĞRULANDI");
+                    Assert.assertEquals(expectedSsn, actualSsn);
+                    System.out.println("SSN DOĞRULANDI");
+                    Assert.assertEquals(expectedUserName, actualUserName);
+                    System.out.println("USERNAME DOĞRULANDI");
+                    t=j;
+                    break;
+
+
+                } else {
+                    System.out.println(guestUserTable.get(j).getText());
+                }
+
+            }
+            if (us02Page.guestUserTable.get(t).equals(arananName)) {
+                break;
+            }else {
+                ReusableMethods.click(us02Page.guestUserIleriButton);
+                ReusableMethods.bekle(1);
+                System.out.println("Page Number = " + (i + 2) + " .sayfa");
+            }
+
+        }
+
+
+    }
+
+    @Given("Kullanici Admin olarak giris yapar.")
+    public void kullaniciAdminOlarakGirisYapar() {
+        ReusableMethods.login("AdminUsername", "AdminPassword");
+    }
 }
+
 
 
