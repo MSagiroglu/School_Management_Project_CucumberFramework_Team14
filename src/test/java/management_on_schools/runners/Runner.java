@@ -9,7 +9,11 @@ import org.junit.runner.RunWith;
 @CucumberOptions(
         plugin = {"pretty",
 
-                "html:projectReports/US_01/default-cucumber-reports.html",
+                "html:projectReports/TC07/default-cucumber-reports.html",
+
+
+
+
 
 
                 "json:target/json-reports/cucumber1.json",
@@ -18,7 +22,10 @@ import org.junit.runner.RunWith;
         features = "src/test/resources/features",
         glue = {"management_on_schools/step_definitions"},
 
+
+
         tags = "@US_02",//-->  and kulansaydık her iki tag'a sahip olan Scenario yu çalıştırır.
+
 
 
         //--> Eğer Feature'ın tag'ini @all yaparsak o featurenin tüm testlerini çalıştırır ise
