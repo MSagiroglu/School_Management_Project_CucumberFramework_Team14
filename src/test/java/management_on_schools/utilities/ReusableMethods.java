@@ -226,7 +226,7 @@ public class ReusableMethods {
 
 
     public static void login(String userName, String password) {
-        homePage.homePageLoginButton.click();
+        ReusableMethods.click(homePage.homePageLoginButton);
         homePage.loginEmailField.sendKeys(ConfigReader.getProperty(userName));
         homePage.loginPasswordField.sendKeys(ConfigReader.getProperty(password));
         homePage.loginButton.click();
