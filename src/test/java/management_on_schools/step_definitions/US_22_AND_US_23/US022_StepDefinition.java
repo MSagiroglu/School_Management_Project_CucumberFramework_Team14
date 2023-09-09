@@ -4,6 +4,7 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import management_on_schools.pages.Home_Page;
 import management_on_schools.pages.MehmetAli22_23.Us_22_23Page;
 import management_on_schools.utilities.ConfigReader;
 import management_on_schools.utilities.Driver;
@@ -13,27 +14,43 @@ import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 
 public class US022_StepDefinition {
+    Home_Page homePage = new Home_Page();
     Us_22_23Page page = new Us_22_23Page();
     Actions actions = new Actions(Driver.getDriver());
 
-    public void phoneAlaniTemizleme(){
-        page.phoneNumberAlani.sendKeys(Keys.chord(Keys.CONTROL,"a", Keys.DELETE));
+    public void nameAlaniTemizleme(){
+        page.nameAlani.sendKeys(Keys.chord(Keys.CONTROL,"a", Keys.DELETE));
     }
-    public void usernameAlaniTemizleme(){
-        page.usernameAlani.sendKeys(Keys.chord(Keys.CONTROL,"a", Keys.DELETE));
+    public void surnameAlaniTemizleme(){
+        page.surnameAlani.sendKeys(Keys.chord(Keys.CONTROL,"a", Keys.DELETE));
     }
-    public void ssnAlaniTemizleme(){
-        page.ssnAlani.sendKeys(Keys.chord(Keys.CONTROL,"a", Keys.DELETE));
+    public void birthPlaceAlaniTemizleme(){
+        page.birthPlaceAlani.sendKeys(Keys.chord(Keys.CONTROL,"a", Keys.DELETE));
     }
     public void dateOfBirthAlaniTemizleme(){
         page.dateOfBirthAlani.sendKeys(Keys.chord(Keys.CONTROL,"a", Keys.DELETE));
     }
+    public void phoneAlaniTemizleme(){
+        page.phoneNumberAlani.sendKeys(Keys.chord(Keys.CONTROL,"a", Keys.DELETE));
+    }
+    public void ssnAlaniTemizleme(){
+        page.ssnAlani.sendKeys(Keys.chord(Keys.CONTROL,"a", Keys.DELETE));
+    }
+    public void usernameAlaniTemizleme(){
+        page.usernameAlani.sendKeys(Keys.chord(Keys.CONTROL,"a", Keys.DELETE));
+    }
+    public void passwordAlaniTemizleme(){
+        page.passwordAlani.sendKeys(Keys.chord(Keys.CONTROL,"a", Keys.DELETE));
+    }
 
     @Given("admin login olur")
     public void adminLoginOlur() {
-        Driver.getDriver().navigate().refresh();
-        ReusableMethods.login("AdminUsername","AdminPassword");
-
+        //ReusableMethods.login("AdminUsername","AdminPassword");
+        ReusableMethods.bekle(2);
+        page.anaSayfaloginButonu.click();
+        page.loginUserNameAlani.sendKeys(ConfigReader.getProperty("AdminUsername"));
+        page.loginPasswordAlani.sendKeys(ConfigReader.getProperty("AdminPassword"));
+        page.loginButonu.click();
         //Sayfa otomatik asagi indigi icin Keys.PAGE_UP ile yukari cektik...
         ReusableMethods.bekle(2);
         actions.sendKeys(Keys.PAGE_UP).perform();
@@ -62,7 +79,7 @@ public class US022_StepDefinition {
     @Then("admin adminin eklenip eklenmedigini dogrular")
     public void adminAdmininEklenipEklenmediginiDogrular() {
         ReusableMethods.visibleWait(page.alert,10);
-        ReusableMethods.tumSayfaResmi("22","TC01");
+        ReusableMethods.tumSayfaResmi("22","TC01_AdminSaved");
         Assert.assertEquals(page.alert.getText(),"Admin Saved");
         ReusableMethods.bekle(2);
         ReusableMethods.logout();
@@ -181,5 +198,143 @@ public class US022_StepDefinition {
         ReusableMethods.visibleWait(page.alert,10);
         ReusableMethods.tumSayfaResmi("22","TC04_gecmisTarih");
         Assert.assertEquals(page.alert.getText(),gecmisTarihExpectedMessage);
+    }
+
+    @Then("admin kayitli username girer ve hata mesajini dogrular")
+    public void adminKayitliUsernameGirerVeHataMesajiniDogrular() {
+        //Daha once kayitli olmayan phone, ssn number giriyoruz ve kayitli bir username giriyoruz...
+        phoneAlaniTemizleme();
+        ssnAlaniTemizleme();
+        usernameAlaniTemizleme();
+        page.phoneNumberAlani.sendKeys(ConfigReader.getProperty("kayitliOlmayanPhone"));
+        page.ssnAlani.sendKeys(ConfigReader.getProperty("kayitliOlmayanSsn"));
+        page.usernameAlani.sendKeys(ConfigReader.getProperty("AdminUsername")); //Kayitli bir username
+        //Dogrulama...
+        String usernameAlreadyRegisterExpectedMessage = "Error: User with username Team14Admin already register";
+        page.submitButton.click();
+        ReusableMethods.visibleWait(page.alert,10);
+        ReusableMethods.tumSayfaResmi("22","TC05_usernameAlreadyRegister");
+        Assert.assertEquals(page.alert.getText(),usernameAlreadyRegisterExpectedMessage);
+    }
+
+    @Then("admin uygun olmayan passwordlar girer hata mesajlarini dogrular")
+    public void adminUygunOlmayanPasswordlarGirerHataMesajlariniDogrular() {
+        //Daha once kayitli olmayan phone, ssn number giriyoruz ve username giriyoruz...
+        phoneAlaniTemizleme();
+        ssnAlaniTemizleme();
+        usernameAlaniTemizleme();
+        page.phoneNumberAlani.sendKeys(ConfigReader.getProperty("us22tc06phoneNumber"));
+        page.ssnAlani.sendKeys(ConfigReader.getProperty("us22tc06ssnNumber"));
+        page.usernameAlani.sendKeys(ConfigReader.getProperty("us22tc06username"));
+        ReusableMethods.bekle(2);
+
+        //1.Dogrulama
+        String invalidFeedbackExpectedMessage01 = "At least 8 characters";
+        passwordAlaniTemizleme();
+        page.passwordAlani.sendKeys("admin12");
+        ReusableMethods.tumSayfaResmi("22","TC06_passwordAtLeast8Characters");
+        Assert.assertEquals(page.passwordInvalidFeedback.getText(),invalidFeedbackExpectedMessage01);
+        ReusableMethods.bekle(2);
+
+        //2.Dogrulama
+        String invalidFeedbackExpectedMessage02 ="One uppercase character";
+        passwordAlaniTemizleme();
+        page.passwordAlani.sendKeys("adminsifre");
+        ReusableMethods.tumSayfaResmi("22","TC06_passwordOneUppercaseCharacter");
+        Assert.assertEquals(page.passwordInvalidFeedback.getText(),invalidFeedbackExpectedMessage02);
+        ReusableMethods.bekle(2);
+
+        //3.Dogrulama
+        String invalidFeedbackExpectedMessage03 ="One number";
+        passwordAlaniTemizleme();
+        page.passwordAlani.sendKeys("Adminsifre");
+        ReusableMethods.tumSayfaResmi("22","TC06_passwordOneNumber");
+        Assert.assertEquals(page.passwordInvalidFeedback.getText(),invalidFeedbackExpectedMessage03);
+        ReusableMethods.bekle(2);
+    }
+
+    @And("admin uygun bir password ile admin ekler ve dogrular")
+    public void adminUygunBirPasswordIleAdminEklerVeDogrular() {
+        //Yanlis girilen password'u silip uygun password ile admin ekleyip dogruluyoruz...
+        passwordAlaniTemizleme();
+        page.passwordAlani.sendKeys(ConfigReader.getProperty("passwordMAK")); //Uygun bir sifre
+        page.submitButton.click();
+        ReusableMethods.visibleWait(page.alert,10);
+        ReusableMethods.tumSayfaResmi("22","TC06_uygunPasswordAdminSaved");
+        Assert.assertEquals(page.alert.getText(),"Admin Saved");
+    }
+
+    @When("admin veri girilecek alanlari bos birakir ve hata mesajlarini dogrular sonra gender haric verileri girer")
+    public void adminVeriGirilecekAlanlariBosBirakirVeHataMesajlariniDogrularSonraGenderHaricVerileriGirer() {
+        //Dogrulama verilerini giriyoruz
+        String requiredMessage = "Required";
+        String enterYourPasswordMessage = "Enter your password"; //Password icin farkli bir mesaj cikiyor!!!
+
+        //1.Dogrulama
+        page.surnameAlani.click();//Once surname'e click yapıyoruz ki name'e click yaptigimizda mesajlar goruntulensin
+        page.nameAlani.click();
+        ReusableMethods.tumSayfaResmi("22","TC07_nameRequired");
+        Assert.assertEquals(page.nameInvalidFeedback.getText(),requiredMessage);
+        page.nameAlani.sendKeys(ConfigReader.getProperty("nameMAK"));
+
+        //2.Dogrulama
+        ReusableMethods.tumSayfaResmi("22","TC07_surnameRequired");
+        Assert.assertEquals(page.surnameInvalidFeedback.getText(),requiredMessage);
+        page.surnameAlani.sendKeys(ConfigReader.getProperty("surnameMAK"));
+
+        //3.Dogrulama
+        ReusableMethods.tumSayfaResmi("22","TC07_birthPlaceRequired");
+        Assert.assertEquals(page.birthPlaceInvalidFeedback.getText(),requiredMessage);
+        page.birthPlaceAlani.sendKeys(ConfigReader.getProperty("birthPlaceMAK"));
+
+        //4.Dogrulama
+        ReusableMethods.tumSayfaResmi("22","TC07_dateOfBirthRequired");
+        Assert.assertEquals(page.dateOfBirthInvalidFeedback.getText(),requiredMessage);
+        page.dateOfBirthAlani.sendKeys(ConfigReader.getProperty("dateOfBirthMAK"));
+
+        //5.Dogrulama
+        ReusableMethods.tumSayfaResmi("22","TC07_phoneNumberRequired");
+        Assert.assertEquals(page.phoneNumberInvalidFeedback.getText(),requiredMessage);
+        page.phoneNumberAlani.sendKeys(ConfigReader.getProperty("kayitliOlmayanPhone"));
+
+        //6.Dogrulama
+        ReusableMethods.tumSayfaResmi("22","TC07_ssnNumberRequired");
+        Assert.assertEquals(page.ssnNumberInvalidFeedback.getText(),requiredMessage);
+        page.ssnAlani.sendKeys(ConfigReader.getProperty("kayitliOlmayanSsn"));
+
+        //7.Dogrulama
+        ReusableMethods.tumSayfaResmi("22","TC07_usernameRequired");
+        Assert.assertEquals(page.usernameInvalidFeedback.getText(),requiredMessage);
+        page.usernameAlani.sendKeys(ConfigReader.getProperty("kayitliOlmayanUsername"));
+
+        //8.Dogrulama
+        ReusableMethods.tumSayfaResmi("22","TC07_passwordRequired");
+        Assert.assertEquals(page.passwordInvalidFeedback.getText(),enterYourPasswordMessage);
+        page.passwordAlani.sendKeys(ConfigReader.getProperty("passwordMAK"));
+    }
+
+    @Then("admin cikis yapip girdigi verilerle login olmayi dener ve hata alip dogrular")
+    public void adminCikisYapipGirdigiVerilerleLoginOlmayiDenerVeHataAlipDogrular() {
+        //Cikis yapip girilen bilgilerle login oluyoruz
+        String errorLoginMessage = "Bad credentials";
+
+        //Cikis yapar
+        homePage.menuButton.click();
+        homePage.logoutButton.click();
+        homePage.logOutYesButton.click();
+
+        //Login olmayi dener
+        ReusableMethods.bekle(2);
+        page.anaSayfaloginButonu.click();
+        page.loginUserNameAlani.sendKeys(ConfigReader.getProperty("kayitliOlmayanUsername"));
+        page.loginPasswordAlani.sendKeys(ConfigReader.getProperty("passwordMAK"));
+        page.loginButonu.click();
+        //ReusableMethods.login("kayitliOlmayanUsername","passwordMAK");
+
+        //Hata mesajını Dogrulama
+        ReusableMethods.visibleWait(page.alert,10);
+        ReusableMethods.tumSayfaResmi("22","TC07_errorLogin");
+        Assert.assertEquals(page.alert.getText(),errorLoginMessage);
+
     }
 }
