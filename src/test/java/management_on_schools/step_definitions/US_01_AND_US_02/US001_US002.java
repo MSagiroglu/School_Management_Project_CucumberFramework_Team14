@@ -25,10 +25,10 @@ public class US001_US002 {
     US_02Page us02Page = new US_02Page();
     Actions action = new Actions(Driver.getDriver());
     static Faker faker = new Faker();
-    static String name = "Team14 " + faker.number().numberBetween(1, 10);
+    static String name = "ATeam14 " + faker.number().numberBetween(1, 10);
     static String surname = faker.name().lastName();
     String birthPlace = name;
-    static String userName = "Team14" + faker.name().firstName() + faker.number().numberBetween(1, 10);
+    static String userName =  faker.name().firstName() + faker.number().numberBetween(1, 10);
     String password = name + "1";
     String birthDate = faker.number().numberBetween(1, 28) + "." + faker.number().numberBetween(1, 12) + "." + faker.number().numberBetween(1900, 2020);
     static String phoneNumber = faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(1000, 9999);
@@ -310,16 +310,16 @@ public class US001_US002 {
 
     @And("Admin Kayıt olan Guest user'a ait bilgileri görebilir.")
     public void adminKayıtOlanGuestUserAAitBilgileriGorebilir() {
-
+        ReusableMethods.bekle(2);
+        ReusableMethods.visibleWait(us02Page.guestUserTableCount, 10);
         int pageCount = Integer.parseInt(us02Page.guestUserTableCount.getAttribute("textContent").split(" ")[3]);
-        System.out.println("pageCount = " + pageCount);
         guestUserTable = us02Page.guestUserTable;
         System.out.println("guestUserTable.get(i) = " + guestUserTable.get(1).getText());
         arananName = userName;
         System.out.println("arananName = " + arananName);
 
         for (int i = 0; i < pageCount; i++) {
-            int t=1;
+            int t = 1;
             for (int j = 1; j < guestUserTable.size(); j++) {
                 guestUserTable = us02Page.guestUserTable;
                 if (guestUserTable.get(j).getText().equals(arananName)) {
@@ -358,22 +358,22 @@ public class US001_US002 {
                     System.out.println("SSN DOĞRULANDI");
                     Assert.assertEquals(expectedUserName, actualUserName);
                     System.out.println("USERNAME DOĞRULANDI");
-                    t=j;
+                    t = j;
                     break;
-
 
                 } else {
                     System.out.println(guestUserTable.get(j).getText());
                 }
-
+                t = j;
             }
-            if (us02Page.guestUserTable.get(t).equals(arananName)) {
+            if (guestUserTable.get(t).getText().equals(arananName)) {
                 break;
-            }else {
+            } else {
                 ReusableMethods.click(us02Page.guestUserIleriButton);
                 ReusableMethods.bekle(1);
                 System.out.println("Page Number = " + (i + 2) + " .sayfa");
             }
+
 
         }
 
