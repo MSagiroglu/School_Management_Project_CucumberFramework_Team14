@@ -9,7 +9,7 @@ import org.junit.runner.RunWith;
 @CucumberOptions(
         plugin = {"pretty",
 
-                "html:projectReports/TC07/default-cucumber-reports.html",
+                "html:projectReports/TC24/default-cucumber-reports.html",
 
 
 
@@ -24,7 +24,7 @@ import org.junit.runner.RunWith;
 
 
 
-        tags = "@US_02",//-->  and kulansaydık her iki tag'a sahip olan Scenario yu çalıştırır.
+        tags = "@Us24TC02",//-->  and kulansaydık her iki tag'a sahip olan Scenario yu çalıştırır.
 
 
 

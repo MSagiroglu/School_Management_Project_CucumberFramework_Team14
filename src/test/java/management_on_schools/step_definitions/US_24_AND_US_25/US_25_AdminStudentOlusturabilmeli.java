@@ -1,5 +1,6 @@
 package management_on_schools.step_definitions.US_24_AND_US_25;
 
+import com.github.javafaker.Faker;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -15,6 +16,20 @@ import org.testng.Assert;
 public class US_25_AdminStudentOlusturabilmeli {
     YektaUS_24_25 us24_25Page = new YektaUS_24_25();
     Actions actions = new Actions(Driver.getDriver());
+    static Faker faker = new Faker();
+
+    static String nameYS=faker.name().firstName();
+    static String surnameYS=faker.name().lastName();
+    static String birthPlaceYS= surnameYS +nameYS;
+    static String emailYS=nameYS.toLowerCase()+surnameYS.toLowerCase()+"@gmail.com";
+    static String phoneYS=faker.number().numberBetween(100,999)+"-"+faker.number().numberBetween(100,999)+"-"+faker.number().numberBetween(1000,9999);
+    static String birthdateYS=faker.number().numberBetween(1, 30) + "." + faker.number().numberBetween(1, 12) + "." + faker.number().numberBetween(1950, 2022);
+    static String ssnYS=faker.number().numberBetween(100,999)+"-"+faker.number().numberBetween(10,99)+"-"+faker.number().numberBetween(1000,9999);
+    static String userNameYS=nameYS.toLowerCase()+surnameYS.toLowerCase();
+    static String passwordYS=nameYS+"P43";
+    static String motherYS=faker.name().firstName();
+    static String fatherYS=faker.name().lastName();
+
     @Given("Admin sisteme admin olarak giriş yapar")
     public void admin_sisteme_admin_olarak_giriş_yapar() {
         ReusableMethods.login("AdminUsername","AdminPassword");
@@ -30,17 +45,17 @@ public class US_25_AdminStudentOlusturabilmeli {
 
         actions.sendKeys(Keys.ARROW_DOWN,Keys.ARROW_UP,Keys.ARROW_UP,Keys.ENTER).perform();
 
-        us24_25Page.studentName.sendKeys(ConfigReader.getProperty("nameYs"),Keys.TAB,
-                                         ConfigReader.getProperty("surnameYs"),Keys.TAB,
-                                         ConfigReader.getProperty("birthplaceYs"),Keys.TAB,
-                                         ConfigReader.getProperty("emailYs"),Keys.TAB,
-                                          ConfigReader.getProperty("phoneYs"),Keys.TAB,Keys.TAB,
-                                          ConfigReader.getProperty("birthdateYs"),Keys.TAB,
-                                          ConfigReader.getProperty("ssnYs"),Keys.TAB,
-                                           ConfigReader.getProperty("userNameYs"),Keys.TAB,
-                                           ConfigReader.getProperty("fatherName"),Keys.TAB,
-                                            ConfigReader.getProperty("motherName"),Keys.TAB,
-                                             ConfigReader.getProperty("PasswordYs"));
+        us24_25Page.studentName.sendKeys(nameYS,Keys.TAB,
+                                         surnameYS,Keys.TAB,
+                                         birthPlaceYS,Keys.TAB,
+                                         emailYS,Keys.TAB,
+                                          phoneYS,Keys.TAB,Keys.TAB,
+                                          birthdateYS,Keys.TAB,
+                                          ssnYS,Keys.TAB,
+                                           userNameYS,Keys.TAB,
+                                           fatherYS,Keys.TAB,
+                                            motherYS,Keys.TAB,
+                                             passwordYS);
                                              us24_25Page.studentMale.click();
                                             us24_25Page.studentSubmit.click();
 
