@@ -1,4 +1,4 @@
-@US_02
+@111 @pozitifApi
 Feature: US_002 Admin OlusturulanAday Ogrenciye ait bilgileri gorebilmeli ve silebilmeli
 
   Background:

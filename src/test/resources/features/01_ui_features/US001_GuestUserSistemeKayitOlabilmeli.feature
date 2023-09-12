@@ -4,16 +4,19 @@ Feature: US001 Aday ogrenciler sisteme kayit olabilmelidir.
   Background:
     Given Guest User Anasayfada register butonuna tiklar
 
-  @US_01_PS @1 @US_02
+  @US_01_PS @US_02 @pozitifApi
   Scenario: TC_01 Aday ogrenciler sisteme kayit olabilmelidir.
     When Guest User Register sayfasındaki gerekli alanları doldurur.
     Then Aday ogrencinin kaydının basarili bir şekilde gerçeklestigi dogrulanır.
+
+
 
 
   @US_01_NS @NS01 @1
   Scenario: TC_02 Aday ogrenciler sisteme name girmeden kayit olamamalidir.
     When Guest User Register sayfasındaki gerekli datayi "name" girmeden alanları doldurur.
     Then Aday ogrencinin kaydinin gerçeklesmedigi dogrulanir.
+
 
 
   @US_01_NS @NS02

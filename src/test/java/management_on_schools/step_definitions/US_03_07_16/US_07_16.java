@@ -1,4 +1,4 @@
-package management_on_schools.step_definitions;
+package management_on_schools.step_definitions.US_03_07_16;
 
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;

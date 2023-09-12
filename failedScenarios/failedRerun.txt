@@ -1,1 +1,3 @@
-file:src/test/resources/features/US13ViceDeanTeacher.feature:394
+file:src/test/resources/features/01_ui_features/US002_AdminOlusturulanAdayOgrenciyiGorebilmeliVeSilebilmeli.feature:7
+file:src/test/resources/features/02_api_features/US_01_02/US_02_UserStudenGetRequest.feature:3
+file:src/test/resources/features/01_ui_features/US001_GuestUserSistemeKayitOlabilmeli.feature:8
