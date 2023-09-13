@@ -29,7 +29,8 @@ import org.junit.runner.RunWith;
 
 
 
-        tags = "@pozitifApi",//-->  and kulansaydık her iki tag'a sahip olan Scenario yu çalıştırır.
+       tags = "@pozitifApi",//-->  and kulansaydık her iki tag'a sahip olan Scenario yu çalıştırır.
+
 
         //-->  and kulansaydık her iki tag'a sahip olan Scenario yu çalıştırır.
 
