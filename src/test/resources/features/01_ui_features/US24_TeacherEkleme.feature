@@ -4,10 +4,12 @@ Feature: US24 Teacher Ekleme
     Given Admin Login Olur
     When Admin Teacher ile ilgili bilgileri girer
     And Admin submit tuşuna basar
-    Then Admin teacher listin son sayfasına giderek öğretmenin oluştuğunu kontrol eder
+    And Öğretmenin kaydolduğu doğrulanır
+
 
   @Us24TC02
   Scenario: Admin ders seçmeden öğretmen kaydetmemeli
-    Given Admin Login Olur
+    Given Admin login olur
     When Admin Teacher ile ilgili bilgileri ders seçimi yapmadan girer
-    Then Admin teacher listin son sayfasına giderek öğretmenin oluşmadığını kontrol eder
+    And Sistemin öğretmen seçimi yapılmadan kaydetmediği hata mesajı ile doğrulanır.
+

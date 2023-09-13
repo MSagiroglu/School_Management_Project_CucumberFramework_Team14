@@ -29,7 +29,7 @@ import org.junit.runner.RunWith;
 
 
 
-        tags = "",//-->  and kulansaydık her iki tag'a sahip olan Scenario yu çalıştırır.
+        tags = "@Us24TC02",//-->  and kulansaydık her iki tag'a sahip olan Scenario yu çalıştırır.
 
         //-->  and kulansaydık her iki tag'a sahip olan Scenario yu çalıştırır.
 
