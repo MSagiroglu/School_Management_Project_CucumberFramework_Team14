@@ -10,7 +10,7 @@ import org.junit.runner.RunWith;
         plugin = {"pretty",
 
 
-                "html:projectReports/TC24/default-cucumber-reports.html",
+                "html:projectReports/US_01/default-cucumber-reports.html",
 
 
 
@@ -29,7 +29,8 @@ import org.junit.runner.RunWith;
 
 
 
-        tags = "@Us22Tc01Api",//-->  and kulansaydık her iki tag'a sahip olan Scenario yu çalıştırır.
+       tags = "@pozitifApi",//-->  and kulansaydık her iki tag'a sahip olan Scenario yu çalıştırır.
+
 
         //-->  and kulansaydık her iki tag'a sahip olan Scenario yu çalıştırır.
 
