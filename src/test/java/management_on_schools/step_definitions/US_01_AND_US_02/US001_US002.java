@@ -5,9 +5,14 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import io.restassured.response.Response;
 import management_on_schools.pages.Home_Page;
 import management_on_schools.pages.MustafaS01_02.US_01Page;
 import management_on_schools.pages.MustafaS01_02.US_02Page;
+import management_on_schools.pojos.MustafaS01_02.US_01.GuestUserPostPojo;
+import management_on_schools.pojos.MustafaS01_02.US_01.Responsepojo;
+import management_on_schools.pojos.MustafaS01_02.US_02.ContentPojo;
+import management_on_schools.pojos.MustafaS01_02.US_02.GetRequestResponsePojo;
 import management_on_schools.utilities.ConfigReader;
 import management_on_schools.utilities.Driver;
 import management_on_schools.utilities.ReusableMethods;
@@ -18,6 +23,10 @@ import org.openqa.selenium.interactions.Actions;
 
 import java.util.List;
 
+import static io.restassured.RestAssured.given;
+import static management_on_schools.base_url.ManagementOnSchool.spec;
+import static org.junit.Assert.assertEquals;
+
 
 public class US001_US002 {
     Home_Page homePage = new Home_Page();
@@ -25,12 +34,12 @@ public class US001_US002 {
     US_02Page us02Page = new US_02Page();
     Actions action = new Actions(Driver.getDriver());
     static Faker faker = new Faker();
-    static String name = "Team14 " + faker.number().numberBetween(1, 10);
+    static String name = "ATeam14 " + faker.number().numberBetween(1, 10);
     static String surname = faker.name().lastName();
-    String birthPlace = name;
-    static String userName = "Team14" + faker.name().firstName() + faker.number().numberBetween(1, 10);
-    String password = name + "1";
-    String birthDate = faker.number().numberBetween(1, 28) + "." + faker.number().numberBetween(1, 12) + "." + faker.number().numberBetween(1900, 2020);
+    static String birthPlace = name;
+    static String userName = faker.name().firstName() + faker.number().numberBetween(1, 10);
+    static String password = name + "1";
+    static String birthDate = faker.number().numberBetween(1900, 2020)+"-"+faker.number().numberBetween(10, 12)+"-"+faker.number().numberBetween(1, 28);
     static String phoneNumber = faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(1000, 9999);
     static String ssnNumber = faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(10, 99) + "-" + faker.number().numberBetween(1000, 9999);
     String registeredPhone = ConfigReader.getProperty("RegiteredPhone");
@@ -307,19 +316,20 @@ public class US001_US002 {
     String arananName;
     String expectedName, expectedPhone, expectedSsn, expectedUserName;
     WebElement actualName1, actualPhone1, actualSsn1, actualUserName1;
+    static String pagenumber;
 
     @And("Admin Kayıt olan Guest user'a ait bilgileri görebilir.")
     public void adminKayıtOlanGuestUserAAitBilgileriGorebilir() {
-
+        ReusableMethods.bekle(2);
+        ReusableMethods.visibleWait(us02Page.guestUserTableCount, 10);
         int pageCount = Integer.parseInt(us02Page.guestUserTableCount.getAttribute("textContent").split(" ")[3]);
-        System.out.println("pageCount = " + pageCount);
         guestUserTable = us02Page.guestUserTable;
         System.out.println("guestUserTable.get(i) = " + guestUserTable.get(1).getText());
         arananName = userName;
         System.out.println("arananName = " + arananName);
 
         for (int i = 0; i < pageCount; i++) {
-            int t=1;
+            int t = 1;
             for (int j = 1; j < guestUserTable.size(); j++) {
                 guestUserTable = us02Page.guestUserTable;
                 if (guestUserTable.get(j).getText().equals(arananName)) {
@@ -358,22 +368,25 @@ public class US001_US002 {
                     System.out.println("SSN DOĞRULANDI");
                     Assert.assertEquals(expectedUserName, actualUserName);
                     System.out.println("USERNAME DOĞRULANDI");
-                    t=j;
-                    break;
+                    pagenumber=us02Page.guestUserTableCount.getAttribute("textContent").split(" ")[3];
+                    System.out.println("pagenumber = " + pagenumber);
 
+                    t = j;
+                    break;
 
                 } else {
                     System.out.println(guestUserTable.get(j).getText());
                 }
-
+                t = j;
             }
-            if (us02Page.guestUserTable.get(t).equals(arananName)) {
+            if (guestUserTable.get(t).getText().equals(arananName)) {
                 break;
-            }else {
+            } else {
                 ReusableMethods.click(us02Page.guestUserIleriButton);
                 ReusableMethods.bekle(1);
                 System.out.println("Page Number = " + (i + 2) + " .sayfa");
             }
+
 
         }
 
@@ -383,6 +396,90 @@ public class US001_US002 {
     @Given("Kullanici Admin olarak giris yapar.")
     public void kullaniciAdminOlarakGirisYapar() {
         ReusableMethods.login("AdminUsername", "AdminPassword");
+    }
+
+    //-----------       API             ---------------\\
+    GuestUserPostPojo expectedData;
+    Response response;
+    Responsepojo actualData;
+
+    @Given("Dean eklemek icin Post request hazirligi yapilir")
+    public void dean_eklemek_icin_post_request_hazirligi_yapilir() {
+        //https://managementonschools.com/app/guestUser/register
+        //Set the url
+        spec.pathParams("first", "guestUser", "second", "register");
+
+
+    }
+
+    @Given("Gonderilecek Dean bilgileri hazırlanır")
+    public void gonderilecek_dean_bilgileri_hazırlanır() {
+        //Set the expected data
+        expectedData = new GuestUserPostPojo(birthDate, birthPlace, "FEMALE", name, password, phoneNumber, ssnNumber, surname, userName);
+        System.out.println("expectedData = " + expectedData);
+
+
+    }
+
+    @When("Dean eklemek icin Post request gonderilir")
+    public void dean_eklemek_icin_post_request_gonderilir() {
+        response = given(spec).body(expectedData).when().post("/{first}/{second}");
+        response.prettyPrint();
+        actualData = response.as(Responsepojo.class);
+
+    }
+
+    @Then("Dean Bilgileri dogrulanir")
+    public void dean_bilgileri_dogrulanir() {
+        assertEquals(200, response.statusCode());
+        assertEquals(expectedData.getBirthDay(), actualData.getObject().getBirthDay());
+        assertEquals(expectedData.getBirthPlace(), actualData.getObject().getBirthPlace());
+        assertEquals(expectedData.getGender(), actualData.getObject().getGender());
+        assertEquals(expectedData.getName(), actualData.getObject().getName());
+        assertEquals(expectedData.getSurname(), actualData.getObject().getSurname());
+        assertEquals(expectedData.getUsername(), actualData.getObject().getUsername());
+        assertEquals(expectedData.getSsn(), actualData.getObject().getSsn());
+        assertEquals(expectedData.getPhoneNumber(), actualData.getObject().getPhoneNumber());
+
+    }
+
+
+    @Given("Guest User icin Get request hazirligi yapilir")
+    public void guestUserIcinGetRequestHazirligiYapilir() {
+        //https://managementonschools.com/app/guestUser/getAll?page=60&size=5&sort=name&type=desc
+        spec.pathParams("first","guestUser","second","getAll").queryParams("page",pagenumber);
+    }
+    ContentPojo expectedGuestUserData;
+    @And("Sorgulanacak Guest User bilgileri hazırlanır")
+    public void sorgulanacakGuestUserBilgileriHazırlanır() {
+        expectedGuestUserData=new ContentPojo(userName,ssnNumber,name,surname,birthDate,birthPlace,phoneNumber,"FEMALE");
+        System.out.println("expectedGuestUserData = " + expectedGuestUserData);
+    }
+
+    @When("Sorgulamak icin Get request gonderilir")
+    public void sorgulamakIcinGetRequestGonderilir() {
+        response=given(spec).get("{first}/{second}");
+        response.prettyPrint();
+    }
+
+    @Then("Guest User Bilgileri dogrulanir")
+    public void guestUserBilgileriDogrulanir() {
+        GetRequestResponsePojo actualGuestUserData=response.as(GetRequestResponsePojo.class);
+        for (int i=0;i<actualGuestUserData.getContent().size();i++) {
+            if (actualGuestUserData.getContent().get(i).getUsername().equals(arananName)) {
+                assertEquals(expectedGuestUserData.getUsername(), actualGuestUserData.getContent().get(i).getUsername());
+                assertEquals(expectedGuestUserData.getSsn(), actualGuestUserData.getContent().get(i).getSsn());
+                assertEquals(expectedGuestUserData.getName(), actualGuestUserData.getContent().get(i).getName());
+                assertEquals(expectedGuestUserData.getSurname(), actualGuestUserData.getContent().get(i).getSurname());
+                assertEquals(expectedGuestUserData.getBirthDay(), actualGuestUserData.getContent().get(i).getBirthDay());
+                assertEquals(expectedGuestUserData.getBirthPlace(), actualGuestUserData.getContent().get(i).getBirthPlace());
+                assertEquals(expectedGuestUserData.getPhoneNumber(), actualGuestUserData.getContent().get(i).getPhoneNumber());
+                assertEquals(expectedGuestUserData.getGender(), actualGuestUserData.getContent().get(i).getGender());
+
+            }else {
+                System.out.println("Aranan Guest User Bulunamadı");
+            }
+        }
     }
 }
 

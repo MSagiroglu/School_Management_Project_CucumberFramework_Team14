@@ -15,6 +15,9 @@ public class US_14Page {
     @FindBy(xpath = "(//li[@class='page-item'])[4]")
     public WebElement lastPageButton;
 
+    @FindBy(xpath = "//div[contains(text(),'Teacher updated Successful')]")
+    public WebElement teacherUpdatedMessage;
+
     @FindBy(xpath = "//table//tr//th[1]")
     public WebElement confirmName;
     @FindBy(xpath = "//table//tr//th[2]")
@@ -26,6 +29,10 @@ public class US_14Page {
 
     @FindBy(xpath = "((//button[@class='text-dark btn btn-outline-info'])[17]")
     public WebElement editButton;
+
+    @FindBy(xpath = "(//button[@class='text-dark btn btn-outline-info'])[1]")
+    public WebElement editButtonBox;
+
 
 
 }
