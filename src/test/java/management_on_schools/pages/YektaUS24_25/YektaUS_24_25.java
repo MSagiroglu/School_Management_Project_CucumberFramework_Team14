@@ -31,6 +31,8 @@ public class YektaUS_24_25 {
     public WebElement errorMessage;
     @FindBy(xpath = "//a[.='Student Management']")
     public WebElement studentManagement;
+    @FindBy(xpath = "//span[.='»']")
+    public WebElement lastPage;
 
     //Student
     @FindBy(xpath = "//input[@id='name']")

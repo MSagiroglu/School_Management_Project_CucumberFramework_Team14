@@ -8,7 +8,18 @@ import org.junit.runner.RunWith;
 @RunWith(Cucumber.class)//-->Test çalıştırıcı Notasyon(Cucumber ile JUnit i entegre olmasını sağlar)
 @CucumberOptions(
         plugin = {"pretty",
+
+
+                "html:projectReports/TC24/default-cucumber-reports.html",
+
+
+
+
+
+
+
                 "html:projectReports/US_01/default-cucumber-reports.html",
+
                 "json:target/json-reports/cucumber1.json",
                 "junit:target/xml-report/cucumber.xml",
                 "rerun:failedScenarios/failedRerun.txt"},
@@ -17,7 +28,11 @@ import org.junit.runner.RunWith;
 
 
 
-        tags = "@pozitifApi",//-->  and kulansaydık her iki tag'a sahip olan Scenario yu çalıştırır.
+
+        tags = "",//-->  and kulansaydık her iki tag'a sahip olan Scenario yu çalıştırır.
+
+        //-->  and kulansaydık her iki tag'a sahip olan Scenario yu çalıştırır.
+
 
 
 
