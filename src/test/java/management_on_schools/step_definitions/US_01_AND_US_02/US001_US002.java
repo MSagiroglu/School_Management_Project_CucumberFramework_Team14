@@ -39,7 +39,8 @@ public class US001_US002 {
     static String birthPlace = name;
     static String userName = faker.name().firstName() + faker.number().numberBetween(1, 10);
     static String password = name + "1";
-    static String birthDate = faker.number().numberBetween(1900, 2020)+"-"+faker.number().numberBetween(10, 12)+"-"+faker.number().numberBetween(1, 28);
+    static String birthDate = faker.number().numberBetween(10, 28)+"-"+faker.number().numberBetween(10, 12)+"-"+faker.number().numberBetween(1900, 2020);
+    static String birthDate2 = birthDate.substring(6)+"-"+birthDate.substring(3, 5)+"-"+birthDate.substring(0, 2);
     static String phoneNumber = faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(1000, 9999);
     static String ssnNumber = faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(10, 99) + "-" + faker.number().numberBetween(1000, 9999);
     String registeredPhone = ConfigReader.getProperty("RegiteredPhone");
@@ -415,7 +416,7 @@ public class US001_US002 {
     @Given("Gonderilecek Dean bilgileri hazırlanır")
     public void gonderilecek_dean_bilgileri_hazırlanır() {
         //Set the expected data
-        expectedData = new GuestUserPostPojo(birthDate, birthPlace, "FEMALE", name, password, phoneNumber, ssnNumber, surname, userName);
+        expectedData = new GuestUserPostPojo(birthDate2, birthPlace, "FEMALE", name, password, phoneNumber, ssnNumber, surname, userName);
         System.out.println("expectedData = " + expectedData);
 
 
@@ -447,34 +448,38 @@ public class US001_US002 {
     @Given("Guest User icin Get request hazirligi yapilir")
     public void guestUserIcinGetRequestHazirligiYapilir() {
         //https://managementonschools.com/app/guestUser/getAll?page=60&size=5&sort=name&type=desc
-        spec.pathParams("first","guestUser","second","getAll").queryParams("page",pagenumber);
+        spec.pathParams("first","guestUser","second","getAll").queryParam("size",1000);
     }
     ContentPojo expectedGuestUserData;
     @And("Sorgulanacak Guest User bilgileri hazırlanır")
     public void sorgulanacakGuestUserBilgileriHazırlanır() {
-        expectedGuestUserData=new ContentPojo(userName,ssnNumber,name,surname,birthDate,birthPlace,phoneNumber,"FEMALE");
+        expectedGuestUserData=new ContentPojo(userName,ssnNumber,name,surname,birthDate2,birthPlace,phoneNumber,"FEMALE");
         System.out.println("expectedGuestUserData = " + expectedGuestUserData);
     }
 
     @When("Sorgulamak icin Get request gonderilir")
     public void sorgulamakIcinGetRequestGonderilir() {
-        response=given(spec).get("{first}/{second}");
+        response=given(spec).when().get("{first}/{second}");
         response.prettyPrint();
     }
 
+    GetRequestResponsePojo actualGuestUserData;
+    ContentPojo contentPojo;
     @Then("Guest User Bilgileri dogrulanir")
     public void guestUserBilgileriDogrulanir() {
-        GetRequestResponsePojo actualGuestUserData=response.as(GetRequestResponsePojo.class);
-        for (int i=0;i<actualGuestUserData.getContent().size();i++) {
-            if (actualGuestUserData.getContent().get(i).getUsername().equals(arananName)) {
-                assertEquals(expectedGuestUserData.getUsername(), actualGuestUserData.getContent().get(i).getUsername());
-                assertEquals(expectedGuestUserData.getSsn(), actualGuestUserData.getContent().get(i).getSsn());
-                assertEquals(expectedGuestUserData.getName(), actualGuestUserData.getContent().get(i).getName());
-                assertEquals(expectedGuestUserData.getSurname(), actualGuestUserData.getContent().get(i).getSurname());
-                assertEquals(expectedGuestUserData.getBirthDay(), actualGuestUserData.getContent().get(i).getBirthDay());
-                assertEquals(expectedGuestUserData.getBirthPlace(), actualGuestUserData.getContent().get(i).getBirthPlace());
-                assertEquals(expectedGuestUserData.getPhoneNumber(), actualGuestUserData.getContent().get(i).getPhoneNumber());
-                assertEquals(expectedGuestUserData.getGender(), actualGuestUserData.getContent().get(i).getGender());
+         actualGuestUserData=response.as(GetRequestResponsePojo.class);
+
+         for (int i=0;i<actualGuestUserData.getContent().size();i++) {
+            ContentPojo contentPojo = actualGuestUserData.getContent().get(i);
+            if (contentPojo.getUsername().equals(arananName)) {
+                assertEquals(expectedGuestUserData.getUsername(), contentPojo.getUsername());
+                assertEquals(expectedGuestUserData.getSsn(), contentPojo.getSsn());
+                assertEquals(expectedGuestUserData.getName(), contentPojo.getName());
+                assertEquals(expectedGuestUserData.getSurname(), contentPojo.getSurname());
+                assertEquals(expectedGuestUserData.getBirthDay(), contentPojo.getBirthDay());
+                assertEquals(expectedGuestUserData.getBirthPlace(), contentPojo.getBirthPlace());
+                assertEquals(expectedGuestUserData.getPhoneNumber(), contentPojo.getPhoneNumber());
+                assertEquals(expectedGuestUserData.getGender(), contentPojo.getGender());
 
             }else {
                 System.out.println("Aranan Guest User Bulunamadı");
