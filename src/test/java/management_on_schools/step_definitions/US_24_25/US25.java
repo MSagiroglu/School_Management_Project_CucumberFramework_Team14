@@ -5,6 +5,7 @@ import io.cucumber.java.en.*;
 import management_on_schools.pages.YektaUS24_25.YektaUS_24_25;
 import management_on_schools.utilities.Driver;
 import management_on_schools.utilities.ReusableMethods;
+import org.junit.Assert;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.interactions.Actions;
 
@@ -39,7 +40,8 @@ public class US25 {
         ReusableMethods.bekle(3);
 
         us24_25Page.studentAdvisorTeacher.click();
-        actions.sendKeys(Keys.ARROW_DOWN,Keys.ARROW_UP,Keys.ARROW_UP,Keys.ENTER).perform();
+        ReusableMethods.bekle(3);
+        actions.sendKeys(Keys.ARROW_DOWN,Keys.ARROW_UP,Keys.ENTER).perform();
         ReusableMethods.bekle(3);
 
         us24_25Page.studentName.sendKeys(nameYS,Keys.TAB,
@@ -62,6 +64,16 @@ public class US25 {
 
     @Then("Olusturulan Student'ın sisteme kaydının gerçekleştirildiği doğrulanır.")
     public void olusturulan_student_ın_sisteme_kaydının_gerçekleştirildiği_doğrulanır() {
+        ReusableMethods.visibleWait(us24_25Page.studentMessage,5);
+        ReusableMethods.tumSayfaResmi("US25","TC01_StudentSavedSuccessfully");
+        String messageStudent="Student saved Successfully";
+        ReusableMethods.tumSayfaResmi("US25","TC01_StudentSavedSuccessfully");
+        Assert.assertEquals(us24_25Page.studentMessage.getText(),messageStudent);
+        ReusableMethods.tumSayfaResmi("US25","TC01_StudentSavedSuccessfully");
+        ReusableMethods.bekle(2);
+        ReusableMethods.logout();
+        System.out.println("Yekta");
+
 
     }
 
