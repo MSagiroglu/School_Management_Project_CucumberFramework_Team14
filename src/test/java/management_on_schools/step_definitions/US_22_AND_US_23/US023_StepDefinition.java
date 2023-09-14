@@ -1,5 +1,6 @@
 package management_on_schools.step_definitions.US_22_AND_US_23;
 
+import com.github.javafaker.Faker;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -13,6 +14,7 @@ import org.testng.Assert;
 public class US023_StepDefinition {
     Home_Page homePage = new Home_Page();
     Us_22_23Page page = new Us_22_23Page();
+    static Faker faker = new Faker();
     public void nameAlaniTemizleme(){
         page.nameAlani.sendKeys(Keys.chord(Keys.CONTROL,"a", Keys.DELETE));
     }
@@ -37,6 +39,12 @@ public class US023_StepDefinition {
     public void passwordAlaniTemizleme(){
         page.passwordAlani.sendKeys(Keys.chord(Keys.CONTROL,"a", Keys.DELETE));
     }
+    static String usernameUs23Tc01 = faker.name().firstName() + faker.number().numberBetween(1, 50);
+    static String phoneNumberUs23Tc01 = faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(1000, 9999);
+    static String ssnNumberUs23Tc01 = faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(10, 99) + "-" + faker.number().numberBetween(1000, 9999);
+    static String usernameUs23Tc06 = faker.name().firstName() + faker.number().numberBetween(1, 50);
+    static String phoneNumberUs23Tc06 = faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(1000, 9999);
+    static String ssnNumberUs23Tc06 = faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(10, 99) + "-" + faker.number().numberBetween(1000, 9999);
 
     @When("admin menuye tiklar ve ardindan vice dean managementa tiklar")
     public void adminMenuyeTiklarVeArdindanViceDeanManagementaTiklar() {
@@ -52,9 +60,9 @@ public class US023_StepDefinition {
                 ConfigReader.getProperty("surnameMAK"),Keys.TAB,
                 ConfigReader.getProperty("birthPlaceMAK"),Keys.TAB,Keys.TAB,
                 ConfigReader.getProperty("dateOfBirthMAK"),Keys.TAB,
-                "987-654-3317",Keys.TAB,
-                "123-45-1592",Keys.TAB,
-                ConfigReader.getProperty("us23tc01username"),Keys.TAB,
+                phoneNumberUs23Tc01,Keys.TAB,
+                ssnNumberUs23Tc01,Keys.TAB,
+                usernameUs23Tc01,Keys.TAB,
                 ConfigReader.getProperty("passwordMAK") );
         page.genderMale.click();
         ReusableMethods.bekle(2);
@@ -73,10 +81,10 @@ public class US023_StepDefinition {
         ReusableMethods.bekle(2);
         //Girdigimiz bilgiler ile login oluyoruz
         page.anaSayfaloginButonu.click();
-        page.loginUserNameAlani.sendKeys(ConfigReader.getProperty("us23tc01username"));
+        page.loginUserNameAlani.sendKeys(usernameUs23Tc01);
         page.loginPasswordAlani.sendKeys(ConfigReader.getProperty("passwordMAK"));
         page.loginButonu.click();
-        Assert.assertEquals(page.viceDeanVerify.getText(),ConfigReader.getProperty("us23tc01username"));
+        Assert.assertEquals(page.viceDeanVerify.getText(),ConfigReader.getProperty(usernameUs23Tc01));
     }
 
     @Then("admin vice dean telefon verilerini yanlis girer ve hata mesajlarini dogrular")
@@ -211,9 +219,9 @@ public class US023_StepDefinition {
         phoneAlaniTemizleme();
         ssnAlaniTemizleme();
         usernameAlaniTemizleme();
-        page.phoneNumberAlani.sendKeys(ConfigReader.getProperty("us23tc06phoneNumber"));
-        page.ssnAlani.sendKeys(ConfigReader.getProperty("us23tc06ssnNumber"));
-        page.usernameAlani.sendKeys(ConfigReader.getProperty("us23tc06username"));
+        page.phoneNumberAlani.sendKeys(phoneNumberUs23Tc06);
+        page.ssnAlani.sendKeys(ssnNumberUs23Tc06);
+        page.usernameAlani.sendKeys(usernameUs23Tc06);
         ReusableMethods.bekle(2);
 
         //1.Dogrulama

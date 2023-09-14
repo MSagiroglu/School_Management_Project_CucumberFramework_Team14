@@ -34,12 +34,13 @@ public class US001_US002 {
     US_02Page us02Page = new US_02Page();
     Actions action = new Actions(Driver.getDriver());
     static Faker faker = new Faker();
-    static String name = "ATeam14 " + faker.number().numberBetween(1, 10);
+    static String name =  faker.name().firstName() + faker.number().numberBetween(1, 10);
     static String surname = faker.name().lastName();
     static String birthPlace = name;
     static String userName = faker.name().firstName() + faker.number().numberBetween(1, 10);
     static String password = name + "1";
-    static String birthDate = faker.number().numberBetween(1900, 2020)+"-"+faker.number().numberBetween(10, 12)+"-"+faker.number().numberBetween(1, 28);
+    static String birthDate = faker.number().numberBetween(10, 28)+"-"+faker.number().numberBetween(10, 12)+"-"+faker.number().numberBetween(1900, 2020);
+    static String birthDate2 = birthDate.substring(6)+"-"+birthDate.substring(3, 5)+"-"+birthDate.substring(0, 2);
     static String phoneNumber = faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(1000, 9999);
     static String ssnNumber = faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(10, 99) + "-" + faker.number().numberBetween(1000, 9999);
     String registeredPhone = ConfigReader.getProperty("RegiteredPhone");
@@ -313,7 +314,7 @@ public class US001_US002 {
     String actualPhone;
     String actualSsn;
     String actualUserName;
-    String arananName;
+    static String arananName=userName;
     String expectedName, expectedPhone, expectedSsn, expectedUserName;
     WebElement actualName1, actualPhone1, actualSsn1, actualUserName1;
     static String pagenumber;
@@ -337,37 +338,25 @@ public class US001_US002 {
                     guestUserTable = us02Page.guestUserTable;
                     ReusableMethods.tumSayfaResmi("01", "Admin Guest User'a ait bilgileri görebilir.");
                     expectedName = name + " " + surname;
-                    System.out.println("expectedName = " + expectedName);
                     expectedPhone = phoneNumber;
-                    System.out.println("expectedPhone = " + expectedPhone);
                     expectedSsn = ssnNumber;
-                    System.out.println("expectedSsn = " + expectedSsn);
                     expectedUserName = userName;
-                    System.out.println("expectedUserName = " + expectedUserName);
                     actualName1 = guestUserTable.get(j - 3);
                     ReusableMethods.waitForVisibility(actualName1, 5);
                     actualName = actualName1.getText();
-                    System.out.println("actualName = " + actualName);
                     actualPhone1 = guestUserTable.get(j - 2);
                     ReusableMethods.waitForVisibility(actualPhone1, 5);
                     actualPhone = actualPhone1.getText();
-                    System.out.println("actualPhone = " + actualPhone);
                     actualSsn1 = guestUserTable.get(j - 1);
                     ReusableMethods.waitForVisibility(actualSsn1, 5);
                     actualSsn = actualSsn1.getText();
-                    System.out.println("actualSsn = " + actualSsn);
                     actualUserName1 = guestUserTable.get(j);
                     ReusableMethods.waitForVisibility(actualUserName1, 5);
                     actualUserName = actualUserName1.getText();
-                    System.out.println("actualUserName = " + actualUserName);
                     Assert.assertEquals(expectedName, actualName);
-                    System.out.println("NAME DOĞRULANDI");
                     Assert.assertEquals(expectedPhone, actualPhone);
-                    System.out.println("PHONE DOĞRULANDI");
                     Assert.assertEquals(expectedSsn, actualSsn);
-                    System.out.println("SSN DOĞRULANDI");
                     Assert.assertEquals(expectedUserName, actualUserName);
-                    System.out.println("USERNAME DOĞRULANDI");
                     pagenumber=us02Page.guestUserTableCount.getAttribute("textContent").split(" ")[3];
                     System.out.println("pagenumber = " + pagenumber);
 
@@ -415,7 +404,7 @@ public class US001_US002 {
     @Given("Gonderilecek Dean bilgileri hazırlanır")
     public void gonderilecek_dean_bilgileri_hazırlanır() {
         //Set the expected data
-        expectedData = new GuestUserPostPojo(birthDate, birthPlace, "FEMALE", name, password, phoneNumber, ssnNumber, surname, userName);
+        expectedData = new GuestUserPostPojo(birthDate2, birthPlace, "FEMALE", name, password, phoneNumber, ssnNumber, surname, userName);
         System.out.println("expectedData = " + expectedData);
 
 
@@ -447,26 +436,27 @@ public class US001_US002 {
     @Given("Guest User icin Get request hazirligi yapilir")
     public void guestUserIcinGetRequestHazirligiYapilir() {
         //https://managementonschools.com/app/guestUser/getAll?page=60&size=5&sort=name&type=desc
-        spec.pathParams("first","guestUser","second","getAll").queryParams("page",pagenumber);
+        spec.pathParams("first","guestUser","second","getAll").queryParam("size",1000);
     }
     ContentPojo expectedGuestUserData;
     @And("Sorgulanacak Guest User bilgileri hazırlanır")
     public void sorgulanacakGuestUserBilgileriHazırlanır() {
-        expectedGuestUserData=new ContentPojo(userName,ssnNumber,name,surname,birthDate,birthPlace,phoneNumber,"FEMALE");
-        System.out.println("expectedGuestUserData = " + expectedGuestUserData);
+        expectedGuestUserData=new ContentPojo(userName,ssnNumber,name,surname,birthDate2,birthPlace,phoneNumber,"FEMALE");
+        //System.out.println("expectedGuestUserData = " + expectedGuestUserData);
     }
 
     @When("Sorgulamak icin Get request gonderilir")
     public void sorgulamakIcinGetRequestGonderilir() {
-        response=given(spec).get("{first}/{second}");
-        response.prettyPrint();
+        response=given(spec).when().get("{first}/{second}");
+       // response.prettyPrint();
     }
 
+    GetRequestResponsePojo actualGuestUserData;
     @Then("Guest User Bilgileri dogrulanir")
     public void guestUserBilgileriDogrulanir() {
-        GetRequestResponsePojo actualGuestUserData=response.as(GetRequestResponsePojo.class);
-        for (int i=0;i<actualGuestUserData.getContent().size();i++) {
-            if (actualGuestUserData.getContent().get(i).getUsername().equals(arananName)) {
+         actualGuestUserData=response.as(GetRequestResponsePojo.class);
+         for (int i=0;i<actualGuestUserData.getContent().size();i++) {
+             if (actualGuestUserData.getContent().get(i).getUsername().equals(arananName)) {
                 assertEquals(expectedGuestUserData.getUsername(), actualGuestUserData.getContent().get(i).getUsername());
                 assertEquals(expectedGuestUserData.getSsn(), actualGuestUserData.getContent().get(i).getSsn());
                 assertEquals(expectedGuestUserData.getName(), actualGuestUserData.getContent().get(i).getName());
@@ -475,10 +465,10 @@ public class US001_US002 {
                 assertEquals(expectedGuestUserData.getBirthPlace(), actualGuestUserData.getContent().get(i).getBirthPlace());
                 assertEquals(expectedGuestUserData.getPhoneNumber(), actualGuestUserData.getContent().get(i).getPhoneNumber());
                 assertEquals(expectedGuestUserData.getGender(), actualGuestUserData.getContent().get(i).getGender());
+                System.out.println("Doğrulama yapıldı");
+                break;
 
-            }else {
-                System.out.println("Aranan Guest User Bulunamadı");
-            }
+             }
         }
     }
 }
