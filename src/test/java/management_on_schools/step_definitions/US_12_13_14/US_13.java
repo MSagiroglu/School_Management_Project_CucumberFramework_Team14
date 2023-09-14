@@ -32,6 +32,22 @@ public class US_13 {
     String birthPlaceEntered;
     String emailEntered;
 
+
+    String fakeName;
+    String fakeSurname;
+    String fakeBirthPlace;
+    String fakeEmail;
+    String fakePhone;
+    String fakeDateOfBirth;
+    String fakePassword;
+    String fakeUserName;
+    String fakeSSN;
+
+
+
+
+
+
     @Given("click to {string}")
     public void click_to(String string) {
         switch (string) {
@@ -183,17 +199,17 @@ public class US_13 {
 
         switch (data) {
             case "name":
-                String fakeName = faker.name().firstName();
+                fakeName = faker.name().firstName();
                 us_13Page.name.sendKeys(fakeName);
                 ReusableMethods.bekle(2);
                 break;
             case "surname":
-                String fakeSurname = faker.name().lastName();
+                fakeSurname = faker.name().lastName();
                 us_13Page.surname.sendKeys(fakeSurname);
                 ReusableMethods.bekle(2);
                 break;
             case "birthPlace":
-                String fakeBirthPlace = faker.address().city().replaceAll("\\s", "");
+                fakeBirthPlace = faker.address().city().replaceAll("\\s", "");
                 if (fakeBirthPlace.length() >= 14) {
                     fakeBirthPlace = fakeBirthPlace.substring(0, 9);
                 }
@@ -201,18 +217,18 @@ public class US_13 {
                 ReusableMethods.bekle(2);
                 break;
             case "email":
-                String fakeEmail = faker.internet().emailAddress();
+                fakeEmail = faker.internet().emailAddress();
                 us_13Page.email.sendKeys(fakeEmail);
                 break;
             case "phoneNumber":
-                String fakePhone = "" + faker.number().numberBetween(1, 9) + faker.number().numberBetween(1, 9) + faker.number().numberBetween(1, 9) +
+                fakePhone = "" + faker.number().numberBetween(1, 9) + faker.number().numberBetween(1, 9) + faker.number().numberBetween(1, 9) +
                         "-" + faker.number().numberBetween(1, 9) + faker.number().numberBetween(1, 9) + faker.number().numberBetween(1, 9) + "-" +
                         faker.number().numberBetween(1, 9) + faker.number().numberBetween(1, 9) + faker.number().numberBetween(1, 9) + faker.number().numberBetween(1, 9);
                 us_13Page.phoneNumber.sendKeys(fakePhone);
                 ReusableMethods.bekle(2);
                 break;
             case "SSN":
-                String fakeSSN = "" + faker.number().numberBetween(1, 9) + faker.number().numberBetween(1, 9) + faker.number().numberBetween(1, 9) +
+                fakeSSN = "" + faker.number().numberBetween(1, 9) + faker.number().numberBetween(1, 9) + faker.number().numberBetween(1, 9) +
                         "-" + faker.number().numberBetween(1, 9) + faker.number().numberBetween(1, 9) + "-" + faker.number().numberBetween(1, 9) +
                         faker.number().numberBetween(1, 9) + faker.number().numberBetween(1, 9) + faker.number().numberBetween(1, 9);
 
@@ -220,7 +236,7 @@ public class US_13 {
                 ReusableMethods.bekle(2);
                 break;
             case "userName":
-                String fakeUserName = faker.name().username().replaceAll("[^A-Za-z]", "A");
+                fakeUserName = faker.name().username().replaceAll("[^A-Za-z]", "A");
                 if (fakeUserName.length() >= 14) {
                     fakeUserName = fakeUserName.substring(0, 9);
                 }
@@ -228,12 +244,12 @@ public class US_13 {
                 ReusableMethods.bekle(2);
                 break;
             case "password":
-                String fakePassword = faker.internet().password();
+                fakePassword = faker.internet().password();
                 us_13Page.password.sendKeys("A1" + fakePassword);
                 ReusableMethods.bekle(2);
                 break;
             case "dateOfBirth":
-                String fakeDateOfBirth = "" + faker.number().numberBetween(0, 3) + faker.number().numberBetween(0, 9) + "" + faker.number().numberBetween(0, 1) +
+                fakeDateOfBirth = "" + faker.number().numberBetween(0, 3) + faker.number().numberBetween(0, 9) + "" + faker.number().numberBetween(0, 1) +
                         faker.number().numberBetween(0, 1) + "" + 1 + 9 + faker.number().numberBetween(5, 9) + faker.number().numberBetween(0, 9);
                 us_13Page.dateOfBirth.sendKeys(fakeDateOfBirth);
                 ReusableMethods.bekle(2);
@@ -334,5 +350,6 @@ public class US_13 {
         Assert.assertTrue(us_13Page.isAdvisorTeacher.isSelected());
     }
 }
+
 
 
