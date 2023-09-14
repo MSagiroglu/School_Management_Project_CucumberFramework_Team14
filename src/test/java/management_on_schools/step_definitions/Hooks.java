@@ -2,8 +2,7 @@ package management_on_schools.step_definitions;
 
 
 import io.cucumber.java.AfterAll;
-import management_on_schools.base_url.ManagementOnSchool;
-import management_on_schools.utilities.ConfigReader;
+import management_on_schools.pojos.base_url.ManagementOnSchool;
 import management_on_schools.utilities.Driver;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
@@ -16,8 +15,8 @@ import org.openqa.selenium.TakesScreenshot;
 public class Hooks {
     @Before
     public void setUp() throws Exception {
-        ManagementOnSchool.setUp();
-       Driver.getDriver().get(ConfigReader.getProperty("managementOnSchoolsUrl"));
+       ManagementOnSchool.setUp();
+//       Driver.getDriver().get(ConfigReader.getProperty("managementOnSchoolsUrl"));
 
 
     }
