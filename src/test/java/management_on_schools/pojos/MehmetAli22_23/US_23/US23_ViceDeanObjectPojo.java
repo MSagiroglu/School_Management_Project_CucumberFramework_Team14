@@ -1,12 +1,12 @@
-package management_on_schools.pojos.MehmetAli22_23.US_22;
+package management_on_schools.pojos.MehmetAli22_23.US_23;
 
 import java.io.Serializable;
 
-public class AdminObjectpojo implements Serializable {
-	public AdminObjectpojo() {
+public class US23_ViceDeanObjectPojo implements Serializable {
+	public US23_ViceDeanObjectPojo() {
 	}
 
-	public AdminObjectpojo(int userId, String username, String name, String surname, String birthDay, String ssn, String birthPlace, String phoneNumber, String gender) {
+	public US23_ViceDeanObjectPojo(int userId, String username, String name, String surname, String birthDay, String ssn, String birthPlace, String phoneNumber, String gender) {
 		this.userId = userId;
 		this.username = username;
 		this.name = name;

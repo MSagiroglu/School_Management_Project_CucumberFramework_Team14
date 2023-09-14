@@ -8,8 +8,8 @@ import io.cucumber.java.en.When;
 import io.restassured.response.Response;
 import management_on_schools.pages.Home_Page;
 import management_on_schools.pages.MehmetAli22_23.Us_22_23Page;
-import management_on_schools.pojos.MehmetAli22_23.US_22.AddAdminPojo;
-import management_on_schools.pojos.MehmetAli22_23.US_22.AdminResponsepojo;
+import management_on_schools.pojos.MehmetAli22_23.US_22.US22_AddAdminPojo;
+import management_on_schools.pojos.MehmetAli22_23.US_22.US22_AdminResponsepojo;
 import management_on_schools.utilities.ConfigReader;
 import management_on_schools.utilities.Driver;
 import management_on_schools.utilities.ReusableMethods;
@@ -359,9 +359,9 @@ public class US022_StepDefinition {
     }
 
     //---------------------- API TESTS ------------------------------------
-    AddAdminPojo expectedData;
+    US22_AddAdminPojo expectedData;
     Response response;
-    AdminResponsepojo actualData;
+    US22_AdminResponsepojo actualData;
     @Given("Admin eklemek icin Post request hazirligi yapilir")
     public void adminEklemekIcinPostRequestHazirligiYapilir() {
         //https://managementonschools.com/app/admin/save
@@ -372,7 +372,7 @@ public class US022_StepDefinition {
     @And("Gonderilecek Admin bilgileri hazirlanir")
     public void gonderilecekAdminBilgileriHazirlanir() {
         //Set the expected data
-        expectedData = new AddAdminPojo("2002-01-24","bursa",true,"MALE","mehmet ali","Admin123", phoneNumberUs22Tc01, ssnNumberUs22Tc01,"karasu", usernameUs22Tc01);
+        expectedData = new US22_AddAdminPojo("2002-01-24","bursa",true,"MALE","mehmet ali","Admin123", phoneNumberUs22Tc01, ssnNumberUs22Tc01,"karasu", usernameUs22Tc01);
         System.out.println(expectedData);
     }
 
@@ -380,12 +380,15 @@ public class US022_StepDefinition {
     public void adminEklemekIcinPostRequestGonderilir() {
         //Send req and get resp
         response=given(spec).body(expectedData).when().post("{first}/{second}");
-        actualData = response.as(AdminResponsepojo.class);
+
+        //Response'u Dogrulama kisminda alacagaiz...(Hata aldigimizda farkli bir Json dondugu icin)
 
     }
 
     @Then("Admin Bilgileri dogrulanir")
     public void adminBilgileriDogrulanir() {
+        //get response
+        actualData = response.as(US22_AdminResponsepojo.class);
         //Do assertion
         assertEquals(200, response.statusCode());
         assertEquals(expectedData.getBirthDay(), actualData.getObject().getBirthDay());
@@ -397,5 +400,26 @@ public class US022_StepDefinition {
         assertEquals(expectedData.getSsn(), actualData.getObject().getSsn());
         assertEquals(expectedData.getPhoneNumber(), actualData.getObject().getPhoneNumber());
 
+    }
+
+
+    @And("Gonderilecek Admin bilgilerinde gelecek tarihli date of birth girilir")//TC02
+    public void gonderilecekAdminBilgilerindeGelecekTarihliDateOfBirthGirilir() {
+        //Set the expected data
+        expectedData = new US22_AddAdminPojo("2028-01-24","bursa",true,"MALE","mehmet ali","Admin123", phoneNumberUs22Tc01, ssnNumberUs22Tc01,"karasu", usernameUs22Tc01);
+        System.out.println(expectedData);
+    }
+
+    @Then("Status Kodunun {int} oldugu dogrulanir")
+    public void statusKodununOlduguDogrulanir(int statusCode) {
+        //Do assertion
+        Assert.assertEquals(response.statusCode(),statusCode);
+    }
+
+    @And("Gonderilecek Admin bilgilerinde onceden girilmis telefon no girilir")//TC03
+    public void gonderilecekAdminBilgilerindeOncedenGirilmisTelefonNoGirilir() {
+        //Set the expected data
+        expectedData = new US22_AddAdminPojo("2002-01-24","bursa",true,"MALE","mehmet ali","Admin123", "555-222-9999", ssnNumberUs22Tc01,"karasu", usernameUs22Tc01);
+        System.out.println(expectedData);
     }
 }

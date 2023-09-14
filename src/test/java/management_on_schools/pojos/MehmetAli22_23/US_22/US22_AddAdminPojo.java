@@ -1,6 +1,6 @@
 package management_on_schools.pojos.MehmetAli22_23.US_22;
 
-public class AddAdminPojo {
+public class US22_AddAdminPojo {
     private String birthDay;
     private String birthPlace;
     private Boolean built_in;
@@ -12,10 +12,10 @@ public class AddAdminPojo {
     private String surname;
     private String username;
 
-    public AddAdminPojo() {
+    public US22_AddAdminPojo() {
     }
 
-    public AddAdminPojo(String birthDay, String birthPlace, Boolean built_in, String gender, String name, String password, String phoneNumber, String ssn, String surname, String username) {
+    public US22_AddAdminPojo(String birthDay, String birthPlace, Boolean built_in, String gender, String name, String password, String phoneNumber, String ssn, String surname, String username) {
         this.birthDay = birthDay;
         this.birthPlace = birthPlace;
         this.built_in = built_in;
