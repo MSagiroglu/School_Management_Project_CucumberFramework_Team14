@@ -4,11 +4,11 @@ import management_on_schools.pojos.MustafaS01_02.US_01.InnerObjectpojo;
 
 import java.io.Serializable;
 
-public class AdminResponsepojo implements Serializable {
-	public AdminResponsepojo() {
+public class US22_AdminResponsepojo implements Serializable {
+	public US22_AdminResponsepojo() {
 	}
 
-	public AdminResponsepojo(InnerObjectpojo object, String message, String httpStatus) {
+	public US22_AdminResponsepojo(InnerObjectpojo object, String message, String httpStatus) {
 		this.object = object;
 		this.message = message;
 		this.httpStatus = httpStatus;
