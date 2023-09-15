@@ -3,6 +3,7 @@ package management_on_schools.step_definitions.US_24_25;
 import com.github.javafaker.Faker;
 import io.cucumber.java.en.*;
 import management_on_schools.pages.YektaUS24_25.YektaUS_24_25;
+import management_on_schools.utilities.ConfigReader;
 import management_on_schools.utilities.Driver;
 import management_on_schools.utilities.ReusableMethods;
 import org.junit.Assert;
@@ -68,11 +69,47 @@ public class US24 {
         Assert.assertEquals(us24_25Page.message.getText(),messageTeacher);
         ReusableMethods.tumSayfaResmi("US24","TC01_TeacherSavedSuccessfully");
         us24_25Page.lastPage.click();
+        System.out.println("YEKTA");
+
+    }
+
+
+
+    @When("Admin Teacher ile ilgili bilgileri ders seçimi yapmadan girer")
+    public void adminTeacherIleIlgiliBilgileriDersSeçimiYapmadanGirer() {
+        ReusableMethods.bekle(2);
+        us24_25Page.menu.click();
+        us24_25Page.teacherManagement.click();
+        ReusableMethods.bekle(2);
+        us24_25Page.name.sendKeys(ConfigReader.getProperty("nameYs"), Keys.TAB,
+                ConfigReader.getProperty("surnameYs"), Keys.TAB,
+                ConfigReader.getProperty("birthplaceYs"), Keys.TAB,
+                ConfigReader.getProperty("emailYs"), Keys.TAB,
+                ConfigReader.getProperty("phoneYs"), Keys.TAB, Keys.TAB, Keys.TAB,
+                ConfigReader.getProperty("birthdateYs"), Keys.TAB,
+                ConfigReader.getProperty("ssnYs"), Keys.TAB,
+                ConfigReader.getProperty("userNameYs"), Keys.TAB,
+                ConfigReader.getProperty("PasswordYs"));
+               us24_25Page.isAdvisorTeacher.click();
+               us24_25Page.gender.click();
+               ReusableMethods.bekle(2);
+                 us24_25Page.submit.click();
+        ReusableMethods.tumSayfaResmi("US24","TC02_TeacherNotSaved");
+        ReusableMethods.visibleWait(us24_25Page.errorMessage,5);
+        ReusableMethods.tumSayfaResmi("US24","TC02_TeacherNotSaved");
+        String errorJson="JSON parse error";
+        ReusableMethods.tumSayfaResmi("US24","TC02_TeacherNotSaved");
+        Assert.assertTrue(us24_25Page.errorMessage.getText().contains(errorJson));
+        System.out.println("Yekta");
+
+
+
+
 
 
     }
-    @Then("Admin teacher listin son sayfasına giderek öğretmenin oluştuğunu kontrol eder")
-    public void admin_teacher_listin_son_sayfasına_giderek_öğretmenin_oluştuğunu_kontrol_eder() {
 
+    @Then("Kaydın oluşmadığına dair hata ve ekran görüntüsü alınır.")
+    public void kaydınOluşmadığınaDairHataVeEkranGörüntüsüAlınır() {
     }
 }
