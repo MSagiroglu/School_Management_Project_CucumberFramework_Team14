@@ -1,15 +1,20 @@
-package management_on_schools.step_definitions.US_08_TO_US_10;
+package management_on_schools.step_definitions.US_08_TO_US_11;
 
 import com.github.javafaker.Faker;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
-import management_on_schools.pages.Ismail.US_08_11Page;
+
 import management_on_schools.utilities.ConfigReader;
+import management_on_schools.utilities.Driver;
 import management_on_schools.utilities.ReusableMethods;
 import org.junit.Assert;
+import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
+
+import java.util.List;
 
 import static management_on_schools.utilities.Driver.getDriver;
 
@@ -22,7 +27,7 @@ public class MyStepdefs {
     Actions actions = new Actions(getDriver());
 
     Faker faker = new Faker();
-    US_08_11Page us_08_11Page = new US_08_11Page();
+   management_on_schools.pages.Ismail08_11.US_08_11Page us_08_11Page = new management_on_schools.pages.Ismail08_11.US_08_11Page();
 
     @Given("kullanici anasayfaya gider")
     public void kullaniciAnasayfayaGider() {
@@ -48,12 +53,12 @@ public class MyStepdefs {
 
     @And("login butonuna tiklar")
     public void loginButonunaTiklar() {
-        us_08_11Page.login1.click();
+        us_08_11Page.homePageLoginButton.click();
     }
 
     @And("login_butonuna_tiklar")
     public void login_butonuna_tiklar() {
-        us_08_11Page.login2.click();
+        us_08_11Page.loginButton.click();
     }
 
     @And("lesson kutucuguna tiklar")
@@ -76,7 +81,7 @@ public class MyStepdefs {
 
     @And("Credit Score name kutucuğuna tıklar")
     public void creditScoreNameKutucuğunaTıklar() {
-        int sayi = faker.number().numberBetween(0, 15);
+        int sayi = faker.number().numberBetween(2, 16);
         String Credit_Score = String.valueOf(sayi);
 
         us_08_11Page.Credit_Score.sendKeys(Credit_Score);
@@ -90,8 +95,10 @@ public class MyStepdefs {
 
     @And("lesson_created_mesajını görür")
     public void lesson_created_mesajınıGörür() {
+        ReusableMethods.waitForVisibility(us_08_11Page.lesson_created, 5);
+        Assert.assertEquals("Lesson Created", us_08_11Page.lesson_created.getText());
+        System.out.println(us_08_11Page.lesson_created.getText());
 
-        System.out.println("us_08_11Page.lesson_created.getText() = " + us_08_11Page.lesson_created.getText());
 
     }
 
@@ -141,6 +148,7 @@ public class MyStepdefs {
         }
 
         randomStopTime = String.format("%02d:%02d", stopHour, stopMinute);
+        ReusableMethods.bekle(2);
         us_08_11Page.Stop_Time.click();
         actions.sendKeys(randomStopTime, Keys.ENTER).perform();
 
@@ -153,19 +161,75 @@ public class MyStepdefs {
 
     @And("\\(Created Lesson Program)_yazisini_goruntuler")
     public void createdLessonProgram_yazisini_goruntuler() {
-        System.out.println(us_08_11Page.lessonProgramSuccessMessage.getText());
-        ReusableMethods.bekle(3);
+        ReusableMethods.waitForVisibility(us_08_11Page.lessonProgramSuccessMessage, 5);
         Assert.assertEquals("Created Lesson Program", us_08_11Page.lessonProgramSuccessMessage.getText());
+        System.out.println(us_08_11Page.lessonProgramSuccessMessage.getText());
+
 
     }
 
 
     @And("Vice Dean Lesson Name alanini gorur.")
     public void viceDeanLessonNameAlaniniGorur() {
+        actions = new Actions(Driver.getDriver());
+
+        actions.sendKeys(Keys.ARROW_DOWN).perform();
         ReusableMethods.bekle(3);
+
         us_08_11Page.v_dean_lessonname.click();
         Assert.assertTrue(us_08_11Page.v_dean_lessonname.isDisplayed());
         ReusableMethods.bekle(3);
 
+    }
+
+    @And("Lesson Program List`te Lesson,Day,Start Time ve Stop Time gorur")
+    public void lessonProgramListTeLessonDayStartTimeVeStopTimeGorur() {
+        actions = new Actions(Driver.getDriver());
+
+        actions.sendKeys(Keys.PAGE_DOWN).perform();
+        ReusableMethods.bekle(3);
+
+        Assert.assertTrue(us_08_11Page.programListTable.isDisplayed());
+        ReusableMethods.bekle(3);
+        actions.clickAndHold(us_08_11Page.sayfaAtlama);
+        ReusableMethods.click(us_08_11Page.sayfaAtlama);
+        ReusableMethods.bekle(2);
+        ReusableMethods.click(us_08_11Page.sayfaAtlama);
+        ReusableMethods.bekle(2);
+        ReusableMethods.click(us_08_11Page.sayfaAtlama);
+        ReusableMethods.bekle(2);
+
+        List<WebElement> tableList = Driver.getDriver().findElements(By.xpath("(//tbody)[3]//tr"));
+        System.out.println("tableList.size() = " + tableList.size());
+
+        for (WebElement element : tableList) {
+            String cellText = element.getText();
+            System.out.println(cellText);
+        }
+
+
+    }
+
+    @And("\\(lessons must not empty)_yazisini_goruntuler")
+    public void lessonsMustNotEmpty_yazisini_goruntuler() {
+        ReusableMethods.waitForVisibility(us_08_11Page.lessonsNotSuccessMessage, 5);
+        Assert.assertEquals("Created Lesson Program", us_08_11Page.lessonsNotSuccessMessage.getText());
+        System.out.println(us_08_11Page.lessonsNotSuccessMessage.getText());
+    }
+
+
+
+    @And("Required mesajini görür")
+    public void requiredMesajiniGörür() {
+        Assert.assertEquals("Required", us_08_11Page.Required_mesaj.getText());
+        System.out.println(us_08_11Page.Required_mesaj.getText());
+
+    }
+
+
+
+    @And("Kullanici sayfayi kapatir")
+    public void kullaniciSayfayiKapatir() {
+        Driver.closeDriver();
     }
 }
