@@ -1,4 +1,4 @@
-package management_on_schools.pojos.base_url;
+package management_on_schools.base_url;
 
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;

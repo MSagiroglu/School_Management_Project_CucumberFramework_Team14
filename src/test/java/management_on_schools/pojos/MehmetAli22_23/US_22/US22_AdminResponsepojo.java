@@ -1,6 +1,6 @@
 package management_on_schools.pojos.MehmetAli22_23.US_22;
 
-import management_on_schools.pojos.MustafaS01_02.US_01.InnerObjectpojo;
+import management_on_schools.pojos.MustafaS01_02.US_01.positive_post_response.InnerObjectpojo;
 
 import java.io.Serializable;
 

@@ -1,4 +1,4 @@
-package management_on_schools.pojos.MustafaS01_02.US_01;
+package management_on_schools.pojos.MustafaS01_02.US_01.positive_post_response;
 
 import java.io.Serializable;
 

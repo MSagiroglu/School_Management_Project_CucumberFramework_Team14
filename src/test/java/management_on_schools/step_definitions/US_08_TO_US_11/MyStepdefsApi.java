@@ -10,7 +10,7 @@ import management_on_schools.pojos.Ismail08_11.Response_LessonCreat_Pojo;
 import org.junit.Assert;
 
 import static io.restassured.RestAssured.given;
-import static management_on_schools.pojos.base_url.ManagementOnSchool.spec_vice_dean;
+import static management_on_schools.base_url.ManagementOnSchool.spec_vice_dean;
 
 
 
