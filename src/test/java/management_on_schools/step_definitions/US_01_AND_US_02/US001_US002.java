@@ -24,7 +24,7 @@ import org.openqa.selenium.interactions.Actions;
 import java.util.List;
 
 import static io.restassured.RestAssured.given;
-import static management_on_schools.base_url.ManagementOnSchool.spec;
+import static management_on_schools.pojos.base_url.ManagementOnSchool.spec;
 import static org.junit.Assert.assertEquals;
 
 
