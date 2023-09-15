@@ -18,8 +18,6 @@ public class Hooks {
     public void setUp() throws Exception {
         ManagementOnSchool.setUp();
        Driver.getDriver().get(ConfigReader.getProperty("managementOnSchoolsUrl"));
-
-
     }
     @After//import io.cucumber.java.After;
     public void tearDown(Scenario scenario) throws Exception {

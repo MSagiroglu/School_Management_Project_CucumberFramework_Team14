@@ -38,7 +38,7 @@ public class US001_US002 {
     static String surname = faker.name().lastName();
     static String birthPlace = name;
     static String userName = faker.name().firstName() + faker.number().numberBetween(1, 10);
-    static String password = name + "1";
+    static String password = name + "1256aA";
     static String birthDate = faker.number().numberBetween(10, 28)+"-"+faker.number().numberBetween(10, 12)+"-"+faker.number().numberBetween(1900, 2020);
     static String birthDate2 = birthDate.substring(6)+"-"+birthDate.substring(3, 5)+"-"+birthDate.substring(0, 2);
     static String phoneNumber = faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(1000, 9999);
@@ -442,13 +442,13 @@ public class US001_US002 {
     @And("Sorgulanacak Guest User bilgileri hazırlanır")
     public void sorgulanacakGuestUserBilgileriHazırlanır() {
         expectedGuestUserData=new ContentPojo(userName,ssnNumber,name,surname,birthDate2,birthPlace,phoneNumber,"FEMALE");
-        //System.out.println("expectedGuestUserData = " + expectedGuestUserData);
+        System.out.println("expectedGuestUserData = " + expectedGuestUserData);
     }
 
     @When("Sorgulamak icin Get request gonderilir")
     public void sorgulamakIcinGetRequestGonderilir() {
         response=given(spec).when().get("{first}/{second}");
-       // response.prettyPrint();
+        response.prettyPrint();
     }
 
     GetRequestResponsePojo actualGuestUserData;
