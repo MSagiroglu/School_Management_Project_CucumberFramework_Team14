@@ -1,11 +1,15 @@
 package management_on_schools.step_definitions.US_22_AND_US_23;
 
+import com.github.javafaker.Faker;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import io.restassured.response.Response;
 import management_on_schools.pages.Home_Page;
 import management_on_schools.pages.MehmetAli22_23.Us_22_23Page;
+import management_on_schools.pojos.MehmetAli22_23.US_22.US22_AddAdminPojo;
+import management_on_schools.pojos.MehmetAli22_23.US_22.US22_AdminResponsepojo;
 import management_on_schools.utilities.ConfigReader;
 import management_on_schools.utilities.Driver;
 import management_on_schools.utilities.ReusableMethods;
@@ -13,7 +17,12 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 
+import static io.restassured.RestAssured.given;
+import static management_on_schools.base_url.ManagementOnSchool.spec;
+import static org.junit.Assert.assertEquals;
+
 public class US022_StepDefinition {
+    static Faker faker = new Faker();
     Home_Page homePage = new Home_Page();
     Us_22_23Page page = new Us_22_23Page();
     Actions actions = new Actions(Driver.getDriver());
@@ -42,7 +51,12 @@ public class US022_StepDefinition {
     public void passwordAlaniTemizleme(){
         page.passwordAlani.sendKeys(Keys.chord(Keys.CONTROL,"a", Keys.DELETE));
     }
-
+    static String usernameUs22Tc01 = faker.name().firstName() + faker.number().numberBetween(1, 50);
+    static String phoneNumberUs22Tc01 = faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(1000, 9999);
+    static String ssnNumberUs22Tc01 = faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(10, 99) + "-" + faker.number().numberBetween(1000, 9999);
+    static String usernameUs22Tc06 = faker.name().firstName() + faker.number().numberBetween(1, 50);
+    static String phoneNumberUs22Tc06 = faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(1000, 9999);
+    static String ssnNumberUs22Tc06 = faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(10, 99) + "-" + faker.number().numberBetween(1000, 9999);
     @Given("admin login olur")
     public void adminLoginOlur() {
         //ReusableMethods.login("AdminUsername","AdminPassword");
@@ -58,14 +72,16 @@ public class US022_StepDefinition {
 
     @When("admin verilen bilgileri girer")
     public void adminVerilenBilgileriGirer() {
-
+        System.out.println(usernameUs22Tc01);
+        page.nameAlani.click();
+        ReusableMethods.bekle(2);
         page.nameAlani.sendKeys(ConfigReader.getProperty("nameMAK"), Keys.TAB,
                                            ConfigReader.getProperty("surnameMAK"),Keys.TAB,
                                            ConfigReader.getProperty("birthPlaceMAK"),Keys.TAB,Keys.TAB,
                                            ConfigReader.getProperty("dateOfBirthMAK"),Keys.TAB,
-                                           "987-654-3210",Keys.TAB,
-                                           "123-45-9876",Keys.TAB,
-                                           ConfigReader.getProperty("us22tc01username"),Keys.TAB,
+                phoneNumberUs22Tc01,Keys.TAB,
+                ssnNumberUs22Tc01,Keys.TAB,
+                usernameUs22Tc01,Keys.TAB,
                                            ConfigReader.getProperty("passwordMAK") );
                                            page.genderMale.click();
         ReusableMethods.bekle(2);
@@ -84,7 +100,11 @@ public class US022_StepDefinition {
         ReusableMethods.bekle(2);
         ReusableMethods.logout();
         ReusableMethods.bekle(2);
-        ReusableMethods.login("us22tc01username","passwordMAK");
+        page.anaSayfaloginButonu.click();
+        page.loginUserNameAlani.sendKeys(usernameUs22Tc01);
+        page.loginPasswordAlani.sendKeys(ConfigReader.getProperty("passwordMAK"));
+        page.loginButonu.click();
+        //ReusableMethods.login("us22tc01username","passwordMAK");
 
         page.adminLoginVerify.isDisplayed();
     }
@@ -223,9 +243,9 @@ public class US022_StepDefinition {
         phoneAlaniTemizleme();
         ssnAlaniTemizleme();
         usernameAlaniTemizleme();
-        page.phoneNumberAlani.sendKeys(ConfigReader.getProperty("us22tc06phoneNumber"));
-        page.ssnAlani.sendKeys(ConfigReader.getProperty("us22tc06ssnNumber"));
-        page.usernameAlani.sendKeys(ConfigReader.getProperty("us22tc06username"));
+        page.phoneNumberAlani.sendKeys(phoneNumberUs22Tc06);
+        page.ssnAlani.sendKeys(ssnNumberUs22Tc06);
+        page.usernameAlani.sendKeys(usernameUs22Tc06);
         ReusableMethods.bekle(2);
 
         //1.Dogrulama
@@ -336,5 +356,70 @@ public class US022_StepDefinition {
         ReusableMethods.tumSayfaResmi("22","TC07_errorLogin");
         Assert.assertEquals(page.alert.getText(),errorLoginMessage);
 
+    }
+
+    //---------------------- API TESTS ------------------------------------
+    US22_AddAdminPojo expectedData;
+    Response response;
+    US22_AdminResponsepojo actualData;
+    @Given("Admin eklemek icin Post request hazirligi yapilir")
+    public void adminEklemekIcinPostRequestHazirligiYapilir() {
+        //https://managementonschools.com/app/admin/save
+        //Set the url
+        spec.pathParams("first", "admin", "second", "save");
+    }
+
+    @And("Gonderilecek Admin bilgileri hazirlanir")
+    public void gonderilecekAdminBilgileriHazirlanir() {
+        //Set the expected data
+        expectedData = new US22_AddAdminPojo("2002-01-24","bursa",true,"MALE","mehmet ali","Admin123", phoneNumberUs22Tc01, ssnNumberUs22Tc01,"karasu", usernameUs22Tc01);
+        System.out.println(expectedData);
+    }
+
+    @When("Admin eklemek icin Post request gonderilir")
+    public void adminEklemekIcinPostRequestGonderilir() {
+        //Send req and get resp
+        response=given(spec).body(expectedData).when().post("{first}/{second}");
+
+        //Response'u Dogrulama kisminda alacagaiz...(Hata aldigimizda farkli bir Json dondugu icin)
+
+    }
+
+    @Then("Admin Bilgileri dogrulanir")
+    public void adminBilgileriDogrulanir() {
+        //get response
+        actualData = response.as(US22_AdminResponsepojo.class);
+        //Do assertion
+        assertEquals(200, response.statusCode());
+        assertEquals(expectedData.getBirthDay(), actualData.getObject().getBirthDay());
+        assertEquals(expectedData.getBirthPlace(), actualData.getObject().getBirthPlace());
+        assertEquals(expectedData.getGender(), actualData.getObject().getGender());
+        assertEquals(expectedData.getName(), actualData.getObject().getName());
+        assertEquals(expectedData.getSurname(), actualData.getObject().getSurname());
+        assertEquals(expectedData.getUsername(), actualData.getObject().getUsername());
+        assertEquals(expectedData.getSsn(), actualData.getObject().getSsn());
+        assertEquals(expectedData.getPhoneNumber(), actualData.getObject().getPhoneNumber());
+
+    }
+
+
+    @And("Gonderilecek Admin bilgilerinde gelecek tarihli date of birth girilir")//TC02
+    public void gonderilecekAdminBilgilerindeGelecekTarihliDateOfBirthGirilir() {
+        //Set the expected data
+        expectedData = new US22_AddAdminPojo("2028-01-24","bursa",true,"MALE","mehmet ali","Admin123", phoneNumberUs22Tc01, ssnNumberUs22Tc01,"karasu", usernameUs22Tc01);
+        System.out.println(expectedData);
+    }
+
+    @Then("Status Kodunun {int} oldugu dogrulanir")
+    public void statusKodununOlduguDogrulanir(int statusCode) {
+        //Do assertion
+        Assert.assertEquals(response.statusCode(),statusCode);
+    }
+
+    @And("Gonderilecek Admin bilgilerinde onceden girilmis telefon no girilir")//TC03
+    public void gonderilecekAdminBilgilerindeOncedenGirilmisTelefonNoGirilir() {
+        //Set the expected data
+        expectedData = new US22_AddAdminPojo("2002-01-24","bursa",true,"MALE","mehmet ali","Admin123", "555-222-9999", ssnNumberUs22Tc01,"karasu", usernameUs22Tc01);
+        System.out.println(expectedData);
     }
 }

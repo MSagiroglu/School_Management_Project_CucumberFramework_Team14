@@ -16,6 +16,8 @@ public class Home_Page {
     public WebElement registerNameField;//--> Register sayfasındaki Name alanı
     @FindBy(xpath = "//a[@class='header_link ms-2']")
     public WebElement homePageLoginButton;//--> Anasayfadaki Login butonu
+
+
     @FindBy(xpath = "//input[@id='username']")
     public WebElement loginEmailField;//--> Login sayfasındaki Email alanı
     @FindBy(xpath = "//input[@id='password']")

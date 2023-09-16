@@ -17,9 +17,7 @@ public class Hooks {
     @Before
     public void setUp() throws Exception {
         ManagementOnSchool.setUp();
-       Driver.getDriver().get(ConfigReader.getProperty("managementOnSchoolsUrl"));
-
-
+       //Driver.getDriver().get(ConfigReader.getProperty("managementOnSchoolsUrl"));
     }
     @After//import io.cucumber.java.After;
     public void tearDown(Scenario scenario) throws Exception {
@@ -28,12 +26,13 @@ public class Hooks {
             scenario.attach(ts.getScreenshotAs(OutputType.BYTES), "image/jpeg",  scenario.getName());
             Driver.quitDriver();
         }
+        Driver.closeDriver();
 
     }
     //Bu method fail olan scenario'larda fail olan kısmın resmini rapora ekleyecektir.
 
-@AfterAll
-public static void tearDownAll(){
-Driver.closeDriver();
-}
+//@AfterAll
+//public static void tearDownAll(){
+//Driver.closeDriver();
+//}
 }

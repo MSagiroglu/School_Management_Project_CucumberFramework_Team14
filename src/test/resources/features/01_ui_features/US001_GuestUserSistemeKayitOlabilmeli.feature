@@ -1,4 +1,4 @@
-@All
+@All @US01vice
 Feature: US001 Aday ogrenciler sisteme kayit olabilmelidir.
 
   Background:

@@ -1,9 +1,22 @@
 package management_on_schools.pojos.MustafaS01_02.US_01;
 
-import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.io.Serializable;
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class GuestUserPostPojo implements Serializable {
 	public GuestUserPostPojo() {
+	}
+
+	public GuestUserPostPojo(String birthDay, String birthPlace, String gender, String password, String phoneNumber, String ssn, String surname, String username) {
+		this.birthDay = birthDay;
+		this.birthPlace = birthPlace;
+		this.gender = gender;
+		this.password = password;
+		this.phoneNumber = phoneNumber;
+		this.ssn = ssn;
+		this.surname = surname;
+		this.username = username;
 	}
 
 	public GuestUserPostPojo(String birthDay, String birthPlace, String gender, String name, String password, String phoneNumber, String ssn, String surname, String username) {
