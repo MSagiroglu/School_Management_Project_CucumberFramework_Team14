@@ -29,7 +29,7 @@ import org.junit.runner.RunWith;
 
 
 
-        tags = "",//-->  and kulansaydık her iki tag'a sahip olan Scenario yu çalıştırır.
+        tags = "@US_03_apiNegative",//-->  and kulansaydık her iki tag'a sahip olan Scenario yu çalıştırır.
 
         //-->  and kulansaydık her iki tag'a sahip olan Scenario yu çalıştırır.
 
