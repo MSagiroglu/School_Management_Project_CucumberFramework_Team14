@@ -28,7 +28,6 @@ public class US24 {
 
     @Given("Admin Login Olur")
     public void admin_login_olur() {
-
         ReusableMethods.login("AdminUsername", "AdminPassword");
 
 

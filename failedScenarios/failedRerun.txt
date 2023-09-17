@@ -1,0 +1,1 @@
+file:src/test/resources/features/01_ui_features/US24_TeacherEkleme.feature:3
