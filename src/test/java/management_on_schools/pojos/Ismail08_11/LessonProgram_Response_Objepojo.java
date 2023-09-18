@@ -1,8 +1,5 @@
 package management_on_schools.pojos.Ismail08_11;
 
-
-
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,10 +11,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 @Data
-public class Response_LessonCreat_Pojo {
 
-    private LessonCreateRequestPojo object;
-
-    private String message;
-
+public class LessonProgram_Response_Objepojo {
+    private Lessonprogram_ResponseInner object;
 }
