@@ -1,4 +1,4 @@
-@Us22Api @api22_23
+@admin @Us22Api @api22_23
 Feature: US22 Api Testi
   @Us22Tc01Api
   Scenario: TC01 Post ile Admin Ekleme Testi

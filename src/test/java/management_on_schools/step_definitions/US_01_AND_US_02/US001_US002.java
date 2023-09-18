@@ -12,8 +12,9 @@ import management_on_schools.pages.MustafaS01_02.US_02Page;
 import management_on_schools.pojos.MustafaS01_02.US_01.GuestUserPostPojo;
 import management_on_schools.pojos.MustafaS01_02.US_01.negative_post_response.NegativePostResponsePojo;
 import management_on_schools.pojos.MustafaS01_02.US_01.positive_post_response.Responsepojo;
-import management_on_schools.pojos.MustafaS01_02.US_02.ContentPojo;
-import management_on_schools.pojos.MustafaS01_02.US_02.GetRequestResponsePojo;
+import management_on_schools.pojos.MustafaS01_02.US_02.deleteRequestPojos.DeleteResponsePojo;
+import management_on_schools.pojos.MustafaS01_02.US_02.getRequestPojos.ContentPojo;
+import management_on_schools.pojos.MustafaS01_02.US_02.getRequestPojos.GetRequestResponsePojo;
 import management_on_schools.utilities.ConfigReader;
 import management_on_schools.utilities.Driver;
 import management_on_schools.utilities.ReusableMethods;
@@ -35,7 +36,7 @@ public class US001_US002 {
     US_02Page us02Page = new US_02Page();
     Actions action = new Actions(Driver.getDriver());
     static Faker faker = new Faker();
-    static String name = faker.name().firstName() + faker.number().numberBetween(1, 10);
+    static String name =  faker.name().firstName() + faker.number().numberBetween(1, 10);
     static String surname = faker.name().lastName();
     static String birthPlace = name;
     static String userName = faker.name().firstName() + faker.number().numberBetween(1, 10);
@@ -304,7 +305,7 @@ public class US001_US002 {
     }
 
 
-    @Given("Admin Guest User Sayfasina giris yapar")
+    @When("Admin Guest User Sayfasina giris yapar")
     public void adminGuestUserSayfasinaGirisYapar() {
         homePage.menuButton.click();
         us02Page.guestUserButton.click();
@@ -320,7 +321,7 @@ public class US001_US002 {
     WebElement actualName1, actualPhone1, actualSsn1, actualUserName1;
     static String pagenumber;
 
-    @And("Admin Kayıt olan Guest user'a ait bilgileri görebilir.")
+    @Then("Admin Kayıt olan Guest user'a ait bilgileri görebilir.")
     public void adminKayıtOlanGuestUserAAitBilgileriGorebilir() {
         ReusableMethods.bekle(2);
         ReusableMethods.visibleWait(us02Page.guestUserTableCount, 10);
@@ -360,21 +361,23 @@ public class US001_US002 {
                     Assert.assertEquals(expectedUserName, actualUserName);
                     pagenumber = us02Page.guestUserTableCount.getAttribute("textContent").split(" ")[3];
                     System.out.println("pagenumber = " + pagenumber);
+                    j = guestUserTable.size();
+                    i = pageCount;
 
-                    t = j;
+                    //t = j;
                     break;
 
                 } else {
                     System.out.println(guestUserTable.get(j).getText());
                 }
-                t = j;
+                //t = j;
             }
             if (guestUserTable.get(t).getText().equals(arananName)) {
                 break;
             } else {
                 ReusableMethods.click(us02Page.guestUserIleriButton);
                 ReusableMethods.bekle(1);
-                System.out.println("Page Number = " + (i + 2) + " .sayfa");
+
             }
 
 
@@ -383,9 +386,49 @@ public class US001_US002 {
 
     }
 
+    @Then("Admin Kayıt olan Guest user'a ait bilgileri silebilir.")
+    public void adminKayıtOlanGuestUserAAitBilgileriSilebilir() {
+        ReusableMethods.bekle(2);
+        ReusableMethods.visibleWait(us02Page.guestUserTableCount, 10);
+        int pageCount = Integer.parseInt(us02Page.guestUserTableCount.getAttribute("textContent").split(" ")[3]);
+        guestUserTable = us02Page.guestUserTable;
+        System.out.println("guestUserTable.get(i) = " + guestUserTable.get(1).getText());
+        arananName = userName;
+        System.out.println("arananName = " + arananName);
+        String expectedMessage = "Guest User deleted Successful";
+
+        for (int i = 0; i < pageCount; i++) {
+            for (int j = 1; j < guestUserTable.size(); j++) {
+                guestUserTable = us02Page.guestUserTable;
+                if (guestUserTable.get(j).getText().equals(arananName)) {
+                    System.out.println("Data bulundu ve silme başladı");
+                    guestUserTable = us02Page.guestUserTable;
+                    WebElement deleteButton = guestUserTable.get(j + 1);
+                    ReusableMethods.bekle(2);
+                    ReusableMethods.click(deleteButton);
+                    ReusableMethods.visibleWait(us01Page.alertMessage, 5);
+                    Assert.assertEquals(expectedMessage, us01Page.alertMessage.getText());
+                    System.out.println("Mesaj doğrulandı");
+                    j = guestUserTable.size();
+                    i = pageCount;
+                    break;
+                }
+            }
+            ReusableMethods.click(us02Page.guestUserIleriButton);
+            ReusableMethods.bekle(1);
+
+        }
+
+    }
+
     @Given("Kullanici Admin olarak giris yapar.")
     public void kullaniciAdminOlarakGirisYapar() {
-        ReusableMethods.login("AdminUsername", "AdminPassword");
+        ReusableMethods.waitForVisibility(homePage.homePageLoginButton, 5);
+        ReusableMethods.click(homePage.homePageLoginButton);
+        homePage.loginEmailField.sendKeys(ConfigReader.getProperty("AdminUsername"));
+        homePage.loginPasswordField.sendKeys(ConfigReader.getProperty("AdminPassword"));
+        homePage.loginButton.click();
+        //ReusableMethods.login("AdminUsername", "AdminPassword");
     }
 
     //-----------       API             ---------------\\
@@ -474,7 +517,9 @@ public class US001_US002 {
             }
         }
     }
+
     GuestUserPostPojo expectedWithoutNameData = new GuestUserPostPojo(birthDate2, birthPlace, "FEMALE", password, phoneNumber, ssnNumber, surname, userName);
+
     @And("Gonderilecek Guest User {string} olmadan bilgileri hazırlanır")
     public void gonderilecekGuestUserOlmadanBilgileriHazırlanır(String data) {
         if (data.equalsIgnoreCase(name)) {
@@ -484,15 +529,13 @@ public class US001_US002 {
     }
 
 
-
-
     @Then("Guest User {string} girmeden Post Response Bilgilerinin getirilemedigi dogrulanir")
     public void guestUserGirmedenPostResponseBilgilerininGetirilemedigiDogrulanir(String data) {
         if (data.equalsIgnoreCase("name")) {
             NegativePostResponsePojo actualNegativePostResponse = response.as(NegativePostResponsePojo.class);
             assertEquals(400, response.statusCode());
             assertEquals("Validation failed for object='guestUserRequest'. Error count: 1", actualNegativePostResponse.getMessage());
-            assertEquals("Please enter your name",actualNegativePostResponse.getValidations().getName());
+            assertEquals("Please enter your name", actualNegativePostResponse.getValidations().getName());
             System.out.println("doğrulama yapıldı");
 
         }
@@ -502,11 +545,43 @@ public class US001_US002 {
 
     @When("Guest User eklemek icin {string} olmadan Post request gonderilir")
     public void guestUserEklemekIcinOlmadanPostRequestGonderilir(String data) {
-        if (data.equalsIgnoreCase("name")){
+        if (data.equalsIgnoreCase("name")) {
             response = given(spec).body(expectedWithoutNameData).when().post("/{first}/{second}");
             response.prettyPrint();
-             actualNegativePostResponse = response.as(NegativePostResponsePojo.class);
+            actualNegativePostResponse = response.as(NegativePostResponsePojo.class);
         }
+    }
+
+
+    @And("Site kapatilir.")
+    public void siteKapatilir() {
+        Driver.closeDriver();
+    }
+
+    @Given("Guest User icin Delete request hazirligi yapilir")
+    public void guestUserIcinDeleteRequestHazirligiYapilir() {
+        //https://managementonschools.com/app/guestUser/delete/1510
+        spec.pathParams("first", "guestUser", "second", "delete","third",actualData.getObject().getUserId());
+        System.out.println("Guest user id = "+actualData.getObject().getUserId());
+
+    }
+
+    @When("Silmek icin Delete request gonderilir")
+    public void silmekIcinDeleteRequestGonderilir() {
+        response = given(spec).when().delete("{first}/{second}/{third}");
+        response.prettyPrint();
+    }
+    DeleteResponsePojo actualDeleteResponse;
+
+    String expectedDeleteMessage=" Guest User deleted Successful";
+
+    @Then("Guest User Delete Response Bilgileri dogrulanir")
+    public void guestUserDeleteResponseBilgileriDogrulanir() {
+        actualDeleteResponse = response.as(DeleteResponsePojo.class);
+        Assert.assertEquals(expectedDeleteMessage, actualDeleteResponse.getMessage());
+        Assert.assertEquals(200, response.statusCode());
+        System.out.println("Silme işlemi başarıyla gerçekleşti.");
+
     }
 }
 
