@@ -1,4 +1,4 @@
-@US24API
+@admin @US25API
 Feature: Admin tarafindan student eklenebilme testi
   Scenario: Admin basarili bir sekilde student ekleyebilmeli
     Given Student eklemek için post request hazirligi yapilir
