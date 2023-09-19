@@ -14,7 +14,7 @@ import static management_on_schools.base_url.ManagementOnSchool.spec;
 
 import static org.junit.Assert.assertEquals;
 
-public class US24API {
+public class US24APIa {
     static US24TeacherPostPOJO expectedDataYK;
     static US24TeacherResponsePojo actualDataYK;
     Response response;
@@ -49,11 +49,11 @@ public class US24API {
 
 
 
-         expectedDataYK= new US24TeacherPostPOJO(apiBirthday,apiBirthplace,
+        expectedDataYK= new US24TeacherPostPOJO(apiBirthday,apiBirthplace,
                 apiEmail,
                 apiGender,apiIsAdvisorTeacher,
                 lessonsID.getLessonsIdList(),apiName,apiPassword,apiphoneNumber,apiSsnNumber,
-                apiSurname,apiUserName);
+                apiSurname,apiUserName+"."+"1994"+"apiVersion");
         System.out.println(expectedDataYK);
 
 
@@ -63,7 +63,7 @@ public class US24API {
         //Send request get response
         response=given(spec).body(expectedDataYK).when().post("{first}/{second}");
         response.prettyPrint();
-         actualDataYK=response.as(US24TeacherResponsePojo.class);
+        actualDataYK=response.as(US24TeacherResponsePojo.class);
 
     }
     @Then("Kaydedilen teacher'a ait bilgiler dogrulanir")
@@ -77,7 +77,7 @@ public class US24API {
         assertEquals(expectedDataYK.getEmail(),actualDataYK.getObject().getEmail());
         assertEquals(expectedDataYK.getGender(),actualDataYK.getObject().getGender());
         assertEquals(expectedDataYK.getName(),actualDataYK.getObject().getName());
-        assertEquals(expectedDataYK.getUsername(),actualDataYK.getObject().getSurname());
+        assertEquals(expectedDataYK.getSurname(),actualDataYK.getObject().getSurname());
         assertEquals(expectedDataYK.getPhoneNumber(),actualDataYK.getObject().getPhoneNumber());
         assertEquals(expectedDataYK.getSsn(),actualDataYK.getObject().getSsn());
 
