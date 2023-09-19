@@ -139,8 +139,8 @@ MesajPostPojo expectedData;
     public void gonderilecekMesajBilgileriEksikHazırlanır() {
         //Set the exp
         US_03_Negative_Api obj=new US_03_Negative_Api();
-        Map<String,Object> expectedData =obj.expectedDataMethod("semamalkoc01@gmail.com","Ders_Saati_10'da_mi?","","Ders_Saati");
-        System.out.println(expectedData);
+        Map<String,Object> expectedDataMethod =obj.expectedDataMethod("semamalkoc01@gmail.com","Ders_Saati_10'da_mi?","Ders_Saati");
+        System.out.println(expectedDataMethod);
 
 
 
@@ -154,16 +154,17 @@ MesajPostPojo expectedData;
 
     }
 
-    @Then("{string} dogrulanir")
-    public void dogrulanir(String str) throws JsonProcessingException {
+
+
+
+    @Then("Dortyuz Bad Request Status Code dogrulanir")
+    public void dortyuzBadRequestStatusCodeDogrulanir()throws JsonProcessingException {
         ObjectMapper objmapper= new ObjectMapper();
         Map<String,Object>actData =  objmapper.readValue(response.asString(), HashMap.class);
         System.out.println(actData);
 
-        assertEquals(expectedData.getMessage(),actData.get("message"));
-        assertEquals(expectedData.getEmail(),actData.get("email"));
-        assertEquals(expectedData.getSubject(),actData.get("subject"));
-        assertEquals(expectedData.getName(),actData.get("name"));
+        assertEquals(400,response.statusCode());
+
 
     }
 }
