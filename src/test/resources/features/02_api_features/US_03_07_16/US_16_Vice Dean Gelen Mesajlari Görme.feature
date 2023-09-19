@@ -1,4 +1,3 @@
-
 @US16_api
 Feature:Vice Dean kullanicilarin gönderdiği tüm mesajlari görebilmeli
   Scenario Outline:US16 Gelen mesajlari dogrulama

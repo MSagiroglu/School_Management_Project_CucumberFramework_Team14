@@ -3,7 +3,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class US_03_Negative_Api {
-    public Map<String, Object> expectedDataMethod(String email, String message, String name, String subject) {
+    public Map<String, Object> expectedDataMethod(String email, String message, String subject) {
         Map<String, Object> expectedData = new HashMap<>();
         if (email != null) {
             expectedData.put("userId", email);
@@ -11,9 +11,7 @@ public class US_03_Negative_Api {
         if (message != null) {
             expectedData.put("title", message);
         }
-        if (name != null) {
-            expectedData.put("completed", name);
-        }
+
         if (subject != null) {
             expectedData.put("completed", subject);
         }
