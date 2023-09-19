@@ -1,15 +1,14 @@
-@All @US01vice
+@UI
 Feature: US001 Aday ogrenciler sisteme kayit olabilmelidir.
 
   Background:
     Given Guest User Anasayfada register butonuna tiklar
 
-  @US_01_PS @US_02 @pozitifApi
+  @UIPositive @e2ePositive
   Scenario: TC_01 Aday ogrenciler sisteme kayit olabilmelidir.
     When Guest User Register sayfasındaki gerekli alanları doldurur.
     Then Aday ogrencinin kaydının basarili bir şekilde gerçeklestigi dogrulanır.
-
-
+   # And Site kapatilir.
 
 
   @US_01_NS @NS01 @1
@@ -18,12 +17,11 @@ Feature: US001 Aday ogrenciler sisteme kayit olabilmelidir.
     Then Aday ogrencinin kaydinin gerçeklesmedigi dogrulanir.
 
 
-
   @US_01_NS @NS02
   Scenario: TC_03 Aday ogrenciler sisteme Surname girmeden kayit olamamalidir.
     When Guest User Register sayfasındaki gerekli datayi "Surname" girmeden alanları doldurur.
     Then Aday ogrencinin kaydinin gerçeklesmedigi dogrulanir.
-    
+
 
   @US_01_NS @NS03
   Scenario: TC_04 Aday ogrenciler sisteme Birth place girmeden kayit olamamalidir.

@@ -14,7 +14,13 @@ import org.junit.runner.RunWith;
                 "rerun:failedScenarios/failedRerun.txt"},
         features = "src/test/resources/features",
         glue = {"management_on_schools/step_definitions"},
+
         tags = " @US_03_apiNegative",//-->  and kulansaydık her iki tag'a sahip olan Scenario yu çalıştırır.
+
+
+
+
+
         dryRun = false, //-->true seçersek scenarioları kontrol eder browser'ı çalıştırmaz
         monochrome = false
 )

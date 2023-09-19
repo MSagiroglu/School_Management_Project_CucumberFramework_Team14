@@ -1,4 +1,4 @@
-package management_on_schools.pojos.MustafaS01_02.US_02;
+package management_on_schools.pojos.MustafaS01_02.US_02.getRequestPojos;
 
 import java.util.List;
 import java.io.Serializable;
