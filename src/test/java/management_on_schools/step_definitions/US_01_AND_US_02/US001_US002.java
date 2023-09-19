@@ -17,12 +17,17 @@ import management_on_schools.pojos.MustafaS01_02.US_02.getRequestPojos.ContentPo
 import management_on_schools.pojos.MustafaS01_02.US_02.getRequestPojos.GetRequestResponsePojo;
 import management_on_schools.utilities.ConfigReader;
 import management_on_schools.utilities.Driver;
+import management_on_schools.utilities.JDBCUtils;
 import management_on_schools.utilities.ReusableMethods;
 import org.junit.Assert;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 
 import static io.restassured.RestAssured.given;
@@ -518,15 +523,18 @@ public class US001_US002 {
         }
     }
 
-    GuestUserPostPojo expectedWithoutNameData = new GuestUserPostPojo(birthDate2, birthPlace, "FEMALE", password, phoneNumber, ssnNumber, surname, userName);
+    static GuestUserPostPojo expectedWithoutNameData = new GuestUserPostPojo(birthDate2, birthPlace, "FEMALE", password, phoneNumber, ssnNumber, surname, userName);
 
     @And("Gonderilecek Guest User {string} olmadan bilgileri hazırlanır")
     public void gonderilecekGuestUserOlmadanBilgileriHazırlanır(String data) {
-        if (data.equalsIgnoreCase(name)) {
+        if (data.equalsIgnoreCase("name")) {
             expectedWithoutNameData = new GuestUserPostPojo(birthDate2, birthPlace, "FEMALE", password, phoneNumber, ssnNumber, surname, userName);
-            System.out.println("expectedWithoutNameData = " + expectedWithoutNameData);
+            System.out.println("expectedWithoutNameData = " + expectedWithoutNameData.getUsername());
         }
+
     }
+
+
 
 
     @Then("Guest User {string} girmeden Post Response Bilgilerinin getirilemedigi dogrulanir")
@@ -583,6 +591,58 @@ public class US001_US002 {
         System.out.println("Silme işlemi başarıyla gerçekleşti.");
 
     }
+
+
+static Connection connection;
+
+    @When("Guest User Database bilgileri icin baglantı kurulur.")
+    public void guest_user_database_bilgileri_icin_baglantı_kurulur() {
+        connection=JDBCUtils.connectToDatabase();
+    }
+    String actualDatabaseUsername;
+    String actualDatabaseName;
+    String actualDatabaseSurname;
+    String actualDatabasePhoneNumber;
+    String actualDatabaseSsn;
+    String actualDatabaseBirthDay;
+    String actualDatabaseBirthPlace;
+   static Statement statement;
+   static ResultSet resultSet;
+    static String expectedDatabaseUserName=expectedWithoutNameData.getUsername();
+
+
+    @Then("Guest User bilgilerinin database icinde olup olmadigi dogrulanir.")
+    public void guestUserBilgilerininDatabaseIcindeOlupOlmadigiDogrulanir() throws SQLException {
+        statement=JDBCUtils.createStatement();
+         resultSet= JDBCUtils.executeQuery("select * from guest_user where username = '" + expectedDatabaseUserName + "'");
+
+        if (resultSet.next()==true) {
+            actualDatabaseUsername= resultSet.getString("username");
+            actualDatabaseName= resultSet.getString("name");
+            actualDatabaseSurname= resultSet.getString("surname");
+            actualDatabasePhoneNumber= resultSet.getString("phone_number");
+            actualDatabaseSsn= resultSet.getString("ssn");
+            actualDatabaseBirthDay= resultSet.getString("birth_day");
+            actualDatabaseBirthPlace= resultSet.getString("birth_place");
+            Assert.assertEquals(actualData.getObject().getUsername(), actualDatabaseUsername);
+            Assert.assertEquals(actualData.getObject().getName(), actualDatabaseName);
+            Assert.assertEquals(actualData.getObject().getSurname(), actualDatabaseSurname);
+            Assert.assertEquals(actualData.getObject().getPhoneNumber(), actualDatabasePhoneNumber);
+            Assert.assertEquals(actualData.getObject().getSsn(), actualDatabaseSsn);
+            Assert.assertEquals(actualData.getObject().getBirthDay(), actualDatabaseBirthDay);
+            Assert.assertEquals(actualData.getObject().getBirthPlace(), actualDatabaseBirthPlace);
+            System.out.println("Database bilgileri dogrulandı.");
+        } else {
+            System.out.println("Database bilgileri dogrulamadı.");
+        }
+
+
+        JDBCUtils.closeConnection();
+
+    }
+
+
+
 }
 
 
