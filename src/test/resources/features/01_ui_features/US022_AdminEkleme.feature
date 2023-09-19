@@ -1,4 +1,4 @@
-@Us22
+@UI @Us22
 Feature: US22 Admin Ekleme
   @Us22Tc01
   Scenario: TC01 Admin Ekleme
