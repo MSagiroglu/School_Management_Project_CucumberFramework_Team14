@@ -23,7 +23,7 @@ public class US24APIa {
     static String apiSurname =faker.name().lastName();
     static String apiphoneNumber = faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(1000, 9999);
     static String apiSsnNumber = faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(10, 99) + "-" + faker.number().numberBetween(1000, 9999);
-    static String apiUserName =faker.name().firstName().toLowerCase()+faker.name().lastName().toUpperCase();
+    private String apiUserName =faker.name().firstName().toLowerCase()+faker.name().lastName().toUpperCase();
     static String apiBirthday="1953-01-01";
     static String apiBirthplace=apiName+"istan";
     static String apiGender="MALE";
@@ -53,7 +53,7 @@ public class US24APIa {
                 apiEmail,
                 apiGender,apiIsAdvisorTeacher,
                 lessonsID.getLessonsIdList(),apiName,apiPassword,apiphoneNumber,apiSsnNumber,
-                apiSurname,apiUserName+"."+"1994"+"apiVersion");
+                apiSurname,apiUserName);
         System.out.println(expectedDataYK);
 
 
