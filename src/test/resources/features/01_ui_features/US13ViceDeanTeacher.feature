@@ -22,6 +22,9 @@ Feature: US_13 Vice Dean Ogretmen Olusturma
     And warning for "teacherSavedMessage"
     Then quit driver
 
+    Scenario: DB
+      Given database dogrulamasi
+
 
   Scenario: TC_02 Ders secimi yapilmadan kayit olunamamalidir
     And enter random "name"
@@ -441,6 +444,8 @@ Feature: US_13 Vice Dean Ogretmen Olusturma
     And click to "submit"
     And warning for "invalidNameWarning"
     Then quit driver
+
+
 
 
 

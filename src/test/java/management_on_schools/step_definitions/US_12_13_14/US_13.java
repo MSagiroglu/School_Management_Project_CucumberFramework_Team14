@@ -4,11 +4,16 @@ import com.github.javafaker.Faker;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
+import io.restassured.path.json.JsonPath;
+import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import management_on_schools.pages.Begum12_13_14.US_12Page;
 import management_on_schools.pages.Begum12_13_14.US_13Page;
 import management_on_schools.pages.Begum12_13_14.US_14Page;
 import management_on_schools.pages.Home_Page;
+import management_on_schools.pojos.Begum12_13_14.US13.TeacherPostPojo;
+import management_on_schools.pojos.Begum12_13_14.US13.TeacherResponsePojo;
 import management_on_schools.utilities.ConfigReader;
 import management_on_schools.utilities.Driver;
 import management_on_schools.utilities.ReusableMethods;
@@ -19,33 +24,43 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.asserts.SoftAssert;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
+
+import static io.restassured.RestAssured.given;
+import static management_on_schools.base_url.ManagementOnSchool.spec;
+import static management_on_schools.utilities.JDBCUtils.executeQuery;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertEquals;
 
 public class US_13 {
     Home_Page homePage = new Home_Page();
     US_13Page us_13Page = new US_13Page();
     US_12Page us_12Page = new US_12Page();
     US_14Page us_14Page = new US_14Page();
-    Faker faker = new Faker();
+    static Faker faker = new Faker();
     String nameEntered;
     String surnameEntered;
     String birthPlaceEntered;
     String emailEntered;
+    Connection connection;
+    Statement statement;
+    ResultSet resultSet;
 
 
-    String fakeName;
-    String fakeSurname;
-    String fakeBirthPlace;
-    String fakeEmail;
-    String fakePhone;
-    String fakeDateOfBirth;
-    String fakePassword;
-    String fakeUserName;
-    String fakeSSN;
-
-
-
-
+    static String fakeName;
+    static String fakeSurname;
+    static String fakeBirthPlace;
+    static String fakeEmail;
+    static String fakePhone;
+    static String fakeDateOfBirth;
+    static String fakePassword;
+    static String fakeUserName;
+    static String fakeSSN;
 
 
     @Given("click to {string}")
@@ -204,15 +219,12 @@ public class US_13 {
                 ReusableMethods.bekle(2);
                 break;
             case "surname":
-                fakeSurname = faker.name().lastName();
+                 fakeSurname = faker.name().lastName();
                 us_13Page.surname.sendKeys(fakeSurname);
                 ReusableMethods.bekle(2);
                 break;
             case "birthPlace":
-                fakeBirthPlace = faker.address().city().replaceAll("\\s", "");
-                if (fakeBirthPlace.length() >= 14) {
-                    fakeBirthPlace = fakeBirthPlace.substring(0, 9);
-                }
+                fakeBirthPlace = faker.address().city().replaceAll("\\s", "").substring(0,9);
                 us_13Page.birthPlace.sendKeys(fakeBirthPlace);
                 ReusableMethods.bekle(2);
                 break;
@@ -221,7 +233,7 @@ public class US_13 {
                 us_13Page.email.sendKeys(fakeEmail);
                 break;
             case "phoneNumber":
-                fakePhone = "" + faker.number().numberBetween(1, 9) + faker.number().numberBetween(1, 9) + faker.number().numberBetween(1, 9) +
+                fakePhone =  "" + faker.number().numberBetween(1, 9) + faker.number().numberBetween(1, 9) + faker.number().numberBetween(1, 9) +
                         "-" + faker.number().numberBetween(1, 9) + faker.number().numberBetween(1, 9) + faker.number().numberBetween(1, 9) + "-" +
                         faker.number().numberBetween(1, 9) + faker.number().numberBetween(1, 9) + faker.number().numberBetween(1, 9) + faker.number().numberBetween(1, 9);
                 us_13Page.phoneNumber.sendKeys(fakePhone);
@@ -231,21 +243,17 @@ public class US_13 {
                 fakeSSN = "" + faker.number().numberBetween(1, 9) + faker.number().numberBetween(1, 9) + faker.number().numberBetween(1, 9) +
                         "-" + faker.number().numberBetween(1, 9) + faker.number().numberBetween(1, 9) + "-" + faker.number().numberBetween(1, 9) +
                         faker.number().numberBetween(1, 9) + faker.number().numberBetween(1, 9) + faker.number().numberBetween(1, 9);
-
                 us_13Page.ssn.sendKeys(fakeSSN);
                 ReusableMethods.bekle(2);
                 break;
             case "userName":
-                fakeUserName = faker.name().username().replaceAll("[^A-Za-z]", "A");
-                if (fakeUserName.length() >= 14) {
-                    fakeUserName = fakeUserName.substring(0, 9);
-                }
+                fakeUserName = faker.name().username().replaceAll("[^A-Za-z]", "A").substring(0,9);
                 us_13Page.userName.sendKeys(fakeUserName);
                 ReusableMethods.bekle(2);
                 break;
             case "password":
-                fakePassword = faker.internet().password();
-                us_13Page.password.sendKeys("A1" + fakePassword);
+                fakePassword = faker.internet().password() + "A1";
+                us_13Page.password.sendKeys(fakePassword);
                 ReusableMethods.bekle(2);
                 break;
             case "dateOfBirth":
@@ -348,6 +356,145 @@ public class US_13 {
     @And("is advisor teacher")
     public void isAdvisorTeacher() {
         Assert.assertTrue(us_13Page.isAdvisorTeacher.isSelected());
+    }
+
+    // API
+
+    TeacherPostPojo expectedData;
+    TeacherResponsePojo actualData;
+    Response response;
+    JsonPath jsonPath;
+
+
+    @Given("Post request ile ogretmen olusturulur")
+    public void postRequestIleOgretmenOlusturulur() {
+        spec.pathParams("first", "teachers", "second", "save");
+    }
+
+    @And("Gonderilecek Teacher bilgileri hazirlanir")
+    public void gonderilecekTeacherBilgileriHazirlanir() {
+      String fakeBirthDay2 = "1990-04-21";
+        List<Long> lessonsIdList = new ArrayList<>();
+        lessonsIdList.add(49L);
+      expectedData = new TeacherPostPojo(fakeBirthDay2,fakeBirthPlace,fakeEmail,"FEMALE",true,lessonsIdList,fakeName,fakePassword,fakePhone,fakeSSN,fakeSurname,fakeUserName);
+        System.out.println(expectedData);
+    }
+
+    @When("Teacher eklemek icin Post request gonderilir")
+    public void teacherEklemekIcinPostRequestGonderilir() {
+        response=given(spec).body(expectedData).when().post("{first}/{second}");
+        response.prettyPrint();
+        actualData = response.as(TeacherResponsePojo.class);
+
+    }
+    @Then("Teacher bilgileri dogrulanir")
+    public void teacherBilgileriDogrulanir() {
+        String message = "Teacher saved successfully";
+        String httpStatus = "CREATED";
+        assertEquals(200, response.statusCode());
+        assertEquals(expectedData.getBirthDay(), actualData.getObject().getBirthDay());
+        assertEquals(expectedData.getBirthPlace(), actualData.getObject().getBirthPlace());
+        assertEquals(expectedData.getEmail(), actualData.getObject().getEmail());
+        assertEquals(expectedData.getGender(), actualData.getObject().getGender());
+        assertEquals(expectedData.isIsAdvisorTeacher(), actualData.getObject().isAdvisorTeacher());
+        assertEquals(expectedData.getName(), actualData.getObject().getName());
+        assertEquals(expectedData.getPhoneNumber(), actualData.getObject().getPhoneNumber());
+        assertEquals(expectedData.getSsn(), actualData.getObject().getSsn());
+        assertEquals(expectedData.getSurname(), actualData.getObject().getSurname());
+        assertEquals(expectedData.getUsername(), actualData.getObject().getUsername());
+        assertEquals(message,actualData.getMessage());
+        assertEquals(httpStatus,actualData.getHttpStatus());
+
+    }
+
+    @Then("Ogretmenin istenen bilgilerinin goruntulendigi dogrulanir")
+    public void ogretmeninIstenenBilgilerininGoruntulendigiDogrulanir() {
+        String message = "Teacher saved successfully";
+        assertEquals(200, response.statusCode());
+        assertEquals(expectedData.getName(), actualData.getObject().getName());
+        assertEquals(expectedData.getPhoneNumber(), actualData.getObject().getPhoneNumber());
+        assertEquals(expectedData.getSsn(), actualData.getObject().getSsn());
+        assertEquals(expectedData.getUsername(), actualData.getObject().getUsername());
+        assertEquals(message,actualData.getMessage());
+
+    }
+
+    @Given("Put request ile guncellenecek ogretmen bilgileri gonderilir")
+    public void putRequestIleGuncellenecekOgretmenBilgileriGonderilir() {
+        spec.pathParams("first", "teachers", "second", "update","third",933);
+        String fakeBirthDay2 = "1990-04-21";
+        List<Long> lessonsIdList = new ArrayList<>();
+        lessonsIdList.add(49L);
+        expectedData = new TeacherPostPojo(fakeBirthDay2,fakeBirthPlace,fakeEmail,"FEMALE",true,lessonsIdList,fakeName,fakePassword,fakePhone,fakeSSN,fakeSurname,fakeUserName);
+        System.out.println(expectedData);
+        response=given(spec).body(expectedData).when().put("{first}/{second}/{third}");
+        response.prettyPrint();
+        actualData = response.as(TeacherResponsePojo.class);
+    }
+
+    @Then("guncellenen ogretmen bilgileri dogrulanir")
+    public void guncellenenOgretmenBilgileriDogrulanir() {
+        String message = "Teacher updated Successful";
+        assertEquals(200, response.statusCode());
+        assertEquals(message,actualData.getMessage());
+        assertEquals(expectedData.getBirthDay(), actualData.getObject().getBirthDay());
+        assertEquals(expectedData.getBirthPlace(), actualData.getObject().getBirthPlace());
+        assertEquals(expectedData.getEmail(), actualData.getObject().getEmail());
+        assertEquals(expectedData.getGender(), actualData.getObject().getGender());
+        assertEquals(expectedData.isIsAdvisorTeacher(), actualData.getObject().isAdvisorTeacher());
+        assertEquals(expectedData.getName(), actualData.getObject().getName());
+        assertEquals(expectedData.getPhoneNumber(), actualData.getObject().getPhoneNumber());
+        assertEquals(expectedData.getSsn(), actualData.getObject().getSsn());
+        assertEquals(expectedData.getSurname(), actualData.getObject().getSurname());
+        assertEquals(expectedData.getUsername(), actualData.getObject().getUsername());
+
+
+    }
+
+    @And("Gonderilecek eksik Teacher bilgileri hazirlanir")
+    public void gonderilecekEksikTeacherBilgileriHazirlanir() {
+        String fakeBirthDay2 = "1990-04-21";
+        String gecersizEmail = "123456";
+        List<Long> lessonsIdList = new ArrayList<>();
+        lessonsIdList.add(49L);
+        expectedData = new TeacherPostPojo(fakeBirthDay2,fakeBirthPlace,gecersizEmail,"FEMALE",true,lessonsIdList,fakeName,fakePassword,fakePhone,fakeSSN,fakeSurname,fakeUserName);
+        System.out.println(expectedData);
+    }
+
+    @Then("kayit olusturulamadigi dogrulanir")
+    public void kayitOlusturulamadigiDogrulanir() {
+        String message = "Please enter valid email";
+        response.then().assertThat().statusCode(400).body("validations.email",equalTo(message));
+
+    }
+
+    @When("Eksik bilgilerle teacher eklemek icin Post request gonderilir")
+    public void eksikBilgilerleTeacherEklemekIcinPostRequestGonderilir() {
+        response=given(spec).body(expectedData).when().post("{first}/{second}");
+        response.prettyPrint();
+
+
+    }
+
+    @Given("database dogrulamasi")
+    public void databaseDogrulamasi() throws SQLException {
+        String query = "select * from guest_user where username = '" + fakeUserName+ "'";
+        resultSet = executeQuery(query);
+        resultSet.next();
+
+        String actualBirthPlace = resultSet.getString("birth_place");
+        String actualGender = resultSet.getString("gender");
+        String actualName = resultSet.getString("name");
+        String actualPhoneNumber = resultSet.getString("phone_number");
+        String actualSsn = resultSet.getString("ssn");
+        String actualSurname = resultSet.getString("surname");
+        String actualUsername = resultSet.getString("username");
+
+
+
+        assertEquals(fakeUserName, actualUsername);
+        assertEquals(fakePhone, actualPhoneNumber);
+
     }
 }
 
