@@ -1,7 +1,9 @@
-package management_on_schools.pojos.Yekta_US24_25.US25;
+package management_on_schools.pojos.Yekta_US24_25.US25.PositiveScenarios;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.io.Serializable;
-
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class US25ObjectPojo implements Serializable {
 	private int id;
 	private String username;

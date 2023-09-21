@@ -3,15 +3,15 @@ package management_on_schools.step_definitions.US_24_25;
 import com.github.javafaker.Faker;
 import io.cucumber.java.en.*;
 import io.restassured.response.Response;
-import management_on_schools.pojos.Yekta_US24_25.US24.US24TeacherResponsePojo;
-import management_on_schools.pojos.Yekta_US24_25.US25.US25StudentPostPojo;
-import management_on_schools.pojos.Yekta_US24_25.US25.US25StudentResponsePojo;
+import management_on_schools.pojos.Yekta_US24_25.US25.NegativeScenarios.US25NegativeResponsePojo;
+import management_on_schools.pojos.Yekta_US24_25.US25.PositiveScenarios.US25StudentPostPojo;
+import management_on_schools.pojos.Yekta_US24_25.US25.PositiveScenarios.US25StudentResponsePojo;
 
 import static io.restassured.RestAssured.given;
 import static management_on_schools.base_url.ManagementOnSchool.spec;
 import static org.junit.Assert.assertEquals;
 
-public class US25API {
+public class US25APIa {
     static US25StudentPostPojo expectedData;
     static US25StudentResponsePojo actualData;
     Response response;
@@ -74,21 +74,49 @@ assertEquals(expectedData.getSsn(),actualData.getObject().getSsn());
 assertEquals(expectedData.getUsername(),actualData.getObject().getUsername());
 
     }
-
-
-    @And("Student kaydı yapılırken advisor teacher seçimi yapılmaz")
-    public void studentKaydıYapılırkenAdvisorTeacherSeçimiYapılmaz() {
-        expectedData=new US25StudentPostPojo(getIsAdvisorTeacherFalse,apiBirthdayS,birthPlaceS,
+/*
+static US24TeacherPostPOJO getExpectedDataYK1 =new US24TeacherPostPOJO(apiBirthday,apiBirthplace,
+            apiEmail,
+            apiGender,apiIsAdvisorTeacher,
+            null,apiName,apiPassword,apiphoneNumber,apiSsnNumber,
+            apiSurname,apiUserName);
+    US24NegativeResponsePojo us24Negative;
+    isAdvisorTeacher,apiBirthdayS,birthPlaceS,
                 emailS,fatherNameS,genderS,
                 motherNameS,nameApiS,apiPasswordS,
                 apiphoneNumberS,apiSsnNumberS,surnameApiS,
-                apiUsernameS);
+                apiUsernameS)
+ */
 
-
+    static US25StudentPostPojo getExpectedData1= new US25StudentPostPojo(0,apiBirthdayS,birthPlaceS,emailS,fatherNameS,
+            genderS,motherNameS,nameApiS,apiPasswordS,apiphoneNumberS,apiSsnNumberS,surnameApiS,apiUsernameS);
+US25NegativeResponsePojo us25Negative;
+    @And("Advisor Teacher seçimi yapılmadan öğrenci bilgileri hazırlanır")
+    public void advisorTeacherSeçimiYapılmadanÖğrenciBilgileriHazırlanır() {
+        /*
+        response = given(spec).body(getExpectedDataYK1).when().post("/{first}/{second}");
+        response.prettyPrint();
+        us24Negative = response.as(US24NegativeResponsePojo.class);
+        assertEquals(400,response.statusCode());
+        assertEquals("Please select lesson",us24Negative.getValidations().getLessonsIdList());
+        System.out.println(response.statusCode());
+        System.out.println(us24Negative.getValidations().getLessonsIdList());
+        System.out.println("Yekta");
+         */
+        response =given(spec).body(getExpectedData1).when().post("/{first}/{second}");
+        response.prettyPrint();
+        us25Negative=response.as(US25NegativeResponsePojo.class);
+        assertEquals(404,response.statusCode());
+        System.out.println(response.statusCode());
+        
     }
 
-    @Then("Response body'de alacağımız status kodunun {int} oldugu dogrulanir")
-    public void responseBodyDeAlacağımızStatusKodununOlduguDogrulanir(int arg0) {
-        assertEquals(arg0,response.statusCode());
+    @When("Öğrenci eklemek icin Post request gonderilir")
+    public void öğrenciEklemekIcinPostRequestGonderilir() {
+        
+    }
+
+    @Then("Status kodunun {int} olduğu doğrulaması yapılır")
+    public void statusKodununOlduğuDoğrulamasıYapılır(int arg0) {
     }
 }
