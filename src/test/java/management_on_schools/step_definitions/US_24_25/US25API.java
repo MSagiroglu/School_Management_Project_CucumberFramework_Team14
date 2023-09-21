@@ -29,6 +29,7 @@ public class US25API {
     static String apiPasswordS=nameApiS.toUpperCase()+"y1993";
     static String apiUsernameS=nameApiS.toUpperCase()+surnameApiS.toLowerCase();
     static Integer isAdvisorTeacher =2;
+    static Integer getIsAdvisorTeacherFalse=0;
     @Given("Student eklemek için post request hazirligi yapilir")
     public void student_eklemek_için_post_request_hazirligi_yapilir() {
         //https://managementonschools.com/app/students/save
@@ -72,8 +73,22 @@ assertEquals(expectedData.getPhoneNumber(),actualData.getObject().getPhoneNumber
 assertEquals(expectedData.getSsn(),actualData.getObject().getSsn());
 assertEquals(expectedData.getUsername(),actualData.getObject().getUsername());
 
+    }
+
+
+    @And("Student kaydı yapılırken advisor teacher seçimi yapılmaz")
+    public void studentKaydıYapılırkenAdvisorTeacherSeçimiYapılmaz() {
+        expectedData=new US25StudentPostPojo(getIsAdvisorTeacherFalse,apiBirthdayS,birthPlaceS,
+                emailS,fatherNameS,genderS,
+                motherNameS,nameApiS,apiPasswordS,
+                apiphoneNumberS,apiSsnNumberS,surnameApiS,
+                apiUsernameS);
 
 
     }
 
+    @Then("Response body'de alacağımız status kodunun {int} oldugu dogrulanir")
+    public void responseBodyDeAlacağımızStatusKodununOlduguDogrulanir(int arg0) {
+        assertEquals(arg0,response.statusCode());
+    }
 }
