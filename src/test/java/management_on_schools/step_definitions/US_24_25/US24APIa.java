@@ -3,14 +3,11 @@ package management_on_schools.step_definitions.US_24_25;
 import com.github.javafaker.Faker;
 import io.cucumber.java.en.*;
 import io.restassured.response.Response;
-import management_on_schools.pojos.MustafaS01_02.US_01.GuestUserPostPojo;
-import management_on_schools.pojos.MustafaS01_02.US_01.negative_post_response.NegativePostResponsePojo;
-import management_on_schools.pojos.Yekta_US24_25.US24.US24NegativeResponsePojo;
-import management_on_schools.pojos.Yekta_US24_25.US24.US24TeacherPostPOJO;
-import management_on_schools.pojos.Yekta_US24_25.US24.US24TeacherResponsePojo;
+import management_on_schools.pojos.Yekta_US24_25.US24.NegativeScenarios.US24NegativeResponsePojo;
+import management_on_schools.pojos.Yekta_US24_25.US24.PositiveScenarios.US24TeacherPostPOJO;
+import management_on_schools.pojos.Yekta_US24_25.US24.PositiveScenarios.US24TeacherResponsePojo;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static io.restassured.RestAssured.given;
 import static management_on_schools.base_url.ManagementOnSchool.spec;
@@ -107,7 +104,9 @@ public class US24APIa {
         us24Negative = response.as(US24NegativeResponsePojo.class);
         assertEquals(400,response.statusCode());
         assertEquals("Please select lesson",us24Negative.getValidations().getLessonsIdList());
-        
+        System.out.println(response.statusCode());
+        System.out.println(us24Negative.getValidations().getLessonsIdList());
+        System.out.println("Yekta");
     }
 
     @When("Öğretmen eklemek icin Post request gonderilir")
