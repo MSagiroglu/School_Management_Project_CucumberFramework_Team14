@@ -15,7 +15,7 @@ import org.junit.runner.RunWith;
         features = "src/test/resources/features",
         glue = {"management_on_schools/step_definitions"},
 
-        tags = " @US_03_apiNegative",//-->  and kulansaydık her iki tag'a sahip olan Scenario yu çalıştırır.
+        tags = "@ApiPositive",//-->  and kulansaydık her iki tag'a sahip olan Scenario yu çalıştırır.
 
 
 
