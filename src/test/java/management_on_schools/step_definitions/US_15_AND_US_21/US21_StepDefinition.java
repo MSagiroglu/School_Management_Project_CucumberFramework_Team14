@@ -4,7 +4,7 @@ import com.github.javafaker.Faker;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import management_on_schools.pages.Home_Page;
-import management_on_schools.pages.Suleyman15_21.US_21Page;
+import management_on_schools.pages.Suleyman_US15_21.US_21Page;
 import management_on_schools.utilities.ConfigReader;
 import management_on_schools.utilities.Driver;
 import management_on_schools.utilities.ReusableMethods;
@@ -15,7 +15,7 @@ import org.openqa.selenium.interactions.Actions;
 
 public class US21_StepDefinition {
     Home_Page home_page = new Home_Page();
-    US_21Page us_21Page = new US_21Page();
+    US_21Page us_21Page=new US_21Page();
     Actions actions = new Actions(Driver.getDriver());
     Faker faker = new Faker();
     JavascriptExecutor js = (JavascriptExecutor) Driver.getDriver();

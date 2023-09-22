@@ -6,7 +6,8 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import management_on_schools.pages.Home_Page;
-import management_on_schools.pages.Suleyman15_21.US_15Page;
+
+import management_on_schools.pages.Suleyman_US15_21.US_15Page;
 import management_on_schools.utilities.ConfigReader;
 import management_on_schools.utilities.Driver;
 import management_on_schools.utilities.ReusableMethods;
@@ -18,7 +19,7 @@ import org.openqa.selenium.support.ui.Select;
 
 public class US15_StepDefinition {
     Home_Page home_page = new Home_Page();
-    US_15Page us_15Page = new US_15Page();
+    US_15Page us_15Page=new US_15Page();
     Actions actions = new Actions(Driver.getDriver());
     JavascriptExecutor js = (JavascriptExecutor) Driver.getDriver();
     static Faker faker = new Faker();
@@ -64,7 +65,7 @@ public class US15_StepDefinition {
 
     @And("kullanici menu butonuna tiklar")
     public void kullaniciMenuButonunaTiklar() {
-        Home_Page.menuButton.click();
+        home_page.menuButton.click();
     }
 
     @And("kullanici Student Management butonuna tiklar")
@@ -142,7 +143,7 @@ public class US15_StepDefinition {
         home_page.loginEmailField.sendKeys(ConfigReader.getProperty("viceDeanUsername"),
                 Keys.TAB, (ConfigReader.getProperty("viceDeanPassword")));
         ReusableMethods.click(home_page.loginButton);
-        Home_Page.menuButton.click();
+        home_page.menuButton.click();
         us_15Page.studentManagementButton.click();
         Select select = new Select(us_15Page.chooseAdvisorTeacherDdm);
         select.selectByValue("32");
@@ -195,7 +196,7 @@ public class US15_StepDefinition {
         home_page.loginEmailField.sendKeys(ConfigReader.getProperty("viceDeanUsername"),
                 Keys.TAB, (ConfigReader.getProperty("viceDeanPassword")));
         ReusableMethods.click(home_page.loginButton);
-        Home_Page.menuButton.click();
+        home_page.menuButton.click();
         us_15Page.studentManagementButton.click();
         Select select = new Select(us_15Page.chooseAdvisorTeacherDdm);
         select.selectByValue("32");
@@ -247,7 +248,7 @@ public class US15_StepDefinition {
         home_page.loginEmailField.sendKeys(ConfigReader.getProperty("viceDeanUsername"),
                 Keys.TAB, (ConfigReader.getProperty("viceDeanPassword")));
         ReusableMethods.click(home_page.loginButton);
-        Home_Page.menuButton.click();
+        home_page.menuButton.click();
         us_15Page.studentManagementButton.click();
         Select select = new Select(us_15Page.chooseAdvisorTeacherDdm);
         select.selectByValue("32");
@@ -299,7 +300,7 @@ public class US15_StepDefinition {
         home_page.loginEmailField.sendKeys(ConfigReader.getProperty("viceDeanUsername"),
                 Keys.TAB, (ConfigReader.getProperty("viceDeanPassword")));
         ReusableMethods.click(home_page.loginButton);
-        Home_Page.menuButton.click();
+        home_page.menuButton.click();
         us_15Page.studentManagementButton.click();
         Select select = new Select(us_15Page.chooseAdvisorTeacherDdm);
         select.selectByValue("32");
@@ -351,7 +352,7 @@ public class US15_StepDefinition {
         home_page.loginEmailField.sendKeys(ConfigReader.getProperty("viceDeanUsername"),
                 Keys.TAB, (ConfigReader.getProperty("viceDeanPassword")));
         ReusableMethods.click(home_page.loginButton);
-        Home_Page.menuButton.click();
+        home_page.menuButton.click();
         us_15Page.studentManagementButton.click();
         Select select = new Select(us_15Page.chooseAdvisorTeacherDdm);
         select.selectByValue("32");
@@ -403,7 +404,7 @@ public class US15_StepDefinition {
         home_page.loginEmailField.sendKeys(ConfigReader.getProperty("viceDeanUsername"),
                 Keys.TAB, (ConfigReader.getProperty("viceDeanPassword")));
         ReusableMethods.click(home_page.loginButton);
-        Home_Page.menuButton.click();
+        home_page.menuButton.click();
         us_15Page.studentManagementButton.click();
         Select select = new Select(us_15Page.chooseAdvisorTeacherDdm);
         select.selectByValue("32");
@@ -453,7 +454,7 @@ public class US15_StepDefinition {
         home_page.loginEmailField.sendKeys(ConfigReader.getProperty("viceDeanUsername"),
                 Keys.TAB, (ConfigReader.getProperty("viceDeanPassword")));
         ReusableMethods.click(home_page.loginButton);
-        Home_Page.menuButton.click();
+        home_page.menuButton.click();
         us_15Page.studentManagementButton.click();
         Select select = new Select(us_15Page.chooseAdvisorTeacherDdm);
         select.selectByValue("32");
@@ -504,7 +505,7 @@ public class US15_StepDefinition {
         home_page.loginEmailField.sendKeys(ConfigReader.getProperty("viceDeanUsername"),
                 Keys.TAB, (ConfigReader.getProperty("viceDeanPassword")));
         ReusableMethods.click(home_page.loginButton);
-        Home_Page.menuButton.click();
+        home_page.menuButton.click();
         us_15Page.studentManagementButton.click();
         Select select = new Select(us_15Page.chooseAdvisorTeacherDdm);
         select.selectByValue("32");
@@ -555,7 +556,7 @@ public class US15_StepDefinition {
         home_page.loginEmailField.sendKeys(ConfigReader.getProperty("viceDeanUsername"),
                 Keys.TAB, (ConfigReader.getProperty("viceDeanPassword")));
         ReusableMethods.click(home_page.loginButton);
-        Home_Page.menuButton.click();
+        home_page.menuButton.click();
         us_15Page.studentManagementButton.click();
         Select select = new Select(us_15Page.chooseAdvisorTeacherDdm);
         select.selectByValue("32");
@@ -606,7 +607,7 @@ public class US15_StepDefinition {
         home_page.loginEmailField.sendKeys(ConfigReader.getProperty("viceDeanUsername"),
                 Keys.TAB, (ConfigReader.getProperty("viceDeanPassword")));
         ReusableMethods.click(home_page.loginButton);
-        Home_Page.menuButton.click();
+        home_page.menuButton.click();
         us_15Page.studentManagementButton.click();
         Select select = new Select(us_15Page.chooseAdvisorTeacherDdm);
         select.selectByValue("32");
@@ -658,7 +659,7 @@ public class US15_StepDefinition {
         home_page.loginEmailField.sendKeys(ConfigReader.getProperty("viceDeanUsername"),
                 Keys.TAB, (ConfigReader.getProperty("viceDeanPassword")));
         ReusableMethods.click(home_page.loginButton);
-        Home_Page.menuButton.click();
+        home_page.menuButton.click();
         us_15Page.studentManagementButton.click();
         Select select = new Select(us_15Page.chooseAdvisorTeacherDdm);
         select.selectByValue("32");
@@ -710,7 +711,7 @@ public class US15_StepDefinition {
         home_page.loginEmailField.sendKeys(ConfigReader.getProperty("viceDeanUsername"),
                 Keys.TAB, (ConfigReader.getProperty("viceDeanPassword")));
         ReusableMethods.click(home_page.loginButton);
-        Home_Page.menuButton.click();
+        home_page.menuButton.click();
         us_15Page.studentManagementButton.click();
         Select select = new Select(us_15Page.chooseAdvisorTeacherDdm);
         select.selectByValue("32");
@@ -762,7 +763,7 @@ public class US15_StepDefinition {
         home_page.loginEmailField.sendKeys(ConfigReader.getProperty("viceDeanUsername"),
                 Keys.TAB, (ConfigReader.getProperty("viceDeanPassword")));
         ReusableMethods.click(home_page.loginButton);
-        Home_Page.menuButton.click();
+        home_page.menuButton.click();
         us_15Page.studentManagementButton.click();
         Select select = new Select(us_15Page.chooseAdvisorTeacherDdm);
         select.selectByValue("32");
@@ -814,7 +815,7 @@ public class US15_StepDefinition {
         home_page.loginEmailField.sendKeys(ConfigReader.getProperty("viceDeanUsername"),
                 Keys.TAB, (ConfigReader.getProperty("viceDeanPassword")));
         ReusableMethods.click(home_page.loginButton);
-        Home_Page.menuButton.click();
+        home_page.menuButton.click();
         us_15Page.studentManagementButton.click();
         Select select = new Select(us_15Page.chooseAdvisorTeacherDdm);
         select.selectByValue("32");

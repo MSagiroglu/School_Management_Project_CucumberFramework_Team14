@@ -3,23 +3,31 @@ package management_on_schools.step_definitions.US_03_07_16;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import management_on_schools.pages.Home_Page;
 import management_on_schools.pages.Sema03_07_16.ManagementonSchool;
 import management_on_schools.utilities.ConfigReader;
 import management_on_schools.utilities.Driver;
+import management_on_schools.utilities.ReusableMethods;
 import org.openqa.selenium.Keys;
 import org.testng.Assert;
 
+import java.sql.*;
+
 import static io.restassured.RestAssured.given;
 import static management_on_schools.base_url.ManagementOnSchool.spec;
+
 import static org.junit.Assert.assertEquals;
 
 public class US_07_16 {
     Response response;
     Home_Page homePage=new Home_Page();
     management_on_schools.pages.Sema03_07_16.ManagementonSchool ManagementonSchool=new ManagementonSchool();
+    Connection connection;
+    Statement statement;
+    ResultSet resultSet;
     @Given("kullanici Managementon School sayfasina gider ve login butonuna tiklar")
     public void kullaniciManagementonSchoolSayfasinaGiderVeLoginButonunaTiklar() {
         Driver.getDriver().get(ConfigReader.getProperty("managementOnSchoolsUrl"));
@@ -77,6 +85,7 @@ public class US_07_16 {
         assertEquals(actSubject,subject);
         assertEquals(actMessage,message);
         assertEquals(actDate,date);
+        ReusableMethods.tumSayfaResmi("16","mesajlar_görüldü");
     }
 
     @Given("Get Request ile gelen tüm mesajlari al")
@@ -87,4 +96,31 @@ public class US_07_16 {
         response =given(spec).when().get("{first}/{second}");
 
     }
+
+    @Given("Database e baglan")
+    public void databaseEBaglan() throws SQLException {
+        connection=DriverManager.getConnection("jdbc:postgresql://managementonschools.com:5432/school_management","select_user","43w5ijfso")  ;
+    }
+
+
+    @When("name ile kayitli mesajlari al {string}")
+    public void nameIleKayitliMesajlariAl(String name) throws SQLException {
+        statement=connection.createStatement();
+       String query=("Select * from contact_message where email='semamalkoc01@gmail.com'");
+       resultSet=statement.executeQuery(query);
+       resultSet.next();
+
+
+
+    }
+
+
+
+    @Then("ABody dogrulama : name={string},email={string},subject={string},message={string},date={string}")
+    public void abodyDogrulamaNameEmailSubjectMessageDate(String Name, String arg1, String arg2, String arg3, String arg4) throws SQLException {
+        String actname=resultSet.getString("name");
+        assertEquals(Name,actname);
+        ReusableMethods.tumSayfaResmi("16","name_doğrulandı");
+    }
 }
+
