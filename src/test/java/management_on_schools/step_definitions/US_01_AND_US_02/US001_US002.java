@@ -10,17 +10,24 @@ import management_on_schools.pages.Home_Page;
 import management_on_schools.pages.MustafaS01_02.US_01Page;
 import management_on_schools.pages.MustafaS01_02.US_02Page;
 import management_on_schools.pojos.MustafaS01_02.US_01.GuestUserPostPojo;
-import management_on_schools.pojos.MustafaS01_02.US_01.Responsepojo;
-import management_on_schools.pojos.MustafaS01_02.US_02.ContentPojo;
-import management_on_schools.pojos.MustafaS01_02.US_02.GetRequestResponsePojo;
+import management_on_schools.pojos.MustafaS01_02.US_01.negative_post_response.NegativePostResponsePojo;
+import management_on_schools.pojos.MustafaS01_02.US_01.positive_post_response.Responsepojo;
+import management_on_schools.pojos.MustafaS01_02.US_02.deleteRequestPojos.DeleteResponsePojo;
+import management_on_schools.pojos.MustafaS01_02.US_02.getRequestPojos.ContentPojo;
+import management_on_schools.pojos.MustafaS01_02.US_02.getRequestPojos.GetRequestResponsePojo;
 import management_on_schools.utilities.ConfigReader;
 import management_on_schools.utilities.Driver;
+import management_on_schools.utilities.JDBCUtils;
 import management_on_schools.utilities.ReusableMethods;
 import org.junit.Assert;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 
 import static io.restassured.RestAssured.given;
@@ -38,9 +45,9 @@ public class US001_US002 {
     static String surname = faker.name().lastName();
     static String birthPlace = name;
     static String userName = faker.name().firstName() + faker.number().numberBetween(1, 10);
-    static String password = name + "1";
-    static String birthDate = faker.number().numberBetween(10, 28)+"-"+faker.number().numberBetween(10, 12)+"-"+faker.number().numberBetween(1900, 2020);
-    static String birthDate2 = birthDate.substring(6)+"-"+birthDate.substring(3, 5)+"-"+birthDate.substring(0, 2);
+    static String password = name + "1256aA";
+    static String birthDate = faker.number().numberBetween(10, 28) + "-" + faker.number().numberBetween(10, 12) + "-" + faker.number().numberBetween(1900, 2020);
+    static String birthDate2 = birthDate.substring(6) + "-" + birthDate.substring(3, 5) + "-" + birthDate.substring(0, 2);
     static String phoneNumber = faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(1000, 9999);
     static String ssnNumber = faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(10, 99) + "-" + faker.number().numberBetween(1000, 9999);
     String registeredPhone = ConfigReader.getProperty("RegiteredPhone");
@@ -303,7 +310,7 @@ public class US001_US002 {
     }
 
 
-    @Given("Admin Guest User Sayfasina giris yapar")
+    @When("Admin Guest User Sayfasina giris yapar")
     public void adminGuestUserSayfasinaGirisYapar() {
         homePage.menuButton.click();
         us02Page.guestUserButton.click();
@@ -314,12 +321,12 @@ public class US001_US002 {
     String actualPhone;
     String actualSsn;
     String actualUserName;
-    static String arananName=userName;
+    static String arananName = userName;
     String expectedName, expectedPhone, expectedSsn, expectedUserName;
     WebElement actualName1, actualPhone1, actualSsn1, actualUserName1;
     static String pagenumber;
 
-    @And("Admin Kayıt olan Guest user'a ait bilgileri görebilir.")
+    @Then("Admin Kayıt olan Guest user'a ait bilgileri görebilir.")
     public void adminKayıtOlanGuestUserAAitBilgileriGorebilir() {
         ReusableMethods.bekle(2);
         ReusableMethods.visibleWait(us02Page.guestUserTableCount, 10);
@@ -357,23 +364,25 @@ public class US001_US002 {
                     Assert.assertEquals(expectedPhone, actualPhone);
                     Assert.assertEquals(expectedSsn, actualSsn);
                     Assert.assertEquals(expectedUserName, actualUserName);
-                    pagenumber=us02Page.guestUserTableCount.getAttribute("textContent").split(" ")[3];
+                    pagenumber = us02Page.guestUserTableCount.getAttribute("textContent").split(" ")[3];
                     System.out.println("pagenumber = " + pagenumber);
+                    j = guestUserTable.size();
+                    i = pageCount;
 
-                    t = j;
+                    //t = j;
                     break;
 
                 } else {
                     System.out.println(guestUserTable.get(j).getText());
                 }
-                t = j;
+                //t = j;
             }
             if (guestUserTable.get(t).getText().equals(arananName)) {
                 break;
             } else {
                 ReusableMethods.click(us02Page.guestUserIleriButton);
                 ReusableMethods.bekle(1);
-                System.out.println("Page Number = " + (i + 2) + " .sayfa");
+
             }
 
 
@@ -382,18 +391,58 @@ public class US001_US002 {
 
     }
 
+    @Then("Admin Kayıt olan Guest user'a ait bilgileri silebilir.")
+    public void adminKayıtOlanGuestUserAAitBilgileriSilebilir() {
+        ReusableMethods.bekle(2);
+        ReusableMethods.visibleWait(us02Page.guestUserTableCount, 10);
+        int pageCount = Integer.parseInt(us02Page.guestUserTableCount.getAttribute("textContent").split(" ")[3]);
+        guestUserTable = us02Page.guestUserTable;
+        System.out.println("guestUserTable.get(i) = " + guestUserTable.get(1).getText());
+        arananName = userName;
+        System.out.println("arananName = " + arananName);
+        String expectedMessage = "Guest User deleted Successful";
+
+        for (int i = 0; i < pageCount; i++) {
+            for (int j = 1; j < guestUserTable.size(); j++) {
+                guestUserTable = us02Page.guestUserTable;
+                if (guestUserTable.get(j).getText().equals(arananName)) {
+                    System.out.println("Data bulundu ve silme başladı");
+                    guestUserTable = us02Page.guestUserTable;
+                    WebElement deleteButton = guestUserTable.get(j + 1);
+                    ReusableMethods.bekle(2);
+                    ReusableMethods.click(deleteButton);
+                    ReusableMethods.visibleWait(us01Page.alertMessage, 5);
+                    Assert.assertEquals(expectedMessage, us01Page.alertMessage.getText());
+                    System.out.println("Mesaj doğrulandı");
+                    j = guestUserTable.size();
+                    i = pageCount;
+                    break;
+                }
+            }
+            ReusableMethods.click(us02Page.guestUserIleriButton);
+            ReusableMethods.bekle(1);
+
+        }
+
+    }
+
     @Given("Kullanici Admin olarak giris yapar.")
     public void kullaniciAdminOlarakGirisYapar() {
-        ReusableMethods.login("AdminUsername", "AdminPassword");
+        ReusableMethods.waitForVisibility(homePage.homePageLoginButton, 5);
+        ReusableMethods.click(homePage.homePageLoginButton);
+        homePage.loginEmailField.sendKeys(ConfigReader.getProperty("AdminUsername"));
+        homePage.loginPasswordField.sendKeys(ConfigReader.getProperty("AdminPassword"));
+        homePage.loginButton.click();
+        //ReusableMethods.login("AdminUsername", "AdminPassword");
     }
 
     //-----------       API             ---------------\\
-    GuestUserPostPojo expectedData;
-    Response response;
-    Responsepojo actualData;
+    static GuestUserPostPojo expectedData;
+    static Response response;
+    static Responsepojo actualData;
 
-    @Given("Dean eklemek icin Post request hazirligi yapilir")
-    public void dean_eklemek_icin_post_request_hazirligi_yapilir() {
+    @Given("Guest User eklemek icin Post request hazirligi yapilir")
+    public void guest_user_eklemek_icin_post_request_hazirligi_yapilir() {
         //https://managementonschools.com/app/guestUser/register
         //Set the url
         spec.pathParams("first", "guestUser", "second", "register");
@@ -401,8 +450,8 @@ public class US001_US002 {
 
     }
 
-    @Given("Gonderilecek Dean bilgileri hazırlanır")
-    public void gonderilecek_dean_bilgileri_hazırlanır() {
+    @Given("Gonderilecek Guest User bilgileri hazırlanır")
+    public void gonderilecek_guest_user_bilgileri_hazırlanır() {
         //Set the expected data
         expectedData = new GuestUserPostPojo(birthDate2, birthPlace, "FEMALE", name, password, phoneNumber, ssnNumber, surname, userName);
         System.out.println("expectedData = " + expectedData);
@@ -410,16 +459,15 @@ public class US001_US002 {
 
     }
 
-    @When("Dean eklemek icin Post request gonderilir")
-    public void dean_eklemek_icin_post_request_gonderilir() {
+    @When("Guest User eklemek icin Post request gonderilir")
+    public void guest_user_eklemek_icin_post_request_gonderilir() {
         response = given(spec).body(expectedData).when().post("/{first}/{second}");
         response.prettyPrint();
         actualData = response.as(Responsepojo.class);
-
     }
 
-    @Then("Dean Bilgileri dogrulanir")
-    public void dean_bilgileri_dogrulanir() {
+    @Then("Guest User Post Response Bilgileri dogrulanir")
+    public void guest_user_post_responsebilgileri_dogrulanir() {
         assertEquals(200, response.statusCode());
         assertEquals(expectedData.getBirthDay(), actualData.getObject().getBirthDay());
         assertEquals(expectedData.getBirthPlace(), actualData.getObject().getBirthPlace());
@@ -436,27 +484,30 @@ public class US001_US002 {
     @Given("Guest User icin Get request hazirligi yapilir")
     public void guestUserIcinGetRequestHazirligiYapilir() {
         //https://managementonschools.com/app/guestUser/getAll?page=60&size=5&sort=name&type=desc
-        spec.pathParams("first","guestUser","second","getAll").queryParam("size",1000);
+        spec.pathParams("first", "guestUser", "second", "getAll").queryParam("size", 1000);
     }
+
     ContentPojo expectedGuestUserData;
+
     @And("Sorgulanacak Guest User bilgileri hazırlanır")
     public void sorgulanacakGuestUserBilgileriHazırlanır() {
-        expectedGuestUserData=new ContentPojo(userName,ssnNumber,name,surname,birthDate2,birthPlace,phoneNumber,"FEMALE");
-        //System.out.println("expectedGuestUserData = " + expectedGuestUserData);
+        expectedGuestUserData = new ContentPojo(userName, ssnNumber, name, surname, birthDate2, birthPlace, phoneNumber, "FEMALE");
+        System.out.println("expectedGuestUserData = " + expectedGuestUserData);
     }
 
     @When("Sorgulamak icin Get request gonderilir")
     public void sorgulamakIcinGetRequestGonderilir() {
-        response=given(spec).when().get("{first}/{second}");
-       // response.prettyPrint();
+        response = given(spec).when().get("{first}/{second}");
+        response.prettyPrint();
     }
 
     GetRequestResponsePojo actualGuestUserData;
-    @Then("Guest User Bilgileri dogrulanir")
-    public void guestUserBilgileriDogrulanir() {
-         actualGuestUserData=response.as(GetRequestResponsePojo.class);
-         for (int i=0;i<actualGuestUserData.getContent().size();i++) {
-             if (actualGuestUserData.getContent().get(i).getUsername().equals(arananName)) {
+
+    @Then("Guest User Get Response Bilgileri dogrulanir")
+    public void guestUserGetResponseBilgileriDogrulanir() {
+        actualGuestUserData = response.as(GetRequestResponsePojo.class);
+        for (int i = 0; i < actualGuestUserData.getContent().size(); i++) {
+            if (actualGuestUserData.getContent().get(i).getUsername().equals(arananName)) {
                 assertEquals(expectedGuestUserData.getUsername(), actualGuestUserData.getContent().get(i).getUsername());
                 assertEquals(expectedGuestUserData.getSsn(), actualGuestUserData.getContent().get(i).getSsn());
                 assertEquals(expectedGuestUserData.getName(), actualGuestUserData.getContent().get(i).getName());
@@ -468,10 +519,133 @@ public class US001_US002 {
                 System.out.println("Doğrulama yapıldı");
                 break;
 
-             }
+            }
         }
     }
+
+    static GuestUserPostPojo expectedWithoutNameData = new GuestUserPostPojo(birthDate2, birthPlace, "FEMALE", password, phoneNumber, ssnNumber, surname, userName);
+
+    @And("Gonderilecek Guest User {string} olmadan bilgileri hazırlanır")
+    public void gonderilecekGuestUserOlmadanBilgileriHazırlanır(String data) {
+        if (data.equalsIgnoreCase("name")) {
+            expectedWithoutNameData = new GuestUserPostPojo(birthDate2, birthPlace, "FEMALE", password, phoneNumber, ssnNumber, surname, userName);
+            System.out.println("expectedWithoutNameData = " + expectedWithoutNameData.getUsername());
+        }
+
+    }
+
+
+
+
+    @Then("Guest User {string} girmeden Post Response Bilgilerinin getirilemedigi dogrulanir")
+    public void guestUserGirmedenPostResponseBilgilerininGetirilemedigiDogrulanir(String data) {
+        if (data.equalsIgnoreCase("name")) {
+            NegativePostResponsePojo actualNegativePostResponse = response.as(NegativePostResponsePojo.class);
+            assertEquals(400, response.statusCode());
+            assertEquals("Validation failed for object='guestUserRequest'. Error count: 1", actualNegativePostResponse.getMessage());
+            assertEquals("Please enter your name", actualNegativePostResponse.getValidations().getName());
+            System.out.println("doğrulama yapıldı");
+
+        }
+    }
+
+    NegativePostResponsePojo actualNegativePostResponse;
+
+    @When("Guest User eklemek icin {string} olmadan Post request gonderilir")
+    public void guestUserEklemekIcinOlmadanPostRequestGonderilir(String data) {
+        if (data.equalsIgnoreCase("name")) {
+            response = given(spec).body(expectedWithoutNameData).when().post("/{first}/{second}");
+            response.prettyPrint();
+            actualNegativePostResponse = response.as(NegativePostResponsePojo.class);
+        }
+    }
+
+
+    @And("Site kapatilir.")
+    public void siteKapatilir() {
+        Driver.closeDriver();
+    }
+
+    @Given("Guest User icin Delete request hazirligi yapilir")
+    public void guestUserIcinDeleteRequestHazirligiYapilir() {
+        //https://managementonschools.com/app/guestUser/delete/1510
+        spec.pathParams("first", "guestUser", "second", "delete","third",actualData.getObject().getUserId());
+        System.out.println("Guest user id = "+actualData.getObject().getUserId());
+
+    }
+
+    @When("Silmek icin Delete request gonderilir")
+    public void silmekIcinDeleteRequestGonderilir() {
+        response = given(spec).when().delete("{first}/{second}/{third}");
+        response.prettyPrint();
+    }
+    DeleteResponsePojo actualDeleteResponse;
+
+    String expectedDeleteMessage=" Guest User deleted Successful";
+
+    @Then("Guest User Delete Response Bilgileri dogrulanir")
+    public void guestUserDeleteResponseBilgileriDogrulanir() {
+        actualDeleteResponse = response.as(DeleteResponsePojo.class);
+        Assert.assertEquals(expectedDeleteMessage, actualDeleteResponse.getMessage());
+        Assert.assertEquals(200, response.statusCode());
+        System.out.println("Silme işlemi başarıyla gerçekleşti.");
+
+    }
+
+
+static Connection connection;
+
+    @When("Guest User Database bilgileri icin baglantı kurulur.")
+    public void guest_user_database_bilgileri_icin_baglantı_kurulur() {
+        connection=JDBCUtils.connectToDatabase();
+    }
+    String actualDatabaseUsername;
+    String actualDatabaseName;
+    String actualDatabaseSurname;
+    String actualDatabasePhoneNumber;
+    String actualDatabaseSsn;
+    String actualDatabaseBirthDay;
+    String actualDatabaseBirthPlace;
+   static Statement statement;
+   static ResultSet resultSet;
+    static String expectedDatabaseUserName=expectedWithoutNameData.getUsername();
+
+
+    @Then("Guest User bilgilerinin database icinde olup olmadigi dogrulanir.")
+    public void guestUserBilgilerininDatabaseIcindeOlupOlmadigiDogrulanir() throws SQLException {
+        statement=JDBCUtils.createStatement();
+         resultSet= JDBCUtils.executeQuery("select * from guest_user where username = '" + expectedDatabaseUserName + "'");
+
+        if (resultSet.next()==true) {
+            actualDatabaseUsername= resultSet.getString("username");
+            actualDatabaseName= resultSet.getString("name");
+            actualDatabaseSurname= resultSet.getString("surname");
+            actualDatabasePhoneNumber= resultSet.getString("phone_number");
+            actualDatabaseSsn= resultSet.getString("ssn");
+            actualDatabaseBirthDay= resultSet.getString("birth_day");
+            actualDatabaseBirthPlace= resultSet.getString("birth_place");
+            Assert.assertEquals(actualData.getObject().getUsername(), actualDatabaseUsername);
+            Assert.assertEquals(actualData.getObject().getName(), actualDatabaseName);
+            Assert.assertEquals(actualData.getObject().getSurname(), actualDatabaseSurname);
+            Assert.assertEquals(actualData.getObject().getPhoneNumber(), actualDatabasePhoneNumber);
+            Assert.assertEquals(actualData.getObject().getSsn(), actualDatabaseSsn);
+            Assert.assertEquals(actualData.getObject().getBirthDay(), actualDatabaseBirthDay);
+            Assert.assertEquals(actualData.getObject().getBirthPlace(), actualDatabaseBirthPlace);
+            System.out.println("Database bilgileri dogrulandı.");
+        } else {
+            System.out.println("Database bilgileri dogrulamadı.");
+        }
+
+
+        JDBCUtils.closeConnection();
+
+    }
+
+
+
 }
+
+
 
 
 

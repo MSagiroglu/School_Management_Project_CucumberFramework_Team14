@@ -24,15 +24,13 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.asserts.SoftAssert;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 import static io.restassured.RestAssured.given;
 import static management_on_schools.base_url.ManagementOnSchool.spec;
+import static management_on_schools.base_url.ManagementOnSchool.spec_vice_dean;
 import static management_on_schools.utilities.JDBCUtils.executeQuery;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertEquals;
@@ -47,20 +45,22 @@ public class US_13 {
     String surnameEntered;
     String birthPlaceEntered;
     String emailEntered;
-    Connection connection;
-    Statement statement;
-    ResultSet resultSet;
 
 
-    static String fakeName;
-    static String fakeSurname;
-    static String fakeBirthPlace;
-    static String fakeEmail;
-    static String fakePhone;
-    static String fakeDateOfBirth;
-    static String fakePassword;
-    static String fakeUserName;
-    static String fakeSSN;
+    static String fakeName = faker.name().firstName();
+    static String fakeSurname = faker.name().lastName();
+    static String fakeBirthPlace = faker.address().city().replaceAll("\\s", "").substring(0,6);
+    static String fakeEmail = faker.internet().emailAddress();
+    static String fakePhone =  "" + faker.number().numberBetween(1, 9) + faker.number().numberBetween(1, 9) + faker.number().numberBetween(1, 9) +
+            "-" + faker.number().numberBetween(1, 9) + faker.number().numberBetween(1, 9) + faker.number().numberBetween(1, 9) + "-" +
+            faker.number().numberBetween(1, 9) + faker.number().numberBetween(1, 9) + faker.number().numberBetween(1, 9) + faker.number().numberBetween(1, 9);
+    static String fakeDateOfBirth = "" + faker.number().numberBetween(0, 3) + faker.number().numberBetween(0, 9) + "" + faker.number().numberBetween(0, 1) +
+            faker.number().numberBetween(0, 1) + "" + 1 + 9 + faker.number().numberBetween(5, 9) + faker.number().numberBetween(0, 9);
+    static String fakePassword = faker.internet().password() + "A1";
+    static String fakeUserName = faker.name().username().replaceAll("[^A-Za-z]", "A").substring(0,9);
+    static String fakeSSN = "" + faker.number().numberBetween(1, 9) + faker.number().numberBetween(1, 9) + faker.number().numberBetween(1, 9) +
+            "-" + faker.number().numberBetween(1, 9) + faker.number().numberBetween(1, 9) + "-" + faker.number().numberBetween(1, 9) +
+            faker.number().numberBetween(1, 9) + faker.number().numberBetween(1, 9) + faker.number().numberBetween(1, 9);
 
 
     @Given("click to {string}")
@@ -92,7 +92,7 @@ public class US_13 {
                 us_13Page.lessonManagement.click();
                 break;
             case "lessonProgramButton":
-                us_12Page.lessonProgramButton.click();
+                ReusableMethods.click(us_12Page.lessonProgramButton);
                 break;
             case "lessonProgramAssignmet":
                 ReusableMethods.scroll(us_12Page.lessonProgramAssignmetButton);
@@ -214,51 +214,37 @@ public class US_13 {
 
         switch (data) {
             case "name":
-                fakeName = faker.name().firstName();
                 us_13Page.name.sendKeys(fakeName);
                 ReusableMethods.bekle(2);
                 break;
             case "surname":
-                 fakeSurname = faker.name().lastName();
                 us_13Page.surname.sendKeys(fakeSurname);
                 ReusableMethods.bekle(2);
                 break;
             case "birthPlace":
-                fakeBirthPlace = faker.address().city().replaceAll("\\s", "").substring(0,9);
                 us_13Page.birthPlace.sendKeys(fakeBirthPlace);
                 ReusableMethods.bekle(2);
                 break;
             case "email":
-                fakeEmail = faker.internet().emailAddress();
                 us_13Page.email.sendKeys(fakeEmail);
                 break;
             case "phoneNumber":
-                fakePhone =  "" + faker.number().numberBetween(1, 9) + faker.number().numberBetween(1, 9) + faker.number().numberBetween(1, 9) +
-                        "-" + faker.number().numberBetween(1, 9) + faker.number().numberBetween(1, 9) + faker.number().numberBetween(1, 9) + "-" +
-                        faker.number().numberBetween(1, 9) + faker.number().numberBetween(1, 9) + faker.number().numberBetween(1, 9) + faker.number().numberBetween(1, 9);
                 us_13Page.phoneNumber.sendKeys(fakePhone);
                 ReusableMethods.bekle(2);
                 break;
             case "SSN":
-                fakeSSN = "" + faker.number().numberBetween(1, 9) + faker.number().numberBetween(1, 9) + faker.number().numberBetween(1, 9) +
-                        "-" + faker.number().numberBetween(1, 9) + faker.number().numberBetween(1, 9) + "-" + faker.number().numberBetween(1, 9) +
-                        faker.number().numberBetween(1, 9) + faker.number().numberBetween(1, 9) + faker.number().numberBetween(1, 9);
                 us_13Page.ssn.sendKeys(fakeSSN);
                 ReusableMethods.bekle(2);
                 break;
             case "userName":
-                fakeUserName = faker.name().username().replaceAll("[^A-Za-z]", "A").substring(0,9);
                 us_13Page.userName.sendKeys(fakeUserName);
                 ReusableMethods.bekle(2);
                 break;
             case "password":
-                fakePassword = faker.internet().password() + "A1";
                 us_13Page.password.sendKeys(fakePassword);
                 ReusableMethods.bekle(2);
                 break;
             case "dateOfBirth":
-                fakeDateOfBirth = "" + faker.number().numberBetween(0, 3) + faker.number().numberBetween(0, 9) + "" + faker.number().numberBetween(0, 1) +
-                        faker.number().numberBetween(0, 1) + "" + 1 + 9 + faker.number().numberBetween(5, 9) + faker.number().numberBetween(0, 9);
                 us_13Page.dateOfBirth.sendKeys(fakeDateOfBirth);
                 ReusableMethods.bekle(2);
                 break;
@@ -363,12 +349,10 @@ public class US_13 {
     TeacherPostPojo expectedData;
     TeacherResponsePojo actualData;
     Response response;
-    JsonPath jsonPath;
-
 
     @Given("Post request ile ogretmen olusturulur")
     public void postRequestIleOgretmenOlusturulur() {
-        spec.pathParams("first", "teachers", "second", "save");
+        spec_vice_dean.pathParams("first", "teachers", "second", "save");
     }
 
     @And("Gonderilecek Teacher bilgileri hazirlanir")
@@ -380,13 +364,6 @@ public class US_13 {
         System.out.println(expectedData);
     }
 
-    @When("Teacher eklemek icin Post request gonderilir")
-    public void teacherEklemekIcinPostRequestGonderilir() {
-        response=given(spec).body(expectedData).when().post("{first}/{second}");
-        response.prettyPrint();
-        actualData = response.as(TeacherResponsePojo.class);
-
-    }
     @Then("Teacher bilgileri dogrulanir")
     public void teacherBilgileriDogrulanir() {
         String message = "Teacher saved successfully";
@@ -421,13 +398,13 @@ public class US_13 {
 
     @Given("Put request ile guncellenecek ogretmen bilgileri gonderilir")
     public void putRequestIleGuncellenecekOgretmenBilgileriGonderilir() {
-        spec.pathParams("first", "teachers", "second", "update","third",933);
+        spec_vice_dean.pathParams("first", "teachers", "second", "update","third",933);
         String fakeBirthDay2 = "1990-04-21";
         List<Long> lessonsIdList = new ArrayList<>();
         lessonsIdList.add(49L);
         expectedData = new TeacherPostPojo(fakeBirthDay2,fakeBirthPlace,fakeEmail,"FEMALE",true,lessonsIdList,fakeName,fakePassword,fakePhone,fakeSSN,fakeSurname,fakeUserName);
         System.out.println(expectedData);
-        response=given(spec).body(expectedData).when().put("{first}/{second}/{third}");
+        response=given(spec_vice_dean).body(expectedData).when().put("{first}/{second}/{third}");
         response.prettyPrint();
         actualData = response.as(TeacherResponsePojo.class);
     }
@@ -460,6 +437,20 @@ public class US_13 {
         expectedData = new TeacherPostPojo(fakeBirthDay2,fakeBirthPlace,gecersizEmail,"FEMALE",true,lessonsIdList,fakeName,fakePassword,fakePhone,fakeSSN,fakeSurname,fakeUserName);
         System.out.println(expectedData);
     }
+    @And("Gonderilecek yanlis Teacher bilgileri hazirlanir")
+    public void gonderilecekYanlisTeacherBilgileriHazirlanir() {
+        String fakeBirthDay2 = "1990-04-21";
+        List<Long> lessonsIdList = new ArrayList<>();
+        lessonsIdList.add(49L);
+        expectedData = new TeacherPostPojo(fakeBirthDay2,fakeBirthPlace,null,"FEMALE",true,lessonsIdList,fakeName,fakePassword,fakePhone,fakeSSN,fakeSurname,fakeUserName);
+        System.out.println(expectedData);
+    }
+
+    @Then("eksik bilgilerle kayit olusturulamadigi dogrulanir")
+    public void eksikBilgilerleKayitOlusturulamadigiDogrulanir() {
+        String message = "Please enter your email";
+        response.then().assertThat().statusCode(400).body("validations.email",equalTo(message));
+    }
 
     @Then("kayit olusturulamadigi dogrulanir")
     public void kayitOlusturulamadigiDogrulanir() {
@@ -470,30 +461,77 @@ public class US_13 {
 
     @When("Eksik bilgilerle teacher eklemek icin Post request gonderilir")
     public void eksikBilgilerleTeacherEklemekIcinPostRequestGonderilir() {
-        response=given(spec).body(expectedData).when().post("{first}/{second}");
+        response=given(spec_vice_dean).body(expectedData).when().post("{first}/{second}");
         response.prettyPrint();
 
 
     }
+    @When("teacher eklemek icin post request gonderilir")
+    public void teacherEklemekIcinPostRequestGonderilir() {
+        response=given(spec_vice_dean).body(expectedData).when().post("{first}/{second}");
+        response.prettyPrint();
+        actualData = response.as(TeacherResponsePojo.class);
+    }
 
-    @Given("database dogrulamasi")
-    public void databaseDogrulamasi() throws SQLException {
-        String query = "select * from guest_user where username = '" + fakeUserName+ "'";
-        resultSet = executeQuery(query);
+
+    Connection connection;
+    Statement statement;
+    ResultSet resultSet;
+    
+
+//    @Then("database dogrulamasi yapilir")
+//    public void databaseDogrulamasiYapilir() throws SQLException {
+//        resultSet.next();
+//        String actUsername = resultSet.getString("username");
+//        String actName = resultSet.getString("name");
+//        String actSurname = resultSet.getString("surname");
+//        String actSsn = resultSet.getString("ssn");
+//        String actBirthPlace = resultSet.getString("birth_place");
+//        String actPhoneNumber = resultSet.getString("phone_number");
+//
+//        assertEquals(fakeUserName,actUsername);
+//        assertEquals(fakeName,actName);
+//        assertEquals(fakeSurname,actSurname);
+//        assertEquals(fakeSSN,actSsn);
+//        assertEquals(fakeBirthPlace,actBirthPlace);
+//        assertEquals(fakePhone,actPhoneNumber);
+//
+//    }
+
+  
+
+    @Given("ogretmen bilgileri icin Database baglan")
+    public void ogretmenBilgileriIcinDatabaseBaglan() throws SQLException {
+        connection = DriverManager.getConnection("jdbc:postgresql://managementonschools.com:5432/school_management","select_user","43w5ijfso");
+
+    }
+
+    @When("kaydi yapilan ogretmeni username {string} ile  getir")
+    public void kaydiYapilanOgretmeniUsernameIleGetir(String username) throws SQLException {
+        statement = connection.createStatement();
+        String query =  "SELECT * FROM teacher where username = '" + username + "'";
+        resultSet = statement.executeQuery(query);
+
+        
+    }
+
+    @Then("bodynin bunlari icerdigini dogrula  birthplace {string}, name {string}, phoneNumber{string}, ssn{string}, surname{string}, username {string}")
+    public void bodyninBunlariIcerdiginiDogrulaBirthplaceNamePhoneNumberSsnSurnameUsername(String birthplace, String name, String phoneNumber, String ssn, String surname, String username) throws SQLException {
+
         resultSet.next();
+        String actUsername = resultSet.getString("username");
+        String actName = resultSet.getString("name");
+        String actSurname = resultSet.getString("surname");
+        String actSsn = resultSet.getString("ssn");
+        String actBirthPlace = resultSet.getString("birth_place");
+        String actPhoneNumber = resultSet.getString("phone_number");
 
-        String actualBirthPlace = resultSet.getString("birth_place");
-        String actualGender = resultSet.getString("gender");
-        String actualName = resultSet.getString("name");
-        String actualPhoneNumber = resultSet.getString("phone_number");
-        String actualSsn = resultSet.getString("ssn");
-        String actualSurname = resultSet.getString("surname");
-        String actualUsername = resultSet.getString("username");
-
-
-
-        assertEquals(fakeUserName, actualUsername);
-        assertEquals(fakePhone, actualPhoneNumber);
+        assertEquals(username,actUsername);
+        assertEquals(name,actName);
+        assertEquals(surname,actSurname);
+        assertEquals(ssn,actSsn);
+        assertEquals(birthplace,actBirthPlace);
+        assertEquals(phoneNumber,actPhoneNumber);
 
     }
 }

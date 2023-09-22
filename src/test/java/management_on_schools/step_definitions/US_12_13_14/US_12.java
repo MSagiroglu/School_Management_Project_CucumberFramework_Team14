@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import static io.restassured.RestAssured.given;
 import static management_on_schools.base_url.ManagementOnSchool.spec;
+import static management_on_schools.base_url.ManagementOnSchool.spec_vice_dean;
 import static org.junit.Assert.assertEquals;
 
 
@@ -27,16 +28,16 @@ public class US_12 {
 
         ReusableMethods.scroll(us_12Page.selectALessonProgram);
         ReusableMethods.bekle(3);
-       us_12Page.selectALessonProgram.click();
+       ReusableMethods.click(us_12Page.selectALessonProgram);
     }
 
 
     @And("Vice Dean choose teacher")
     public void viceDeanChooseTeacher() {
 
-        ReusableMethods.scroll(us_12Page.chooseTeacherDDM);
-        us_12Page.chooseTeacherDDM.click();
-        us_12Page.chooseTeacherLessonProgramViceDean.click();
+       // ReusableMethods.scroll(us_12Page.chooseTeacherDDM);
+        ReusableMethods.click(us_12Page.chooseTeacherDDM);
+        ReusableMethods.click(us_12Page.chooseTeacherLessonProgramViceDean);
     }
 
 
@@ -48,7 +49,7 @@ public class US_12 {
 
     @Given("ders icin ogretmen secilir")
     public void dersIcinOgretmenSecilir() {
-        spec.pathParams("first", "teachers", "second", "chooseLesson");
+        spec_vice_dean.pathParams("first", "teachers", "second", "chooseLesson");
 
     }
 
@@ -58,7 +59,7 @@ public class US_12 {
         List<Integer> lessonId = new ArrayList<>();
         lessonId.add(lessonIdNum);
         chooseLessonPojo = new ChooseLessonPojo(lessonId,933);
-        response = given(spec).body(chooseLessonPojo).when().post("{first}/{second}");
+        response = given(spec_vice_dean).body(chooseLessonPojo).when().post("{first}/{second}");
         response.prettyPrint();
         chooseLessonResponsePojo = response.as(ChooseLessonResponsePojo.class);
          String message = "Lesson added to Teacher";

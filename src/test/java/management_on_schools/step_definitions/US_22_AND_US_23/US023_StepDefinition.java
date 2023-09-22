@@ -2,14 +2,29 @@ package management_on_schools.step_definitions.US_22_AND_US_23;
 
 import com.github.javafaker.Faker;
 import io.cucumber.java.en.And;
+import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import io.restassured.response.Response;
 import management_on_schools.pages.Home_Page;
 import management_on_schools.pages.MehmetAli22_23.Us_22_23Page;
+import management_on_schools.pojos.MehmetAli22_23.US_22.US22_AddAdminPojo;
+import management_on_schools.pojos.MehmetAli22_23.US_23.US23_AddViceDeanPojo;
+import management_on_schools.pojos.MehmetAli22_23.US_23.US23_ViceDeanResponsepojo;
 import management_on_schools.utilities.ConfigReader;
+import management_on_schools.utilities.JDBCUtils;
 import management_on_schools.utilities.ReusableMethods;
 import org.openqa.selenium.Keys;
 import org.testng.Assert;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import static io.restassured.RestAssured.given;
+import static management_on_schools.base_url.ManagementOnSchool.spec;
+import static org.junit.Assert.assertEquals;
 
 public class US023_StepDefinition {
     Home_Page homePage = new Home_Page();
@@ -332,4 +347,110 @@ public class US023_StepDefinition {
         ReusableMethods.tumSayfaResmi("23","TC07_errorLogin");
         Assert.assertEquals(page.alert.getText(),errorLoginMessage);
     }
+
+    //---------------------- API TESTS -------------------------
+    US23_AddViceDeanPojo expectedData;
+    Response response;
+    US23_ViceDeanResponsepojo actualData;
+    @Given("Vice dean eklemek icin Post request hazirligi yapilir")
+    public void viceDeanEklemekIcinPostRequestHazirligiYapilir() {
+        //https://managementonschools.com/app/vicedean/save
+        //Set the url
+        spec.pathParams("first", "vicedean", "second", "save");
+    }
+
+    @And("Gonderilecek Vice dean bilgileri hazirlanir")
+    public void gonderilecekViceDeanBilgileriHazirlanir() {
+        //Set the expected data
+        expectedData = new US23_AddViceDeanPojo("2002-01-24","izmir","MALE","mehmet ali","Admin123", phoneNumberUs23Tc01, ssnNumberUs23Tc01,"karasu", usernameUs23Tc01);
+        System.out.println(expectedData);
+    }
+
+    @When("Vice dean eklemek icin Post request gonderilir")
+    public void viceDeanEklemekIcinPostRequestGonderilir() {
+        //Send req and get resp
+        response=given(spec).body(expectedData).when().post("{first}/{second}");
+        //Response'u Dogrulama kisminda alacagaiz...(Hata aldigimizda farkli bir Json dondugu icin)
+    }
+
+    @Then("Vice dean Bilgileri dogrulanir")
+    public void viceDeanBilgileriDogrulanir() {
+        //Get response
+        actualData = response.as(US23_ViceDeanResponsepojo.class);
+        //Do assertion
+        assertEquals(200, response.statusCode());
+        assertEquals(expectedData.getBirthDay(), actualData.getObject().getBirthDay());
+        assertEquals(expectedData.getBirthPlace(), actualData.getObject().getBirthPlace());
+        assertEquals(expectedData.getGender(), actualData.getObject().getGender());
+        assertEquals(expectedData.getName(), actualData.getObject().getName());
+        assertEquals(expectedData.getSurname(), actualData.getObject().getSurname());
+        assertEquals(expectedData.getUsername(), actualData.getObject().getUsername());
+        assertEquals(expectedData.getSsn(), actualData.getObject().getSsn());
+        assertEquals(expectedData.getPhoneNumber(), actualData.getObject().getPhoneNumber());
+    }
+
+    @And("Gonderilecek Vice dean bilgilerinde gelecek tarihli date of birth girilir")
+    public void gonderilecekViceDeanBilgilerindeGelecekTarihliDateOfBirthGirilir() {
+        //Set the expected data
+        expectedData = new US23_AddViceDeanPojo("2028-01-24","izmir","MALE","mehmet ali","Admin123", phoneNumberUs23Tc01, ssnNumberUs23Tc01,"karasu", usernameUs23Tc01);
+        System.out.println(expectedData);
+    }
+    @Then("Responsedaki status Kodunun {int} oldugu dogrulanir")
+    public void responsedakiStatusKodununOlduguDogrulanir(int statusCode) {
+        //Do assertion
+        Assert.assertEquals(response.statusCode(),statusCode);
+    }
+
+    @And("Gonderilecek Vice dean bilgilerinde onceden girilmis ssn no girilir")
+    public void gonderilecekViceDeanBilgilerindeOncedenGirilmisSsnNoGirilir() {
+        //Set the expected data
+        expectedData = new US23_AddViceDeanPojo("2002-01-24","izmir","MALE","mehmet ali","Admin123", phoneNumberUs23Tc01, "555-22-9999","karasu", usernameUs23Tc01);
+        System.out.println(expectedData);
+    }
+
+    //-------------------------- DATABASE TESTS ----------------------------
+
+    Connection connection;
+    Statement statement;
+    ResultSet resultSet;
+
+    @Given("connect to database")
+    public void connectToDatabase() {
+        connection = JDBCUtils.connectToDatabase();
+    }
+
+    @When("username {string} ile vice deani getir")
+    public void usernameIleViceDeaniGetir(String username) throws SQLException {
+        statement =connection.createStatement(); //Statement olusturuldu
+
+        String query = "select * from vice_dean where username = '"+usernameUs23Tc01+"'"; //Vice deani cagiran sorgumuz
+        resultSet =  statement.executeQuery(query);
+
+
+    }
+
+    @Then("vice dean bodynin bunlari icerdigini dogrula birthday {string}, birthplace {string}, gender {string}, name {string}, phoneNumber{string}, ssn{string}, surname{string}, username {string}")
+    public void viceDeanBodyninBunlariIcerdiginiDogrulaBirthdayBirthplaceGenderNamePhoneNubmerSsnSurnameUsername(String birthday, String birthplace, String gender, String name, String phoneNumber, String ssn, String surname, String username) throws SQLException {
+        resultSet.next(); //Sorgumuzun oldugu kisma gelmesi icin 1 alt satira indiriyoruz next() ile
+
+        //Gercek degerlerimizi dogrulama oncesinde String variable'lara ekliyoruz
+        String actualBirthDay = resultSet.getString("birth_day");
+        String actualBirthPlace = resultSet.getString("birth_place");
+        String actualGender = resultSet.getString("gender");
+        String actualName = resultSet.getString("name");
+        String actualPhoneNumber = resultSet.getString("phone_number");
+        String actualSsn = resultSet.getString("ssn");
+        String actualSurname = resultSet.getString("surname");
+
+
+        assertEquals(birthday,actualBirthDay);
+        assertEquals(birthplace,actualBirthPlace);
+        assertEquals(gender,actualGender);
+        assertEquals(name,actualName);
+        assertEquals(phoneNumberUs23Tc01,actualPhoneNumber);
+        assertEquals(ssnNumberUs23Tc01,actualSsn);
+        assertEquals(surname,actualSurname);
+    }
+
+
 }

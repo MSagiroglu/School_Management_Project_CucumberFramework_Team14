@@ -1,3 +1,5 @@
+
+@UI
 Feature: US_14_Ogretmen_Guncelleme
 
   Background:
@@ -5,6 +7,7 @@ Feature: US_14_Ogretmen_Guncelleme
     And click to "menu"
     And click to "teacherManagementMenu"
 
+  @US14TC01
   Scenario: tc01_Name_PhoneNumber_SSN_UserName_Goruntulenmeli
 
     And go to "tableUp" page
@@ -18,7 +21,7 @@ Feature: US_14_Ogretmen_Guncelleme
     And confirm "userName"
     And quit driver
 
-
+  @US14TC02
     Scenario: tc02_Teacher_Update
       And click to "editButton"
       And choose a lesson
