@@ -9,6 +9,7 @@ import management_on_schools.pojos.Yekta_US24_25.US25.US25StudentResponsePojo;
 
 import static io.restassured.RestAssured.given;
 import static management_on_schools.base_url.ManagementOnSchool.spec;
+import static management_on_schools.step_definitions.US_24_25.US25.nameYS;
 import static org.junit.Assert.assertEquals;
 
 public class US25API {
@@ -16,7 +17,7 @@ public class US25API {
     static US25StudentResponsePojo actualData;
     Response response;
     static Faker faker = new Faker();
-    static String nameApiS=faker.name().firstName();
+    static String nameApiS=nameYS;
     static String surnameApiS=faker.name().lastName();
     static String apiBirthdayS="1953-01-01";
     static String birthPlaceS =nameApiS +"istan";
