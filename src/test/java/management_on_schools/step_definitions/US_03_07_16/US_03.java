@@ -25,8 +25,8 @@ import static management_on_schools.base_url.ManagementOnSchool.spec;
 import static org.testng.Assert.assertEquals;
 
 public class US_03 {
-    Home_Page homePage=new Home_Page();
-    ManagementonSchool ManagementonSchool=new ManagementonSchool();
+    Home_Page homePage = new Home_Page();
+    ManagementonSchool ManagementonSchool = new ManagementonSchool();
 
 
     @Given("kullanici Managementon School sayfasina gider")
@@ -38,15 +38,16 @@ public class US_03 {
     public void kullaniciContactIkonunaTiklar() {
         homePage.contactButton.click();
         Actions actions = new Actions(Driver.getDriver());
-        actions.scrollByAmount(1,400);
+        actions.scrollByAmount(1, 400);
         actions.perform();
 
     }
+
     @And("kullanici Name Email Subject Message kutusuna gecerli verileri girer ve Send ikonuna tiklar")
     public void kullaniciNameEmailSubjectMessageKutusunaGecerliVerileriGirerVeSendIkonunaTiklar() {
         homePage.contactNameField.sendKeys(ConfigReader.getProperty("Name"), Keys.TAB,
-                ConfigReader.getProperty("Email"),Keys.TAB,ConfigReader.getProperty("Subject"),
-                Keys.TAB, ConfigReader.getProperty("Message"),Keys.TAB,Keys.ENTER);
+                ConfigReader.getProperty("Email"), Keys.TAB, ConfigReader.getProperty("Subject"),
+                Keys.TAB, ConfigReader.getProperty("Message"), Keys.TAB, Keys.ENTER);
 
     }
 
@@ -58,8 +59,8 @@ public class US_03 {
     @And("kullanici Email Subject Message kutusuna gecerli verileri girer ve Send ikonuna tiklar")
     public void kullaniciEmailSubjectMessageKutusunaGecerliVerileriGirerVeSendIkonunaTiklar() {
         ManagementonSchool.eMail.sendKeys(ConfigReader.getProperty("Email"), Keys.TAB,
-                ConfigReader.getProperty("Subject"),Keys.TAB,ConfigReader.getProperty("Message"),
-                Keys.TAB,Keys.ENTER);
+                ConfigReader.getProperty("Subject"), Keys.TAB, ConfigReader.getProperty("Message"),
+                Keys.TAB, Keys.ENTER);
         ReusableMethods.bekle(2);
     }
 
@@ -71,8 +72,8 @@ public class US_03 {
     @And("kullanici Name Gecersiz Email Subject Message kutusuna gecerli verileri girer ve Send ikonuna tiklar")
     public void kullaniciNameGecersizEmailSubjectMessageKutusunaGecerliVerileriGirerVeSendIkonunaTiklar() {
         homePage.contactNameField.sendKeys(ConfigReader.getProperty("Name"), Keys.TAB,
-                ConfigReader.getProperty("invalidMail"),Keys.TAB,ConfigReader.getProperty("Subject"),
-                Keys.TAB, ConfigReader.getProperty("Message"),Keys.TAB,Keys.ENTER);
+                ConfigReader.getProperty("invalidMail"), Keys.TAB, ConfigReader.getProperty("Subject"),
+                Keys.TAB, ConfigReader.getProperty("Message"), Keys.TAB, Keys.ENTER);
         ReusableMethods.bekle(2);
     }
 
@@ -81,34 +82,33 @@ public class US_03 {
         Assert.assertTrue(ManagementonSchool.alertEmail.isDisplayed());
     }
 
-    @And("kullanici sayfayi kapatir")
-    public void kullaniciSayfayiKapatir() {
-        Driver.closeDriver();
-    }
-//*************** API *************************
-MesajPostPojo expectedData;
+
+
+    //*************** API *************************
+    MesajPostPojo expectedData;
     Response response;
     ResponsePojo actualData;
+
     @Given("Mesaj gondermek icin Post request hazirligi yapilir")
     public void mesajGondermekIcinPostRequestHazirligiYapilir() {
-       // https://managementonschools.com/app/contactMessages/save
+        // https://managementonschools.com/app/contactMessages/save
         //Set the URL
-        spec.pathParams("first","contactMessages","second","save");
+        spec.pathParams("first", "contactMessages", "second", "save");
     }
 
     @And("Gonderilecek mesaj bilgileri hazırlanır")
     public void gonderilecekMesajBilgileriHazırlanır() {
         //Set the expected data
-        expectedData=new MesajPostPojo
-                ("semamalkoc01@gmail.com", "Ders_Saati_10'da_mi?", "Sema ", "Ders_Saati"  );
+        expectedData = new MesajPostPojo
+                ("semamalkoc01@gmail.com", "Ders_Saati_10'da_mi?", "Sema ", "Ders_Saati");
 
     }
 
     @When("Mesaj eklemek icin Post request gonderilir")
     public void mesajEklemekIcinPostRequestGonderilir() {
         //Send the request and get the response
-        response=given(spec).body(expectedData).when().post("{first}/{second}");
-        actualData=response.as(ResponsePojo.class);
+        response = given(spec).body(expectedData).when().post("{first}/{second}");
+        actualData = response.as(ResponsePojo.class);
 
 
     }
@@ -116,51 +116,56 @@ MesajPostPojo expectedData;
     @Then("Mesaj Bilgileri dogrulanir")
     public void mesajBilgileriDogrulanir() {
         //Do assertion
-        assertEquals(200,response.statusCode());
-        assertEquals(expectedData.getSubject(),actualData.getObject().getSubject());
-        assertEquals(expectedData.getEmail(),actualData.getObject().getEmail());
-        assertEquals(expectedData.getName(),actualData.getObject().getName());
-        assertEquals(expectedData.getMessage(),actualData.getObject().getMessage());
-        ReusableMethods.tumSayfaResmi("03","mesaj_bilgileri_doğrulandı");
+        assertEquals(200, response.statusCode());
+        assertEquals(expectedData.getSubject(), actualData.getObject().getSubject());
+        assertEquals(expectedData.getEmail(), actualData.getObject().getEmail());
+        assertEquals(expectedData.getName(), actualData.getObject().getName());
+        assertEquals(expectedData.getMessage(), actualData.getObject().getMessage());
+        ReusableMethods.tumSayfaResmi("03", "mesaj_bilgileri_doğrulandı");
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    @Given("AMesaj gondermek icin Post request hazirligi yapilir")
+    public void amesajGondermekIcinPostRequestHazirligiYapilir() {
+       spec.pathParams ("first", "contactMessages", "second", "save");
+    }
+    MesajPostPojo expNegData;
+    @And("AGonderilecek mesaj bilgileri hazırlanır")
+    public void agonderilecekMesajBilgileriHazırlanır() {
+        expNegData=new MesajPostPojo("semamalkoc01@gmail.com","Ders_Saati_10'da_mi?","Ders_Saati");
+    }
 
     @When("AMesaj eklemek icin Post request gonderilir")
     public void amesajEklemekIcinPostRequestGonderilir() {
-        //Send the request and get the response//Send the request and get the response
-        response=given(spec).body(expectedData).when().post("{first}/{second}");
+        response = given(spec).body(expNegData).when().post("{first}/{second}");
         ResponsenegativePojo actNegData=response.as(ResponsenegativePojo.class);
 
     }
 
-    @And("AGonderilecek mesaj bilgileri hazırlanır")
-    public void agonderilecekMesajBilgileriHazırlanır() {
-        expectedData= new MesajPostPojo("semamalkoc01@gmail.com", "Ders_Saati_10'da_mi?", "Ders_Saati" );
-    }
-
-    @Given("AMesaj gondermek icin Post request hazirligi yapilir")
-    public void amesajGondermekIcinPostRequestHazirligiYapilir() {
-
+    @Then("{string} dogrulanir")
+    public void dogrulanir(String arg0) {
+        //Do assertion
+        assertEquals(400, response.statusCode());
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

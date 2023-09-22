@@ -16,7 +16,7 @@ public class ValidationsPojo implements Serializable {
 	@Override
  	public String toString(){
 		return 
-			"ValidationsPojo{" + 
+			"US24ValidationsPojo{" +
 			"name = '" + name + '\'' + 
 			"}";
 		}
