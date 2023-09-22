@@ -1,26 +1,26 @@
-package management_on_schools.pojos.Yekta_US24_25.US24;
+package management_on_schools.pojos.Sema03_07_16.US_03;
 
 import java.io.Serializable;
 
-public class US24TeacherResponsePojo implements Serializable {
-	private US24ObjectPojo object;
+public class ResponsePojo implements Serializable {
+	private ObjectPojo object;
 	private String message;
 	private String httpStatus;
 
-	public US24TeacherResponsePojo() {
+	public ResponsePojo() {
 	}
 
-	public US24TeacherResponsePojo(US24ObjectPojo object, String message, String httpStatus) {
+	public ResponsePojo(ObjectPojo object, String message, String httpStatus) {
 		this.object = object;
 		this.message = message;
 		this.httpStatus = httpStatus;
 	}
 
-	public void setObject(US24ObjectPojo object){
+	public void setObject(ObjectPojo object){
 		this.object = object;
 	}
 
-	public US24ObjectPojo getObject(){
+	public ObjectPojo getObject(){
 		return object;
 	}
 
@@ -43,7 +43,7 @@ public class US24TeacherResponsePojo implements Serializable {
 	@Override
  	public String toString(){
 		return 
-			"US24TeacherResponsePojo{" + 
+			"ResponsePojo{" + 
 			"object = '" + object + '\'' + 
 			",message = '" + message + '\'' + 
 			",httpStatus = '" + httpStatus + '\'' + 

@@ -7,8 +7,9 @@ Feature: Admin tarafindan student eklenebilme testi
     When Student eklemek icin Post request gonderilir
     Then Kaydedilen student'a ait bilgiler dogrulanir
 
-  @Us25Tc02Api
-  Scenario: TC02 Advisor Teacher seçmeden kayıt olunmamalı
+  @admin @US25APINegatif
+  Scenario: Advisor Teacher seçimi yapılmadan öğrenci ekleyememe
     Given Student eklemek için post request hazirligi yapilir
-    And Student kaydı yapılırken advisor teacher seçimi yapılmaz
-    Then  Response body'de alacağımız status kodunun 404 oldugu dogrulanir
+    And Advisor Teacher seçimi yapılmadan öğrenci bilgileri hazırlanır
+    When Öğrenci eklemek icin Post request gonderilir
+    Then Status kodunun 400 olduğu doğrulaması yapılır

@@ -16,5 +16,8 @@ Feature: US_01 Guest User (Post Request) Ekleme API Testleri
     And Gonderilecek Guest User "name" olmadan bilgileri hazırlanır
     When Guest User eklemek icin "name" olmadan Post request gonderilir
     Then Guest User "name" girmeden Post Response Bilgilerinin getirilemedigi dogrulanir
+
+
     When Guest User Database bilgileri icin baglantı kurulur.
     Then Guest User bilgilerinin database icinde olup olmadigi dogrulanir.
+

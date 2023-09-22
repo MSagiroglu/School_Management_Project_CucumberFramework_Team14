@@ -1,4 +1,4 @@
-package management_on_schools.pojos.US_03;
+package management_on_schools.pojos.Sema03_07_16.US_03;
 
 import java.io.Serializable;
 
@@ -15,6 +15,12 @@ public class MesajPostPojo implements Serializable {
 		this.email = email;
 		this.message = message;
 		this.name = name;
+		this.subject = subject;
+	}
+
+	public MesajPostPojo(String email, String message, String subject) {
+		this.email = email;
+		this.message = message;
 		this.subject = subject;
 	}
 

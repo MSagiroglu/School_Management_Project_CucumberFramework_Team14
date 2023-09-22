@@ -1,26 +1,28 @@
-package management_on_schools.pojos.US_03;
+package management_on_schools.pojos.Yekta_US24_25.US24.PositiveScenarios;
+
+import management_on_schools.pojos.Yekta_US24_25.US24.PositiveScenarios.US24ObjectPojo;
 
 import java.io.Serializable;
 
-public class ResponsePojo implements Serializable {
-	private ObjectPojo object;
+public class US24TeacherResponsePojo implements Serializable {
+	private US24ObjectPojo object;
 	private String message;
 	private String httpStatus;
 
-	public ResponsePojo() {
+	public US24TeacherResponsePojo() {
 	}
 
-	public ResponsePojo(ObjectPojo object, String message, String httpStatus) {
+	public US24TeacherResponsePojo(US24ObjectPojo object, String message, String httpStatus) {
 		this.object = object;
 		this.message = message;
 		this.httpStatus = httpStatus;
 	}
 
-	public void setObject(ObjectPojo object){
+	public void setObject(US24ObjectPojo object){
 		this.object = object;
 	}
 
-	public ObjectPojo getObject(){
+	public US24ObjectPojo getObject(){
 		return object;
 	}
 
@@ -43,7 +45,7 @@ public class ResponsePojo implements Serializable {
 	@Override
  	public String toString(){
 		return 
-			"ResponsePojo{" + 
+			"US24TeacherResponsePojo{" + 
 			"object = '" + object + '\'' + 
 			",message = '" + message + '\'' + 
 			",httpStatus = '" + httpStatus + '\'' + 

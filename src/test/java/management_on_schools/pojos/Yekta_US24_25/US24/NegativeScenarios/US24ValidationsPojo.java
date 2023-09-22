@@ -1,4 +1,4 @@
-package management_on_schools.pojos.Yekta_US24_25.US24;
+package management_on_schools.pojos.Yekta_US24_25.US24.NegativeScenarios;
 
 import java.io.Serializable;
 
