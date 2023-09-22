@@ -22,10 +22,10 @@
   <component name="DBNavigator.Project.DatabaseFileManager">
     <open-files />
   </component>
-  <component name="DBNavigator.Project.ObjectQuickFilterManager">
+    <component name="DBNavigator.Project.ObjectQuickFilterManager">
     <last-used-operator value="EQUAL" />
     <filters />
-  </component>
+    </component>
   <component name="DBNavigator.Project.Settings">
     <connections>
       <connection id="055c0eb6-15de-408b-b8a2-37f2e8c56578" active="true" signed="true">

@@ -3,11 +3,11 @@ package management_on_schools.step_definitions.US_24_25;
 import com.github.javafaker.Faker;
 import io.cucumber.java.en.*;
 import io.restassured.response.Response;
-import management_on_schools.pojos.Yekta_US24_25.US24.US24TeacherPostPOJO;
-import management_on_schools.pojos.Yekta_US24_25.US24.US24TeacherResponsePojo;
+import management_on_schools.pojos.Yekta_US24_25.US24.NegativeScenarios.US24NegativeResponsePojo;
+import management_on_schools.pojos.Yekta_US24_25.US24.PositiveScenarios.US24TeacherPostPOJO;
+import management_on_schools.pojos.Yekta_US24_25.US24.PositiveScenarios.US24TeacherResponsePojo;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static io.restassured.RestAssured.given;
 import static management_on_schools.base_url.ManagementOnSchool.spec;
@@ -23,7 +23,7 @@ public class US24APIa {
     static String apiSurname =faker.name().lastName();
     static String apiphoneNumber = faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(1000, 9999);
     static String apiSsnNumber = faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(10, 99) + "-" + faker.number().numberBetween(1000, 9999);
-    static String apiUserName =faker.name().firstName().toLowerCase()+faker.name().lastName().toUpperCase();
+    static String apiUserName =faker.name().firstName().toLowerCase()+faker.number().numberBetween(1, 50);
     static String apiBirthday="1953-01-01";
     static String apiBirthplace=apiName+"istan";
     static String apiGender="MALE";
@@ -53,7 +53,7 @@ public class US24APIa {
                 apiEmail,
                 apiGender,apiIsAdvisorTeacher,
                 lessonsID.getLessonsIdList(),apiName,apiPassword,apiphoneNumber,apiSsnNumber,
-                apiSurname,apiUserName+"."+"1994"+"apiVersion");
+                apiSurname,apiUserName);
         System.out.println(expectedDataYK);
 
 
@@ -91,7 +91,32 @@ public class US24APIa {
          */
 
     }
+    static US24TeacherPostPOJO getExpectedDataYK1 =new US24TeacherPostPOJO(apiBirthday,apiBirthplace,
+            apiEmail,
+            apiGender,apiIsAdvisorTeacher,
+            null,apiName,apiPassword,apiphoneNumber,apiSsnNumber,
+            apiSurname,apiUserName);
+    US24NegativeResponsePojo us24Negative;
+    @And("Ders seçimi yapılmadan öğretmen bilgileri gönderilir")
+    public void dersSeçimiYapılmadanÖğretmenBilgileriGönderilir() {
+        response = given(spec).body(getExpectedDataYK1).when().post("/{first}/{second}");
+        response.prettyPrint();
+        us24Negative = response.as(US24NegativeResponsePojo.class);
+        assertEquals(400,response.statusCode());
+        assertEquals("Please select lesson",us24Negative.getValidations().getLessonsIdList());
+        System.out.println(response.statusCode());
+        System.out.println(us24Negative.getValidations().getLessonsIdList());
+        System.out.println("Yekta");
+    }
 
+    @When("Öğretmen eklemek icin Post request gonderilir")
+    public void öğretmenEklemekIcinPostRequestGonderilir() {
+        
+    }
+
+    @Then("Status kodunun {int} olduğu doğrulanır.")
+    public void statusKodununOlduğuDoğrulanır(int arg0) {
+    }
 }
 
 

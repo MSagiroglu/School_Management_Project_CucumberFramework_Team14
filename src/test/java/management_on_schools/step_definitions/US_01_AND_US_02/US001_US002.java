@@ -618,6 +618,7 @@ static Connection connection;
 
         if (resultSet.next()==true) {
             actualDatabaseUsername= resultSet.getString("username");
+            System.out.println("actualDatabaseUsername = " + actualDatabaseUsername);
             actualDatabaseName= resultSet.getString("name");
             actualDatabaseSurname= resultSet.getString("surname");
             actualDatabasePhoneNumber= resultSet.getString("phone_number");

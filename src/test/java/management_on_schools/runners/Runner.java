@@ -19,10 +19,12 @@ import org.junit.runner.RunWith;
 
 
 
+
        tags = "@UI and @US14TC01",//-->  and kulansaydık her iki tag'a sahip olan Scenario yu çalıştırır.
 
 
         //-->  and kulansaydık her iki tag'a sahip olan Scenario yu çalıştırır.
+
 
 
 
