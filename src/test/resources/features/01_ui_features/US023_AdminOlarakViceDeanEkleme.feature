@@ -1,4 +1,4 @@
-@Us23
+@UI @Us23
   Feature: US23 Admin Vice Dean Ekleyebilmeli
     @Us23Tc01
     Scenario: TC01 Admin ile Vice Dean Ekleme
