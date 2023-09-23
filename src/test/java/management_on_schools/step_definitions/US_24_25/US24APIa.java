@@ -6,7 +6,12 @@ import io.restassured.response.Response;
 import management_on_schools.pojos.Yekta_US24_25.US24.NegativeScenarios.US24NegativeResponsePojo;
 import management_on_schools.pojos.Yekta_US24_25.US24.PositiveScenarios.US24TeacherPostPOJO;
 import management_on_schools.pojos.Yekta_US24_25.US24.PositiveScenarios.US24TeacherResponsePojo;
+import management_on_schools.utilities.JDBCUtils;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import static io.restassured.RestAssured.given;
@@ -116,6 +121,22 @@ public class US24APIa {
 
     @Then("Status kodunun {int} olduğu doğrulanır.")
     public void statusKodununOlduğuDoğrulanır(int arg0) {
+    }
+
+
+    static Connection connection;
+    @When("Admin Database bilgileri icin baglantı kurulur.")
+    public void adminDatabaseBilgileriIcinBaglantıKurulur() throws SQLException {
+
+        connection= JDBCUtils.connectToDatabase();
+    }
+    static Statement statement;
+    static ResultSet resultSet;
+    @Then("Admin bilgilerinin database icinde olup olmadigi dogrulanir.")
+    public void adminBilgilerininDatabaseIcindeOlupOlmadigiDogrulanir() throws SQLException {
+        statement =connection.createStatement();
+
+
     }
 }
 
