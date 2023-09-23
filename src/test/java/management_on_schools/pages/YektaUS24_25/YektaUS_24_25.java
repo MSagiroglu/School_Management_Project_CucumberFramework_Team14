@@ -65,6 +65,8 @@ public class YektaUS_24_25 {
     public WebElement studentMessage;
     @FindBy(xpath = "//select[@id='advisorTeacherId']")
     public WebElement studentAdvisorTeacher;
+    @FindBy(xpath = "//div[@role ='alert']")
+    public WebElement studentError;
 
 
 
