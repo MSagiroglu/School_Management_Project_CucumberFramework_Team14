@@ -1,6 +1,6 @@
 @viceDean
 Feature: US09 Api Testi
-  @Us09Tc01Api
+  @Us09Tc01Api @viceDean
   Scenario: TC01 Vice Dean ders olusturabilmelidir.
     Given  kulanici api icin base url olusturur
     And kullanici expected data yi olusturur
