@@ -94,7 +94,6 @@ public class US_07_16 {
                 queryParams("size","10000");
 
         response =given(spec).when().get("{first}/{second}");
-
     }
 
     @Given("Database e baglan")
@@ -102,19 +101,13 @@ public class US_07_16 {
         connection=DriverManager.getConnection("jdbc:postgresql://managementonschools.com:5432/school_management","select_user","43w5ijfso")  ;
     }
 
-
     @When("name ile kayitli mesajlari al {string}")
     public void nameIleKayitliMesajlariAl(String name) throws SQLException {
         statement=connection.createStatement();
        String query=("Select * from contact_message where email='semamalkoc01@gmail.com'");
        resultSet=statement.executeQuery(query);
        resultSet.next();
-
-
-
     }
-
-
 
     @Then("ABody dogrulama : name={string},email={string},subject={string},message={string},date={string}")
     public void abodyDogrulamaNameEmailSubjectMessageDate(String Name, String arg1, String arg2, String arg3, String arg4) throws SQLException {

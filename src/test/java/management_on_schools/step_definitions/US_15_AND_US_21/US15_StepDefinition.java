@@ -5,9 +5,12 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import io.restassured.response.Response;
 import management_on_schools.pages.Home_Page;
 
 import management_on_schools.pages.Suleyman_US15_21.US_15Page;
+import management_on_schools.pojos.Suleyman15_21.US15.OgrenciPostPojo;
+import management_on_schools.pojos.Suleyman15_21.US15.ResponsePojo;
 import management_on_schools.utilities.ConfigReader;
 import management_on_schools.utilities.Driver;
 import management_on_schools.utilities.ReusableMethods;
@@ -17,9 +20,23 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 
+import java.sql.*;
+
+import static io.restassured.RestAssured.given;
+import static management_on_schools.base_url.ManagementOnSchool.spec;
+import static org.junit.Assert.assertEquals;
+
 public class US15_StepDefinition {
+
+    OgrenciPostPojo expectedData;
+    ResponsePojo actualData;
+    Response response;
+    Connection connection;
+
+    ResultSet resultSet;
+    Statement statement;
     Home_Page home_page = new Home_Page();
-    US_15Page us_15Page=new US_15Page();
+    US_15Page us_15Page = new US_15Page();
     Actions actions = new Actions(Driver.getDriver());
     JavascriptExecutor js = (JavascriptExecutor) Driver.getDriver();
     static Faker faker = new Faker();
@@ -860,6 +877,85 @@ public class US15_StepDefinition {
         js.executeScript("arguments[0].click()", us_15Page.stdUs15LogoutYesButton);
         ReusableMethods.bekle(1);
     }
+
+    //*============================================== API ==============================================*\\
+
+    @Given("Ogrenci eklemek icin Post request hazirligi yapilir")
+    public void ogrenci_eklemek_icin_post_request_hazirligi_yapilir() {
+        //https://managementonschools.com/app/students/save
+        //Set the Url
+        spec.pathParams("first", "students", "second", "save");
+    }
+
+    @Given("Gonderilecek ogrenci bilgileri hazirlanir")
+    public void gonderilecek_ogrenci_bilgileri_hazirlanir() {
+        //set the expected data
+        expectedData = new OgrenciPostPojo(32, "1975-11-11", "USSR",
+                email,
+                "Anton", "MALE", "Mariya", "Ilya", "Izmir.*35",
+                phone, ssn, "Repin", userName);
+        System.out.println(expectedData);
+    }
+
+    @When("Ogrenci eklemek icin Post request gonderilir")
+    public void ogrenci_eklemek_icin_post_request_gonderilir() {
+        //Send the request and get the response
+        response = given(spec).body(expectedData).when().post("{first}/{second}");
+        response.prettyPrint();
+        actualData = response.as(ResponsePojo.class);
+    }
+
+    @Then("Ogrenci bilgileri dogrulanir")
+    public void ogrenci_bilgileri_dogrulanir() {
+        //Do assertion
+        assertEquals(200, response.statusCode());
+        assertEquals(expectedData.getUsername(), actualData.getObject().getUsername());
+        assertEquals(expectedData.getSsn(), actualData.getObject().getSsn());
+        assertEquals(expectedData.getName(), actualData.getObject().getName());
+        assertEquals(expectedData.getSurname(), actualData.getObject().getSurname());
+        assertEquals(expectedData.getBirthDay(), actualData.getObject().getBirthDay());
+        assertEquals(expectedData.getBirthPlace(), actualData.getObject().getBirthPlace());
+        assertEquals(expectedData.getPhoneNumber(), actualData.getObject().getPhoneNumber());
+        assertEquals(expectedData.getGender(), actualData.getObject().getGender());
+        assertEquals(expectedData.getMotherName(), actualData.getObject().getMotherName());
+        assertEquals(expectedData.getFatherName(), actualData.getObject().getFatherName());
+        assertEquals(expectedData.getAdvisorTeacherId(), actualData.getObject().getAdvisorTeacherId());
+        assertEquals(expectedData.getEmail(), actualData.getObject().getEmail());
+    }
+
+    //*============================================== DT ==============================================*\\
+
+    @Given("ogrenci kaydi icn DataBase baglan")
+    public void ogrenciKaydiIcnDataBaseBaglan() throws SQLException {
+        connection = DriverManager.getConnection("jdbc:postgresql://managementonschools.com:5432/school_management", "select_user", "43w5ijfso");
+    }
+
+    @When("username {string} ile ogrenci bilglerini getir")
+    public void usernameIleOgrenciBilgleriniGetir(String userName) throws SQLException {
+        statement = connection.createStatement();
+        String query = "select * from students where username = '" + userName + "'";
+        resultSet = statement.executeQuery(query);
+        resultSet.next();
+    }
+
+    @Then("bodynin ilgili bilgileri icerdigini dogrula: name {string}, surname {string}, birthplace {string}, email {string}, phone {string}, gender {string}, dateofbirth {string}, ssn {string}, username {string}, fathername {string}, mothername {string}, password {string}")
+    public void bodyninIlgiliBilgileriIcerdiginiDogrulaNameSurnameBirthplaceEmailPhoneGenderDateofbirthSsnUsernameFathernameMothernamePassword(String name, String surName, String birthPlace, String email, String phone, String gender, String dateOfBirth, String ssn, String userName, String fatherName, String motherName, String password3) throws SQLException {
+        resultSet.next();
+        String actualName = resultSet.getString("name");
+        String actualSurname = resultSet.getString("surname");
+        String actualBirthPlace = resultSet.getString("birth_place");
+        String actualPhone = resultSet.getString("phone_number");
+        String actualSsn = resultSet.getString("ssn");
+
+        assertEquals(name, actualName);
+        assertEquals(surName, actualSurname);
+        assertEquals(birthPlace, actualBirthPlace);
+        assertEquals(phone, actualPhone);
+        assertEquals(ssn, actualSsn);
+
+
+    }
+
 
 }
 
