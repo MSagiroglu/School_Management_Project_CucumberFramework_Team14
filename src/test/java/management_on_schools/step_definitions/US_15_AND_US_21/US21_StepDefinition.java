@@ -1,10 +1,14 @@
 package management_on_schools.step_definitions.US_15_AND_US_21;
 
 import com.github.javafaker.Faker;
+import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import io.restassured.response.Response;
 import management_on_schools.pages.Home_Page;
 import management_on_schools.pages.Suleyman_US15_21.US_21Page;
+import management_on_schools.pojos.Suleyman15_21.US21.LessonPostPojo;
+import management_on_schools.pojos.Suleyman15_21.US21.ResponsePojo;
 import management_on_schools.utilities.ConfigReader;
 import management_on_schools.utilities.Driver;
 import management_on_schools.utilities.ReusableMethods;
@@ -13,9 +17,19 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.interactions.Actions;
 
+import java.util.Collections;
+
+import static io.restassured.RestAssured.given;
+import static management_on_schools.base_url.ManagementOnSchool.spec;
+import static org.junit.Assert.assertEquals;
+
 public class US21_StepDefinition {
+
+    LessonPostPojo expectedData;
+    ResponsePojo actualData;
+    Response response;
     Home_Page home_page = new Home_Page();
-    US_21Page us_21Page=new US_21Page();
+    US_21Page us_21Page = new US_21Page();
     Actions actions = new Actions(Driver.getDriver());
     Faker faker = new Faker();
     JavascriptExecutor js = (JavascriptExecutor) Driver.getDriver();
@@ -97,4 +111,34 @@ public class US21_StepDefinition {
         js.executeScript("arguments[0].click()", us_21Page.stdUs21LogoutYesButton);
         ReusableMethods.bekle(2);
     }
+
+    //==================================== API ==============================================\\
+
+    @Given("Ders eklemek icin Post request hazirligi yapilir")
+    public void ders_eklemek_icin_post_request_hazirligi_yapilir() {
+        //https://managementonschools.com/app/students/chooseLesson
+        //Set the Url
+        spec.pathParams("first", "students", "second", "chooseLesson");
+    }
+
+    @Given("Gonderilecek ders bilgileri hazirlanir")
+    public void gonderilecek_ders_bilgileri_hazirlanir() {
+        //set the expected data
+        expectedData = new LessonPostPojo(Collections.singletonList("384"));
+        System.out.println(expectedData);
+    }
+
+    @When("Ders eklemek icin Post request gonderilir")
+    public void ders_eklemek_icin_post_request_gonderilir() {
+        //Send the request and get the response
+        response = given(spec).body(expectedData).when().post("{first}/{second}");
+        response.prettyPrint();
+        actualData = response.as(ResponsePojo.class);
+    }
+
+    @Then("Ders bilgileri dogrulanir")
+    public void ders_bilgileri_dogrulanir() {
+        assertEquals(200, response.statusCode());
+    }
+
 }
