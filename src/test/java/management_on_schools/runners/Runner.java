@@ -15,7 +15,7 @@ import org.junit.runner.RunWith;
         features = "src/test/resources/features",
         glue = {"management_on_schools/step_definitions"},
 
-        tags = "@E2E",//-->  and kulansaydık her iki tag'a sahip olan Scenario yu çalıştırır.
+        tags = "@E2E_US22_23",//-->  and kulansaydık her iki tag'a sahip olan Scenario yu çalıştırır.
 
 
 
