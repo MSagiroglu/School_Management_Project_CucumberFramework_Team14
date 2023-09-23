@@ -3,6 +3,17 @@ package management_on_schools.pojos.MustafaS01_02.US_01.negative_post_response;
 import java.io.Serializable;
 
 public class NegativePostResponsePojo implements Serializable {
+	public NegativePostResponsePojo() {
+	}
+
+	public NegativePostResponsePojo(String message, int statusCode, String path, long timeStamp, ValidationsPojo validations) {
+		this.message = message;
+		this.statusCode = statusCode;
+		this.path = path;
+		this.timeStamp = timeStamp;
+		this.validations = validations;
+	}
+
 	private String message;
 	private int statusCode;
 	private String path;

@@ -1,3 +1,4 @@
+@UI
 Feature: Admin sisteme Student ekleyebilmeli
   @US_25_PS
   Scenario: TC_01 Admin sisteme student kaydedebilmelidir

@@ -36,6 +36,7 @@ import static org.junit.Assert.assertEquals;
 
 
 public class US001_US002 {
+    //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
     Home_Page homePage = new Home_Page();
     US_01Page us01Page = new US_01Page();
     US_02Page us02Page = new US_02Page();
@@ -545,7 +546,6 @@ public class US001_US002 {
             assertEquals("Validation failed for object='guestUserRequest'. Error count: 1", actualNegativePostResponse.getMessage());
             assertEquals("Please enter your name", actualNegativePostResponse.getValidations().getName());
             System.out.println("doğrulama yapıldı");
-
         }
     }
 
@@ -634,7 +634,7 @@ static Connection connection;
             Assert.assertEquals(actualData.getObject().getBirthPlace(), actualDatabaseBirthPlace);
             System.out.println("Database bilgileri dogrulandı.");
         } else {
-            System.out.println("Database bilgileri dogrulamadı.");
+            System.out.println("Database bilgileri dogrulanmadı.");
         }
 
 

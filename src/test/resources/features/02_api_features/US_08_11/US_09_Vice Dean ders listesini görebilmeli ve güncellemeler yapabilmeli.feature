@@ -1,3 +1,4 @@
+@viceDean
 Feature: US09 Api Testi
   @Us09Tc01Api @viceDean
   Scenario: TC01 Vice Dean ders olusturabilmelidir.

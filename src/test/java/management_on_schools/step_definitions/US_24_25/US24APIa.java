@@ -6,12 +6,18 @@ import io.restassured.response.Response;
 import management_on_schools.pojos.Yekta_US24_25.US24.NegativeScenarios.US24NegativeResponsePojo;
 import management_on_schools.pojos.Yekta_US24_25.US24.PositiveScenarios.US24TeacherPostPOJO;
 import management_on_schools.pojos.Yekta_US24_25.US24.PositiveScenarios.US24TeacherResponsePojo;
+import management_on_schools.utilities.JDBCUtils;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import static io.restassured.RestAssured.given;
 import static management_on_schools.base_url.ManagementOnSchool.spec;
 
+import static management_on_schools.step_definitions.US_24_25.US24.*;
 import static org.junit.Assert.assertEquals;
 
 public class US24APIa {
@@ -19,23 +25,24 @@ public class US24APIa {
     static US24TeacherResponsePojo actualDataYK;
     Response response;
     static Faker faker = new Faker();
-    static String apiName=faker.name().firstName();
-    static String apiSurname =faker.name().lastName();
-    static String apiphoneNumber = faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(1000, 9999);
-    static String apiSsnNumber = faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(10, 99) + "-" + faker.number().numberBetween(1000, 9999);
-    static String apiUserName =faker.name().firstName().toLowerCase()+faker.number().numberBetween(1, 50);
+    static String apiName=nameY;
+    static String apiSurname =surnameY;
+    static String apiphoneNumber = phoneNumberY;
+    static String apiSsnNumber = ssnNumberY;
+    static String apiUserName =userNameY;
     static String apiBirthday="1953-01-01";
-    static String apiBirthplace=apiName+"istan";
+    static String apiBirthplace=birthplaceY;
     static String apiGender="MALE";
     static String apiIsAdvisorTeacher ="true";
-    static String apiEmail=apiName + apiSurname + "@gmail.com";
-    static String apiPassword=apiName+apiSurname.toUpperCase()+"1994";
+    static String apiEmail=email;
+    static String apiPassword=passwordY;
 
 
     @Given("Teacher eklemek için post request hazirligi yapilir")
     public void teacher_eklemek_için_post_request_hazirligi_yapilir() {
         //https://managementonschools.com/app/teachers/save swagger dökümanı
         spec.pathParams("first","teachers","second","save");
+
 
     }
     @Given("Gonderilecek teacher bilgileri hazirlanir")
@@ -66,6 +73,8 @@ public class US24APIa {
         actualDataYK=response.as(US24TeacherResponsePojo.class);
 
     }
+
+
     @Then("Kaydedilen teacher'a ait bilgiler dogrulanir")
     public void kaydedilen_teacher_a_ait_bilgiler_dogrulanir() {
         //Do the assertion
@@ -117,6 +126,42 @@ public class US24APIa {
     @Then("Status kodunun {int} olduğu doğrulanır.")
     public void statusKodununOlduğuDoğrulanır(int arg0) {
     }
-}
 
+
+    static Connection connection;
+    @When("Admin Database bilgileri icin baglantı kurulur.")
+    public void adminDatabaseBilgileriIcinBaglantıKurulur() throws SQLException {
+
+        connection= JDBCUtils.connectToDatabase();
+    }
+
+    static String dataBaseUsername;
+    static String dataBaseName;
+    static String databaseSurname;
+    static String databasePhoneNumber;
+    static String dataBaseSsn;
+
+    static Statement statement;
+    static ResultSet resultSet;
+    @Then("Admin bilgilerinin database icinde olup olmadigi dogrulanir.")
+    public void adminBilgilerininDatabaseIcindeOlupOlmadigiDogrulanir() throws SQLException {
+        statement =connection.createStatement();
+        resultSet= JDBCUtils.executeQuery("select * from teacher where username = '" + apiUserName  + "'");
+        resultSet.next();
+        databaseSurname=resultSet.getString("surname");
+        databasePhoneNumber=resultSet.getString("phone_number");
+        dataBaseName=resultSet.getString("name");
+        dataBaseSsn =resultSet.getString("ssn");
+
+        assertEquals(actualDataYK.getObject().getPhoneNumber(), databasePhoneNumber);
+        assertEquals(actualDataYK.getObject().getName(),dataBaseName);
+        assertEquals(actualDataYK.getObject().getSurname(),databaseSurname);
+        assertEquals(actualDataYK.getObject().getSsn(),dataBaseSsn);
+        System.out.println(dataBaseName);
+        System.out.println(databaseSurname);
+        System.out.println(databasePhoneNumber);
+        System.out.println(dataBaseSsn);
+
+    }
+}
 

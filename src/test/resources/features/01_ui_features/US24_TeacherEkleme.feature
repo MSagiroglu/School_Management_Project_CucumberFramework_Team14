@@ -1,3 +1,4 @@
+@UI
 Feature: US24 Teacher Ekleme
   @Us24TC01
   Scenario: TC01 Teacher Ekleme
