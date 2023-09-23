@@ -58,8 +58,11 @@ public class US022_StepDefinition {
         page.passwordAlani.sendKeys(Keys.chord(Keys.CONTROL,"a", Keys.DELETE));
     }
     static String usernameUs22Tc01 = faker.name().firstName() + faker.number().numberBetween(1, 50);
+    static String usernameUs22Tc01Api = faker.name().firstName() + faker.number().numberBetween(1, 99);
     static String phoneNumberUs22Tc01 = faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(1000, 9999);
+    static String phoneNumberUs22Tc01Api = faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(1000, 9999);
     static String ssnNumberUs22Tc01 = faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(10, 99) + "-" + faker.number().numberBetween(1000, 9999);
+    static String ssnNumberUs22Tc01Api = faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(10, 99) + "-" + faker.number().numberBetween(1000, 9999);
     static String usernameUs22Tc06 = faker.name().firstName() + faker.number().numberBetween(1, 50);
     static String phoneNumberUs22Tc06 = faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(1000, 9999);
     static String ssnNumberUs22Tc06 = faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(10, 99) + "-" + faker.number().numberBetween(1000, 9999);
@@ -378,7 +381,7 @@ public class US022_StepDefinition {
     @And("Gonderilecek Admin bilgileri hazirlanir")
     public void gonderilecekAdminBilgileriHazirlanir() {
         //Set the expected data
-        expectedData = new US22_AddAdminPojo("2002-01-24","bursa",false,"MALE","mehmet ali","Admin123", phoneNumberUs22Tc01, ssnNumberUs22Tc01,"karasu", usernameUs22Tc01);
+        expectedData = new US22_AddAdminPojo("2002-01-24","bursa",false,"MALE","mehmet ali","Admin123", phoneNumberUs22Tc01Api, ssnNumberUs22Tc01Api,"karasu", usernameUs22Tc01Api);
         System.out.println(expectedData);
     }
 
