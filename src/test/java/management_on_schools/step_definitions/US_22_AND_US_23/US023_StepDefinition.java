@@ -55,8 +55,11 @@ public class US023_StepDefinition {
         page.passwordAlani.sendKeys(Keys.chord(Keys.CONTROL,"a", Keys.DELETE));
     }
     static String usernameUs23Tc01 = faker.name().firstName() + faker.number().numberBetween(1, 99);
+    static String usernameUs23Tc01Api = faker.name().firstName() + faker.number().numberBetween(1, 99);
     static String phoneNumberUs23Tc01 = faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(1000, 9999);
+    static String phoneNumberUs23Tc01Api = faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(1000, 9999);
     static String ssnNumberUs23Tc01 = faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(10, 99) + "-" + faker.number().numberBetween(1000, 9999);
+    static String ssnNumberUs23Tc01Api = faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(10, 99) + "-" + faker.number().numberBetween(1000, 9999);
     static String usernameUs23Tc06 = faker.name().firstName() + faker.number().numberBetween(1, 50);
     static String phoneNumberUs23Tc06 = faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(1000, 9999);
     static String ssnNumberUs23Tc06 = faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(10, 99) + "-" + faker.number().numberBetween(1000, 9999);
@@ -73,7 +76,7 @@ public class US023_StepDefinition {
         ReusableMethods.bekle(2);
         page.nameAlani.sendKeys(ConfigReader.getProperty("nameMAK"), Keys.TAB,
                 ConfigReader.getProperty("surnameMAK"),Keys.TAB,
-                ConfigReader.getProperty("birthPlaceMAK"),Keys.TAB,Keys.TAB,
+                "izmir",Keys.TAB,Keys.TAB,
                 ConfigReader.getProperty("dateOfBirthMAK"),Keys.TAB,
                 phoneNumberUs23Tc01,Keys.TAB,
                 ssnNumberUs23Tc01,Keys.TAB,
@@ -362,7 +365,7 @@ public class US023_StepDefinition {
     @And("Gonderilecek Vice dean bilgileri hazirlanir")
     public void gonderilecekViceDeanBilgileriHazirlanir() {
         //Set the expected data
-        expectedData = new US23_AddViceDeanPojo("2002-01-24","izmir","MALE","mehmet ali","Admin123", phoneNumberUs23Tc01, ssnNumberUs23Tc01,"karasu", usernameUs23Tc01);
+        expectedData = new US23_AddViceDeanPojo("2002-01-24","izmir","MALE","mehmet ali","Admin123", phoneNumberUs23Tc01Api, ssnNumberUs23Tc01Api,"karasu", usernameUs23Tc01Api);
         System.out.println(expectedData);
     }
 
