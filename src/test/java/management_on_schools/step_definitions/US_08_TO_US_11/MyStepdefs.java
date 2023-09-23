@@ -24,6 +24,8 @@ public class MyStepdefs {
     public static String randomStopTime;
     public static int startHour;
     public static int startMinute;
+    public static String ders_adi;
+    public static String Credit_Score;
     Actions actions = new Actions(getDriver());
 
     Faker faker = new Faker();
@@ -68,7 +70,8 @@ public class MyStepdefs {
 
     @And("lesson kutucuguna ders adi girer")
     public void lessonKutucugunaDersAdiGirer() {
-        String ders_adi = faker.leagueOfLegends().champion();
+       ders_adi = faker.leagueOfLegends().champion();
+        System.out.println(ders_adi);
 
         us_08_11Page.lesson_kutucugu.sendKeys(ders_adi);
 
@@ -82,7 +85,7 @@ public class MyStepdefs {
     @And("Credit Score name kutucuğuna tıklar")
     public void creditScoreNameKutucuğunaTıklar() {
         int sayi = faker.number().numberBetween(2, 16);
-        String Credit_Score = String.valueOf(sayi);
+        Credit_Score = String.valueOf(sayi);
 
         us_08_11Page.Credit_Score.sendKeys(Credit_Score);
 

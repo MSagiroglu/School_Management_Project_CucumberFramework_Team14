@@ -13,7 +13,7 @@
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="055c0eb6-15de-408b-b8a2-37f2e8c56578">
-      <console name="database" type="STANDARD" schema="school_management" session="Main" />
+      <console name="database" type="STANDARD" schema="public" session="Main"><![CDATA[select * from lesson where lesson_name='Sylas';]]></console>
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseEditorStateManager">
@@ -22,10 +22,13 @@
   <component name="DBNavigator.Project.DatabaseFileManager">
     <open-files />
   </component>
-    <component name="DBNavigator.Project.ObjectQuickFilterManager">
+  <component name="DBNavigator.Project.ExecutionManager">
+    <retain-sticky-names value="false" />
+  </component>
+  <component name="DBNavigator.Project.ObjectQuickFilterManager">
     <last-used-operator value="EQUAL" />
     <filters />
-    </component>
+  </component>
   <component name="DBNavigator.Project.Settings">
     <connections>
       <connection id="055c0eb6-15de-408b-b8a2-37f2e8c56578" active="true" signed="true">
@@ -49,7 +52,7 @@
           <deprecated-pwd value="NDN3NWlqZnNv" />
         </database>
         <properties>
-          <auto-commit value="false" />
+          <auto-commit value="true" />
         </properties>
         <ssh-settings>
           <active value="false" />
@@ -512,5 +515,8 @@
         </visibility-settings>
       </environment>
     </general-settings>
+  </component>
+  <component name="DBNavigator.Project.StatementExecutionManager">
+    <execution-variables />
   </component>
 </project>

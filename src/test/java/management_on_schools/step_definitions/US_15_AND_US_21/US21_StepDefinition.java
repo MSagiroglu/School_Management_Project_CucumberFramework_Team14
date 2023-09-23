@@ -4,7 +4,8 @@ import com.github.javafaker.Faker;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import management_on_schools.pages.Home_Page;
-import management_on_schools.pages.Suleyman15_21.US_21Page;
+
+import management_on_schools.pages.Suleyman_US15_21.US_21Page;
 import management_on_schools.utilities.ConfigReader;
 import management_on_schools.utilities.Driver;
 import management_on_schools.utilities.ReusableMethods;

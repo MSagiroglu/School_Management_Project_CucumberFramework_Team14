@@ -9,7 +9,7 @@ Feature: Vice Dean Ders Olusturma
 
 
 
-  @US09_TC01
+  @US09_TC01 @viceDean
   Scenario: US09_TC01_DersListesiniGorebilme
     And Vice Dean Lesson Name alanini gorur.
 #    And VD Compulsory alanini  gorur.
