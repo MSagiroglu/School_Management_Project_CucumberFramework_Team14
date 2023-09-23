@@ -6,6 +6,8 @@ Feature: Admin tarafindan student eklenebilme testi
     And Gonderilecek student bilgileri hazirlanir
     When Student eklemek icin Post request gonderilir
     Then Kaydedilen student'a ait bilgiler dogrulanir
+    When Admin öğrenci database bilgileri icin baglantı kurulur.
+    Then Admin öğrenci bilgilerinin database icinde olup olmadigi dogrulanir.
 
   @admin @US25APINegatif
   Scenario: Advisor Teacher seçimi yapılmadan öğrenci ekleyememe

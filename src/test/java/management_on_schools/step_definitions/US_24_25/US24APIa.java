@@ -130,14 +130,34 @@ public class US24APIa {
 
         connection= JDBCUtils.connectToDatabase();
     }
+
+    static String dataBaseUsername;
+    static String dataBaseName;
+    static String databaseSurname;
+    static String databasePhoneNumber;
+    static String dataBaseSsn;
+
     static Statement statement;
     static ResultSet resultSet;
     @Then("Admin bilgilerinin database icinde olup olmadigi dogrulanir.")
     public void adminBilgilerininDatabaseIcindeOlupOlmadigiDogrulanir() throws SQLException {
         statement =connection.createStatement();
+        resultSet= JDBCUtils.executeQuery("select * from teacher where username = '" + apiUserName  + "'");
+        resultSet.next();
+        databaseSurname=resultSet.getString("surname");
+        databasePhoneNumber=resultSet.getString("phone_number");
+        dataBaseName=resultSet.getString("name");
+        dataBaseSsn =resultSet.getString("ssn");
 
+        assertEquals(actualDataYK.getObject().getPhoneNumber(), databasePhoneNumber);
+        assertEquals(actualDataYK.getObject().getName(),dataBaseName);
+        assertEquals(actualDataYK.getObject().getSurname(),databaseSurname);
+        assertEquals(actualDataYK.getObject().getSsn(),dataBaseSsn);
+        System.out.println(dataBaseName);
+        System.out.println(databaseSurname);
+        System.out.println(databasePhoneNumber);
+        System.out.println(dataBaseSsn);
 
     }
 }
-
 
