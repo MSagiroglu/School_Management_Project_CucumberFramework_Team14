@@ -8,7 +8,7 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import management_on_schools.base_url.ManagementOnSchool;
 import management_on_schools.pages.Home_Page;
-import management_on_schools.pages.Sema03_07_16.ManagementonSchool;
+import management_on_schools.pages.Sema03_07_16.US_03_07_16;
 import management_on_schools.utilities.ConfigReader;
 import management_on_schools.utilities.Driver;
 import management_on_schools.utilities.ReusableMethods;
@@ -24,7 +24,7 @@ import static org.junit.Assert.assertEquals;
 public class US_07_16 {
     Response response;
     Home_Page homePage=new Home_Page();
-    management_on_schools.pages.Sema03_07_16.ManagementonSchool ManagementonSchool=new ManagementonSchool();
+    US_03_07_16 ManagementonSchool=new US_03_07_16();
     Connection connection;
     Statement statement;
     ResultSet resultSet;

@@ -5,8 +5,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class ManagementonSchool {
-    public ManagementonSchool() {
+public class US_03_07_16 {
+    public US_03_07_16() {
         PageFactory.initElements(Driver.getDriver(), this);
     }
 
