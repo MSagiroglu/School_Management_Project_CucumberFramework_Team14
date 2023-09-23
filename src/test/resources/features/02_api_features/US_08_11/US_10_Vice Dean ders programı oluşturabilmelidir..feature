@@ -1,3 +1,4 @@
+@viceDean
 Feature: US10 Api Testi
   @Us10Tc01Api
 

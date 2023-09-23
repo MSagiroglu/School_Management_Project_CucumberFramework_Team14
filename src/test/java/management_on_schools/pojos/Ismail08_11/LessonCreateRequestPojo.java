@@ -15,6 +15,7 @@ import lombok.ToString;
 
 public class LessonCreateRequestPojo {
 
+
     private Boolean compulsory;
     private int creditScore;
     private String lessonName;

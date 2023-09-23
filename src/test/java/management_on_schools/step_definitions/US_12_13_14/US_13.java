@@ -5,33 +5,25 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
-import io.restassured.specification.RequestSpecification;
+import management_on_schools.base_url.ManagementOnSchool;
 import management_on_schools.pages.Begum12_13_14.US_12Page;
 import management_on_schools.pages.Begum12_13_14.US_13Page;
 import management_on_schools.pages.Begum12_13_14.US_14Page;
 import management_on_schools.pages.Home_Page;
 import management_on_schools.pojos.Begum12_13_14.US13.TeacherPostPojo;
 import management_on_schools.pojos.Begum12_13_14.US13.TeacherResponsePojo;
-import management_on_schools.utilities.ConfigReader;
 import management_on_schools.utilities.Driver;
 import management_on_schools.utilities.ReusableMethods;
 import org.junit.Assert;
-import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
-import org.testng.asserts.SoftAssert;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 import static io.restassured.RestAssured.given;
-import static management_on_schools.base_url.ManagementOnSchool.spec;
-import static management_on_schools.base_url.ManagementOnSchool.spec_vice_dean;
-import static management_on_schools.utilities.JDBCUtils.executeQuery;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertEquals;
 
@@ -352,7 +344,7 @@ public class US_13 {
 
     @Given("Post request ile ogretmen olusturulur")
     public void postRequestIleOgretmenOlusturulur() {
-        spec_vice_dean.pathParams("first", "teachers", "second", "save");
+        ManagementOnSchool.spec.pathParams("first", "teachers", "second", "save");
     }
 
     @And("Gonderilecek Teacher bilgileri hazirlanir")
@@ -398,13 +390,13 @@ public class US_13 {
 
     @Given("Put request ile guncellenecek ogretmen bilgileri gonderilir")
     public void putRequestIleGuncellenecekOgretmenBilgileriGonderilir() {
-        spec_vice_dean.pathParams("first", "teachers", "second", "update","third",933);
+        ManagementOnSchool.spec.pathParams("first", "teachers", "second", "update","third",933);
         String fakeBirthDay2 = "1990-04-21";
         List<Long> lessonsIdList = new ArrayList<>();
         lessonsIdList.add(49L);
         expectedData = new TeacherPostPojo(fakeBirthDay2,fakeBirthPlace,fakeEmail,"FEMALE",true,lessonsIdList,fakeName,fakePassword,fakePhone,fakeSSN,fakeSurname,fakeUserName);
         System.out.println(expectedData);
-        response=given(spec_vice_dean).body(expectedData).when().put("{first}/{second}/{third}");
+        response=given(ManagementOnSchool.spec).body(expectedData).when().put("{first}/{second}/{third}");
         response.prettyPrint();
         actualData = response.as(TeacherResponsePojo.class);
     }
@@ -461,14 +453,14 @@ public class US_13 {
 
     @When("Eksik bilgilerle teacher eklemek icin Post request gonderilir")
     public void eksikBilgilerleTeacherEklemekIcinPostRequestGonderilir() {
-        response=given(spec_vice_dean).body(expectedData).when().post("{first}/{second}");
+        response=given(ManagementOnSchool.spec).body(expectedData).when().post("{first}/{second}");
         response.prettyPrint();
 
 
     }
     @When("teacher eklemek icin post request gonderilir")
     public void teacherEklemekIcinPostRequestGonderilir() {
-        response=given(spec_vice_dean).body(expectedData).when().post("{first}/{second}");
+        response=given(ManagementOnSchool.spec).body(expectedData).when().post("{first}/{second}");
         response.prettyPrint();
         actualData = response.as(TeacherResponsePojo.class);
     }

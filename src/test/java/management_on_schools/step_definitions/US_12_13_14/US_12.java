@@ -5,6 +5,7 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.restassured.response.Response;
+import management_on_schools.base_url.ManagementOnSchool;
 import management_on_schools.pages.Begum12_13_14.US_12Page;
 import management_on_schools.pojos.Begum12_13_14.US12.ChooseLessonPojo;
 import management_on_schools.pojos.Begum12_13_14.US12.ChooseLessonResponsePojo;
@@ -13,8 +14,6 @@ import management_on_schools.utilities.ReusableMethods;
 import java.util.ArrayList;
 import java.util.List;
 import static io.restassured.RestAssured.given;
-import static management_on_schools.base_url.ManagementOnSchool.spec;
-import static management_on_schools.base_url.ManagementOnSchool.spec_vice_dean;
 import static org.junit.Assert.assertEquals;
 
 
@@ -49,7 +48,7 @@ public class US_12 {
 
     @Given("ders icin ogretmen secilir")
     public void dersIcinOgretmenSecilir() {
-        spec_vice_dean.pathParams("first", "teachers", "second", "chooseLesson");
+        ManagementOnSchool.spec.pathParams("first", "teachers", "second", "chooseLesson");
 
     }
 
@@ -59,7 +58,7 @@ public class US_12 {
         List<Integer> lessonId = new ArrayList<>();
         lessonId.add(lessonIdNum);
         chooseLessonPojo = new ChooseLessonPojo(lessonId,933);
-        response = given(spec_vice_dean).body(chooseLessonPojo).when().post("{first}/{second}");
+        response = given(ManagementOnSchool.spec).body(chooseLessonPojo).when().post("{first}/{second}");
         response.prettyPrint();
         chooseLessonResponsePojo = response.as(ChooseLessonResponsePojo.class);
          String message = "Lesson added to Teacher";

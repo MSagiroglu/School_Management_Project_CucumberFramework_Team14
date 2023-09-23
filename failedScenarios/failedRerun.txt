@@ -1,1 +1,1 @@
-file:src/test/resources/features/02_api_features/US_01_02/US_02_API_Guest_User_Bilgileri_GormeveSilme.feature:4
+file:src/test/resources/features/E2E_features/US_0016_E2E.feature:21
