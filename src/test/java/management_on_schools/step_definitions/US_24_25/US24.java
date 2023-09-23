@@ -2,6 +2,7 @@ package management_on_schools.step_definitions.US_24_25;
 
 import com.github.javafaker.Faker;
 import io.cucumber.java.en.*;
+import management_on_schools.pages.Home_Page;
 import management_on_schools.pages.YektaUS24_25.YektaUS_24_25;
 import management_on_schools.utilities.ConfigReader;
 import management_on_schools.utilities.Driver;
@@ -10,9 +11,11 @@ import org.junit.Assert;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.interactions.Actions;
 
+
 public class US24 {
     YektaUS_24_25 us24_25Page = new YektaUS_24_25();
     Actions actions = new Actions(Driver.getDriver());
+    Home_Page homePage = new Home_Page();
     static Faker faker = new Faker();
     static String nameY = "Yekta" + faker.number().numberBetween(1,100);
     //static String surname= faker.name().lastName();
@@ -24,12 +27,15 @@ public class US24 {
     static String ssnNumberY = faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(10, 99) + "-" + faker.number().numberBetween(1000, 9999);
     static String userNameY =faker.name().firstName().toLowerCase()+faker.name().lastName().toUpperCase();
     static String passwordY = nameY+"P43";
-    static String birthDateY = faker.number().numberBetween(1, 30) + "." + faker.number().numberBetween(1, 12) + "." + faker.number().numberBetween(1950, 2022);
+    static String birthDateY = "01-01-1953";
 
     @Given("Admin Login Olur")
     public void admin_login_olur() {
-        ReusableMethods.login("AdminUsername", "AdminPassword");
-
+       // ReusableMethods.login("AdminUsername", "AdminPassword");
+        ReusableMethods.click(homePage.homePageLoginButton);
+        homePage.loginEmailField.sendKeys(ConfigReader.getProperty("AdminUsername"));
+        homePage.loginPasswordField.sendKeys(ConfigReader.getProperty("AdminPassword"));
+        homePage.loginButton.click();
 
     }
     @When("Admin Teacher ile ilgili bilgileri girer")
@@ -67,7 +73,7 @@ public class US24 {
         String messageTeacher="Teacher saved successfully";
         Assert.assertEquals(us24_25Page.message.getText(),messageTeacher);
         ReusableMethods.tumSayfaResmi("US24","TC01_TeacherSavedSuccessfully");
-        us24_25Page.lastPage.click();
+        //us24_25Page.lastPage.click();
         System.out.println("YEKTA");
 
     }

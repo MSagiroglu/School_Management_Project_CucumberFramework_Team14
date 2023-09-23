@@ -19,6 +19,7 @@ import java.sql.*;
 
 import static io.restassured.RestAssured.given;
 
+import static management_on_schools.base_url.ManagementOnSchool.spec;
 import static org.junit.Assert.assertEquals;
 
 public class US_07_16 {
@@ -90,7 +91,7 @@ public class US_07_16 {
 
     @Given("Get Request ile gelen tüm mesajlari al")
     public void getRequestIleGelenTümMesajlariAl() {
-        ManagementOnSchool.spec.pathParams("first","contactMessages","second","getAll").
+        spec.pathParams("first","contactMessages","second","getAll").
                 queryParams("size","10000");
 
        response =given(spec).when().get("{first}/{second}");
