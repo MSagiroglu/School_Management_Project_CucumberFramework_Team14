@@ -42,6 +42,7 @@ public class US24APIa {
         //https://managementonschools.com/app/teachers/save swagger dökümanı
         spec.pathParams("first","teachers","second","save");
 
+
     }
     @Given("Gonderilecek teacher bilgileri hazirlanir")
     public void gonderilecek_teacher_bilgileri_hazirlanir() {
