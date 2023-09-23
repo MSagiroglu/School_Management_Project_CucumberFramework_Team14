@@ -6,6 +6,12 @@ import io.restassured.response.Response;
 import management_on_schools.pojos.Yekta_US24_25.US25.NegativeScenarios.US25NegativeResponsePojo;
 import management_on_schools.pojos.Yekta_US24_25.US25.PositiveScenarios.US25StudentPostPojo;
 import management_on_schools.pojos.Yekta_US24_25.US25.PositiveScenarios.US25StudentResponsePojo;
+import management_on_schools.utilities.JDBCUtils;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 import static io.restassured.RestAssured.given;
 import static management_on_schools.base_url.ManagementOnSchool.spec;
@@ -119,5 +125,38 @@ US25NegativeResponsePojo us25Negative;
 
     @Then("Status kodunun {int} olduğu doğrulaması yapılır")
     public void statusKodununOlduğuDoğrulamasıYapılır(int arg0) {
+    }
+    static Connection connection;
+    @When("Admin öğrenci database bilgileri icin baglantı kurulur.")
+    public void adminÖğrenciDatabaseBilgileriIcinBaglantıKurulur() {
+        connection= JDBCUtils.connectToDatabase();
+    }
+    static String dataBaseUsername1;
+    static String dataBaseName1;
+    static String databaseSurname1;
+    static String databasePhoneNumber1;
+    static String databaseSsn1;
+
+    static Statement statement;
+    static ResultSet resultSet;
+    @Then("Admin öğrenci bilgilerinin database icinde olup olmadigi dogrulanir.")
+    public void adminÖğrenciBilgilerininDatabaseIcindeOlupOlmadigiDogrulanir() throws SQLException {
+        statement =connection.createStatement();
+        resultSet= JDBCUtils.executeQuery("select * from student where username = '" + apiUsernameS  + "'");
+        resultSet.next();
+        databasePhoneNumber1=resultSet.getString("phone_number");
+        dataBaseName1 =resultSet.getString("name");
+        databaseSurname1=resultSet.getString("surname");
+        databaseSsn1=resultSet.getString("ssn");
+        assertEquals(actualData.getObject().getPhoneNumber(), databasePhoneNumber1);
+        assertEquals(actualData.getObject().getSsn(), databaseSsn1);
+        assertEquals(actualData.getObject().getName(), dataBaseName1);
+        assertEquals(actualData.getObject().getSurname(),databaseSurname1);
+        System.out.println(databasePhoneNumber1);
+        System.out.println(databaseSsn1);
+        System.out.println(dataBaseName1);
+        System.out.println(databaseSurname1);
+
+
     }
 }
