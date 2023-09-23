@@ -124,7 +124,7 @@ public class US21_StepDefinition {
     @Given("Gonderilecek ders bilgileri hazirlanir")
     public void gonderilecek_ders_bilgileri_hazirlanir() {
         //set the expected data
-        expectedData = new LessonPostPojo(Collections.singletonList("384"));
+        expectedData = new LessonPostPojo(Collections.singletonList("752"));
         System.out.println(expectedData);
     }
 

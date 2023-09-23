@@ -45,9 +45,10 @@ public class US15_StepDefinition {
     static String birthPlace = faker.address().country();
     static String email = faker.internet().emailAddress();
     static String phone = faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(1000, 9999);
-    static String dateOfBirth = faker.number().numberBetween(1, 12) + "/" + faker.number().numberBetween(1, 31) + "/" + faker.number().numberBetween(1985, 2010);
+    static String dateOfBirth = faker.number().numberBetween(10,28) + "/" + faker.number().numberBetween(10,12) + "/" + faker.number().numberBetween(1985, 2010);
+    static String dateOfBirthAPI = dateOfBirth.substring(6) + "-" + dateOfBirth.substring(3, 5) + "-" + dateOfBirth.substring(0, 2);
     static String ssn = faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(10, 99) + "-" + faker.number().numberBetween(1000, 9999);
-    static String userName = faker.name().username().substring(0, 1).toUpperCase() + faker.name().username().substring(1).toLowerCase();
+    static String userName = faker.name().username() + faker.number().numberBetween(10, 50);
     static String fatherName = faker.name().firstName();
     static String motherName = faker.name().firstName();
     static String password = "Izmir.*35";
@@ -890,10 +891,12 @@ public class US15_StepDefinition {
     @Given("Gonderilecek ogrenci bilgileri hazirlanir")
     public void gonderilecek_ogrenci_bilgileri_hazirlanir() {
         //set the expected data
-        expectedData = new OgrenciPostPojo(32, "1975-11-11", "USSR",
+        expectedData = new OgrenciPostPojo(32,dateOfBirthAPI, birthPlace,
                 email,
-                "Anton", "MALE", "Mariya", "Ilya", "Izmir.*35",
-                phone, ssn, "Repin", userName);
+                fatherName, "MALE", motherName, name, password,
+                phone, ssn, surName, userName);
+        System.out.println("userName = " + userName);
+        System.out.println("ssn = " + ssn);
         System.out.println(expectedData);
     }
 
@@ -930,33 +933,36 @@ public class US15_StepDefinition {
         connection = DriverManager.getConnection("jdbc:postgresql://managementonschools.com:5432/school_management", "select_user", "43w5ijfso");
     }
 
-    @When("username {string} ile ogrenci bilglerini getir")
-    public void usernameIleOgrenciBilgleriniGetir(String userName) throws SQLException {
+    @When("username username ile ogrenci bilglerini getir")
+    public void usernameUsernameIleOgrenciBilgleriniGetir() throws SQLException {
         statement = connection.createStatement();
-        String query = "select * from students where username = '" + userName + "'";
+        String query = "select * from student where username = '" + userName + "'";
         resultSet = statement.executeQuery(query);
-        resultSet.next();
+
     }
 
-    @Then("bodynin ilgili bilgileri icerdigini dogrula: name {string}, surname {string}, birthplace {string}, email {string}, phone {string}, gender {string}, dateofbirth {string}, ssn {string}, username {string}, fathername {string}, mothername {string}, password {string}")
-    public void bodyninIlgiliBilgileriIcerdiginiDogrulaNameSurnameBirthplaceEmailPhoneGenderDateofbirthSsnUsernameFathernameMothernamePassword(String name, String surName, String birthPlace, String email, String phone, String gender, String dateOfBirth, String ssn, String userName, String fatherName, String motherName, String password3) throws SQLException {
+    String actualName;
+    String actualSurname;
+    String actualBirthPlace;
+    String actualPhone;
+    String actualSsn;
+
+
+    @Then("Database bilgileri dogrulanir")
+    public void databaseBilgileriDogrulanir() throws SQLException {
         resultSet.next();
-        String actualName = resultSet.getString("name");
-        String actualSurname = resultSet.getString("surname");
-        String actualBirthPlace = resultSet.getString("birth_place");
-        String actualPhone = resultSet.getString("phone_number");
-        String actualSsn = resultSet.getString("ssn");
+        actualName = resultSet.getString("name");
+        actualSurname = resultSet.getString("surname");
+        actualBirthPlace = resultSet.getString("birth_place");
+        actualPhone = resultSet.getString("phone_number");
+        actualSsn = resultSet.getString("ssn");
 
         assertEquals(name, actualName);
         assertEquals(surName, actualSurname);
         assertEquals(birthPlace, actualBirthPlace);
         assertEquals(phone, actualPhone);
         assertEquals(ssn, actualSsn);
-
-
     }
-
-
 }
 
 

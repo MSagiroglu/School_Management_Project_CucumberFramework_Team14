@@ -1,4 +1,4 @@
-@US15Api
+@viceDean
 Feature: Ogrenci Ekleme Tesi
 
   Scenario: Ogrenci basarili bir sekilde eklenebilmeli
@@ -7,14 +7,11 @@ Feature: Ogrenci Ekleme Tesi
     When Ogrenci eklemek icin Post request gonderilir
     Then Ogrenci bilgileri dogrulanir
 
-  @15DB
-  Scenario Outline: Ogrenci Olusturabilme Kaydinin DataBase ile dorgulanmasi
+
+  Scenario: Ogrenci Olusturabilme Kaydinin DataBase ile dorgulanmasi
     Given ogrenci kaydi icn DataBase baglan
-    When username "<username>" ile ogrenci bilglerini getir
-    Then bodynin ilgili bilgileri icerdigini dogrula: name "<name>", surname "<surname>", birthplace "<birthplace>", email "<email>", phone "<phone>", gender "<gender>", dateofbirth "<dateofbirth>", ssn "<ssn>", username "<username>", fathername "<fathername>", mothername "<mothername>", password "<password>"
-    Examples:
-      | username    | name | surname | birthplace | email                | phone        | gender | dateofbirth | ssn         | username | fathername | mothername | password  |
-      | IlyaRepin14 | Ilya | Repin   | USSR       | korey.hand@gmail.com | 286-694-7546 | male   | 1975-11-11  | 625-23-5065 | Ilya     | Anton      | Mariya     | Izmir.*35 |
+    When username username ile ogrenci bilglerini getir
+    Then Database bilgileri dogrulanir
 
 
 

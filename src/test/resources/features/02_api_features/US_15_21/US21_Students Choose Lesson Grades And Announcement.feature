@@ -1,4 +1,4 @@
-@API21
+@student
 Feature: Students Choose Lesson Grades And Announcement
 
   Scenario: Ders basarili bir sekilde eklenebilmeli
