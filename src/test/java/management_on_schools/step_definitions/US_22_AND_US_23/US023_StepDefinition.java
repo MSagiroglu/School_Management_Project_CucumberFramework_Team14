@@ -54,7 +54,7 @@ public class US023_StepDefinition {
     public void passwordAlaniTemizleme(){
         page.passwordAlani.sendKeys(Keys.chord(Keys.CONTROL,"a", Keys.DELETE));
     }
-    static String usernameUs23Tc01 = faker.name().firstName() + faker.number().numberBetween(1, 50);
+    static String usernameUs23Tc01 = faker.name().firstName() + faker.number().numberBetween(1, 99);
     static String phoneNumberUs23Tc01 = faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(1000, 9999);
     static String ssnNumberUs23Tc01 = faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(10, 99) + "-" + faker.number().numberBetween(1000, 9999);
     static String usernameUs23Tc06 = faker.name().firstName() + faker.number().numberBetween(1, 50);
@@ -99,7 +99,7 @@ public class US023_StepDefinition {
         page.loginUserNameAlani.sendKeys(usernameUs23Tc01);
         page.loginPasswordAlani.sendKeys(ConfigReader.getProperty("passwordMAK"));
         page.loginButonu.click();
-        Assert.assertEquals(page.viceDeanVerify.getText(),ConfigReader.getProperty(usernameUs23Tc01));
+        Assert.assertEquals(page.viceDeanVerify.getText(),usernameUs23Tc01);
     }
 
     @Then("admin vice dean telefon verilerini yanlis girer ve hata mesajlarini dogrular")
@@ -376,6 +376,7 @@ public class US023_StepDefinition {
     @Then("Vice dean Bilgileri dogrulanir")
     public void viceDeanBilgileriDogrulanir() {
         //Get response
+        ReusableMethods.bekle(2);
         actualData = response.as(US23_ViceDeanResponsepojo.class);
         //Do assertion
         assertEquals(200, response.statusCode());

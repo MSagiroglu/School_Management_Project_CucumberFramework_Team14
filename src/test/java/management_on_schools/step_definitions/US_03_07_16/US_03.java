@@ -6,7 +6,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.restassured.response.Response;
 import management_on_schools.pages.Home_Page;
-import management_on_schools.pages.Sema03_07_16.ManagementonSchool;
+import management_on_schools.pages.Sema03_07_16.US_03_07_16;
 import management_on_schools.pojos.Sema03_07_16.US_03.MesajPostPojo;
 import management_on_schools.pojos.Sema03_07_16.US_03.ResponsePojo;
 import management_on_schools.pojos.Sema03_07_16.US_03.ResponsenegativePojo;
@@ -26,7 +26,7 @@ import static org.testng.Assert.assertEquals;
 
 public class US_03 {
     Home_Page homePage = new Home_Page();
-    ManagementonSchool ManagementonSchool = new ManagementonSchool();
+    US_03_07_16 ManagementonSchool = new US_03_07_16();
 
 
     @Given("kullanici Managementon School sayfasina gider")

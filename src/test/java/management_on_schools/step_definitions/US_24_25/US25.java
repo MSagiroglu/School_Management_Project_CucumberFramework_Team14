@@ -77,4 +77,65 @@ public class US25 {
 
     }
 
+    @Then("Student ile ilgili bilgileri advisor teacher seçmeden doldurur.")
+    public void studentIleIlgiliBilgileriAdvisorTeacherSeçmedenDoldurur() {
+        ReusableMethods.login("AdminUsername","AdminPassword");
+        ReusableMethods.bekle(2);
+        us24_25Page.menu.click();
+        us24_25Page.studentManagement.click();
+        ReusableMethods.bekle(3);
+        us24_25Page.studentName.sendKeys(nameYS,Keys.TAB,
+                surnameYS,Keys.TAB,
+                birthPlaceYS,Keys.TAB,
+                emailYS,Keys.TAB,
+                phoneYS,Keys.TAB,Keys.TAB,
+                birthdateYS,Keys.TAB,
+                ssnYS,Keys.TAB,
+                userNameYS,Keys.TAB,
+                fatherYS,Keys.TAB,
+                motherYS, Keys.TAB,
+                passwordYS);
+        us24_25Page.studentMale.click();
+        us24_25Page.studentSubmit.click();
+
+    }
+
+    @And("Student kaydının oluşmadığını kontrol eder.")
+    public void studentKaydınınOluşmadığınıKontrolEder() {
+        ReusableMethods.visibleWait(us24_25Page.studentError,8);
+        ReusableMethods.tumSayfaResmi("US25","TC02_StudentSavedUNSuccessfully");
+        String errorMessageStudent1="Please select advisor teacher";
+        ReusableMethods.tumSayfaResmi("US25","TC02_StudentSavedUNSuccessfully");
+        Assert.assertEquals(us24_25Page.studentError.getText(),errorMessageStudent1);
+        ReusableMethods.tumSayfaResmi("US25","TC02_StudentSavedUNSuccessfully");
+        ReusableMethods.bekle(2);
+        ReusableMethods.logout();
+        System.out.println("Yekta");
+    }
 }
+/*
+        us24_25Page.teacherManagement.click();
+        ReusableMethods.bekle(2);
+        us24_25Page.name.sendKeys(ConfigReader.getProperty("nameYs"), Keys.TAB,
+                ConfigReader.getProperty("surnameYs"), Keys.TAB,
+                ConfigReader.getProperty("birthplaceYs"), Keys.TAB,
+                ConfigReader.getProperty("emailYs"), Keys.TAB,
+                ConfigReader.getProperty("phoneYs"), Keys.TAB, Keys.TAB, Keys.TAB,
+                ConfigReader.getProperty("birthdateYs"), Keys.TAB,
+                ConfigReader.getProperty("ssnYs"), Keys.TAB,
+                ConfigReader.getProperty("userNameYs"), Keys.TAB,
+                ConfigReader.getProperty("PasswordYs"));
+               us24_25Page.isAdvisorTeacher.click();
+               us24_25Page.gender.click();
+               ReusableMethods.bekle(2);
+                 us24_25Page.submit.click();
+        ReusableMethods.tumSayfaResmi("US24","TC02_TeacherNotSaved");
+        ReusableMethods.visibleWait(us24_25Page.errorMessage,5);
+        ReusableMethods.tumSayfaResmi("US24","TC02_TeacherNotSaved");
+        String errorJson="JSON parse error";
+        ReusableMethods.tumSayfaResmi("US24","TC02_TeacherNotSaved");
+        Assert.assertTrue(us24_25Page.errorMessage.getText().contains(errorJson));
+        System.out.println("Yekta");
+
+
+ */

@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static io.restassured.RestAssured.given;
-import static management_on_schools.base_url.ManagementOnSchool.spec_vice_dean;
+import static management_on_schools.base_url.ManagementOnSchool.spec;
 
 
 
@@ -28,7 +28,7 @@ public class MyStepdefsApi {
 
     @Given("kulanici api icin base url olusturur")
     public void kulaniciApiIcinBaseUrlOlusturur() {
-        spec_vice_dean.pathParams("first","lessons","second","save");
+        spec.pathParams("first","lessons","second","save");
 
     }
 
@@ -42,7 +42,7 @@ public class MyStepdefsApi {
 
     @And("kullanici vice dean ile post request yaparak bir lesson olusturur")
     public void kullaniciViceDeanIlePostRequestYaparakBirLessonOlusturur() {
-        response=given(spec_vice_dean).body(expectedDataPojo).post("{first}/{second}");
+        response=given(spec).body(expectedDataPojo).post("{first}/{second}");
         response.prettyPrint();
 
     }
@@ -62,8 +62,8 @@ public class MyStepdefsApi {
     @Then("kullanici olusturdugu dersi görür")
     public void kullaniciOlusturduguDersiGörür() {
         lesson_id = response.jsonPath().getString("object.lessonId");
-        spec_vice_dean.pathParams("first","lessons","second","getAllLessonByLessonId").queryParams("lessonId",lesson_id);
-        response = given(spec_vice_dean).get("{first}/{second}");
+        spec.pathParams("first","lessons","second","getAllLessonByLessonId").queryParams("lessonId",lesson_id);
+        response = given(spec).get("{first}/{second}");
         response.prettyPrint();
 
         JsonPath jsonPath = response.jsonPath();
@@ -82,8 +82,8 @@ public class MyStepdefsApi {
     @Then("kullanici olusturdugu dersi programını görür")
     public void kullaniciOlusturduguDersiProgramınıGörür() {
 
-        spec_vice_dean.pathParams("first", "lessonPrograms", "second", "getById").queryParams("lessonprogram_id", lessonprogram_id);
-        response = given(spec_vice_dean).get("{first}/{second}");
+        spec.pathParams("first", "lessonPrograms", "second", "getById").queryParams("lessonprogram_id", lessonprogram_id);
+        response = given(spec).get("{first}/{second}");
         response.prettyPrint();
 
         JsonPath jsonPath = response.jsonPath();
@@ -94,7 +94,7 @@ public class MyStepdefsApi {
     }
     @Given("kulanici lesson program api icin base url olusturur")
     public void kulaniciLessonProgramApiIcinBaseUrlOlusturur() {
-        spec_vice_dean.pathParams("first", "lessonPrograms", "second", "save");
+        spec.pathParams("first", "lessonPrograms", "second", "save");
     }
 
     @And("kullanici lesson pragram expected data yi olusturur")
@@ -107,7 +107,7 @@ public class MyStepdefsApi {
 
     @And("kullanici vice dean ile post request yaparak bir lesson program olusturur")
     public void kullaniciViceDeanIlePostRequestYaparakBirLessonProgramOlusturur() {
-        response = given(spec_vice_dean).body(expectedDataLSPojo).post("{first}/{second}");
+        response = given(spec).body(expectedDataLSPojo).post("{first}/{second}");
         lessonprogram_id = response.jsonPath().getString("object.lessonProgramId");
         response.prettyPrint();
     }

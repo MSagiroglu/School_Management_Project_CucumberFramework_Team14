@@ -10,7 +10,7 @@ import static management_on_schools.utilities.Authentication.*;
 
 public class ManagementOnSchool {
     public static RequestSpecification spec;
-    public static RequestSpecification spec_vice_dean;
+
 
 
     public static void adminSetUp() {
@@ -24,7 +24,7 @@ public class ManagementOnSchool {
     }
     public static void viceDeanSetUp() {
 
-        spec_vice_dean = new RequestSpecBuilder()
+        spec = new RequestSpecBuilder()
                 .setBaseUri("https://managementonschools.com/app")
                 .addHeader("Authorization", generateToken(ConfigReader.getProperty("ViceDeanUsername"), ConfigReader.getProperty("ViceDeanPassword")))
                 .setContentType(ContentType.JSON).build();

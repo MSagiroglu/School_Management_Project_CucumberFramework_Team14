@@ -1,3 +1,4 @@
+@viceDean
 Feature: US11 Api Testi
   @Us11Tc01Api
   Scenario: TC01 Vice Dean ders programını görebilmeli ve güncellemeler yapabilmelidir.
