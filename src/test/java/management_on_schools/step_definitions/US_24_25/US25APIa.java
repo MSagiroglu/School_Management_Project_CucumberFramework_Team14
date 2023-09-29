@@ -15,7 +15,7 @@ import java.sql.Statement;
 
 import static io.restassured.RestAssured.given;
 import static management_on_schools.base_url.ManagementOnSchool.spec;
-import static management_on_schools.step_definitions.US_24_25.US25.nameYS;
+import static management_on_schools.step_definitions.US_24_25.US25.*;
 import static org.junit.Assert.assertEquals;
 
 public class US25APIa {
@@ -24,17 +24,17 @@ public class US25APIa {
     Response response;
     static Faker faker = new Faker();
     static String nameApiS=nameYS;
-    static String surnameApiS=faker.name().lastName();
+    static String surnameApiS=surnameYS;
     static String apiBirthdayS="1953-01-01";
-    static String birthPlaceS =nameApiS +"istan";
-    static String emailS=nameApiS+surnameApiS+"@gmail.com";
-    static String fatherNameS=faker.name().firstName();
-    static String motherNameS=faker.name().lastName();
+    static String birthPlaceS =birthPlaceYS;
+    static String emailS=emailYS;
+    static String fatherNameS=fatherYS;
+    static String motherNameS=motherYS;
     static String genderS="MALE";
-    static String apiphoneNumberS = faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(1000, 9999);
-    static String apiSsnNumberS = faker.number().numberBetween(100, 999) + "-" + faker.number().numberBetween(10, 99) + "-" + faker.number().numberBetween(1000, 9999);
-    static String apiPasswordS=nameApiS.toUpperCase()+"y1993";
-    static String apiUsernameS=nameApiS.toUpperCase()+surnameApiS.toLowerCase();
+    static String apiphoneNumberS = phoneYS;
+    static String apiSsnNumberS =ssnYS;
+    static String apiPasswordS=passwordYS;
+    static String apiUsernameS=userNameYS;
     static Integer isAdvisorTeacher =2;
     static Integer getIsAdvisorTeacherFalse=0;
     @Given("Student eklemek için post request hazirligi yapilir")
@@ -148,10 +148,10 @@ US25NegativeResponsePojo us25Negative;
         dataBaseName1 =resultSet.getString("name");
         databaseSurname1=resultSet.getString("surname");
         databaseSsn1=resultSet.getString("ssn");
-        assertEquals(actualData.getObject().getPhoneNumber(), databasePhoneNumber1);
-        assertEquals(actualData.getObject().getSsn(), databaseSsn1);
-        assertEquals(actualData.getObject().getName(), dataBaseName1);
-        assertEquals(actualData.getObject().getSurname(),databaseSurname1);
+        assertEquals(apiphoneNumberS, databasePhoneNumber1);
+        assertEquals(apiSsnNumberS, databaseSsn1);
+        assertEquals(nameApiS, dataBaseName1);
+        assertEquals(surnameApiS,databaseSurname1);
         System.out.println(databasePhoneNumber1);
         System.out.println(databaseSsn1);
         System.out.println(dataBaseName1);

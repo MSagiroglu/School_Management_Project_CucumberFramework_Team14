@@ -153,10 +153,10 @@ public class US24APIa {
         dataBaseName=resultSet.getString("name");
         dataBaseSsn =resultSet.getString("ssn");
 
-        assertEquals(actualDataYK.getObject().getPhoneNumber(), databasePhoneNumber);
-        assertEquals(actualDataYK.getObject().getName(),dataBaseName);
-        assertEquals(actualDataYK.getObject().getSurname(),databaseSurname);
-        assertEquals(actualDataYK.getObject().getSsn(),dataBaseSsn);
+        assertEquals(apiphoneNumber, databasePhoneNumber);
+        assertEquals(apiName,dataBaseName);
+        assertEquals(apiSurname,databaseSurname);
+        assertEquals(apiSsnNumber,dataBaseSsn);
         System.out.println(dataBaseName);
         System.out.println(databaseSurname);
         System.out.println(databasePhoneNumber);

@@ -9,6 +9,8 @@ import org.junit.Assert;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.interactions.Actions;
 
+import static management_on_schools.utilities.ReusableMethods.click;
+
 public class US25 {
     YektaUS_24_25 us24_25Page = new YektaUS_24_25();
     Actions actions = new Actions(Driver.getDriver());
@@ -25,7 +27,7 @@ public class US25 {
     static String passwordYS = nameYS+"P43";
     static String fatherYS =faker.name().firstName();
     static String motherYS=faker.name().firstName();
-    static String birthdateYS = faker.number().numberBetween(1, 30) + "." + faker.number().numberBetween(1, 12) + "." +faker.number().numberBetween(1950, 2022);
+    static String birthdateYS = "01-01-1953";
     @Given("Admin sisteme admin olarak giriş yapar")
     public void admin_sisteme_admin_olarak_giriş_yapar() {
         ReusableMethods.login("AdminUsername","AdminPassword");
@@ -38,8 +40,9 @@ public class US25 {
         us24_25Page.menu.click();
         us24_25Page.studentManagement.click();
         ReusableMethods.bekle(3);
+        ReusableMethods.click(us24_25Page.studentAdvisorTeacher);
 
-        us24_25Page.studentAdvisorTeacher.click();
+        //us24_25Page.studentAdvisorTeacher.click();
         ReusableMethods.bekle(3);
         actions.sendKeys(Keys.ARROW_DOWN,Keys.ARROW_UP,Keys.ENTER).perform();
         ReusableMethods.bekle(3);
@@ -56,7 +59,7 @@ public class US25 {
                 motherYS, Keys.TAB,
                 passwordYS);
         us24_25Page.studentMale.click();
-        us24_25Page.studentSubmit.click();
+        ReusableMethods.click(us24_25Page.studentSubmit);
 
 
 

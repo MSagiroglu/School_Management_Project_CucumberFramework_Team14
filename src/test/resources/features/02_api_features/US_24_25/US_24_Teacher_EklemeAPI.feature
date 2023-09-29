@@ -5,6 +5,8 @@
       And Gonderilecek teacher bilgileri hazirlanir
       When Teacher eklemek icin Post request gonderilir
       Then Kaydedilen teacher'a ait bilgiler dogrulanir
+@Yekta
+      Scenario: Olusturulan Teacher databasede olup olmadigi dogrulanir
       When Admin Database bilgileri icin baglantı kurulur.
       Then Admin bilgilerinin database icinde olup olmadigi dogrulanir.
 

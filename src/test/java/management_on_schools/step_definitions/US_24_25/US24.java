@@ -17,9 +17,9 @@ public class US24 {
     Actions actions = new Actions(Driver.getDriver());
     Home_Page homePage = new Home_Page();
     static Faker faker = new Faker();
-    static String nameY = "Yekta" + faker.number().numberBetween(1,100);
+    static String nameY = "Yektaa" + faker.number().numberBetween(1,100);
     //static String surname= faker.name().lastName();
-    static String surnameY =nameY + "1";
+    static String surnameY =nameY + "1a";
 
     static String birthplaceY =nameY +"istan";
     static String email=nameY + surnameY+"@gmail.com";

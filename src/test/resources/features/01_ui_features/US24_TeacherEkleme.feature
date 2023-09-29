@@ -1,6 +1,6 @@
 @UI
 Feature: US24 Teacher Ekleme
-  @Us24TC01
+  @Yekta
   Scenario: TC01 Teacher Ekleme
     Given Admin Login Olur
     When Admin Teacher ile ilgili bilgileri girer
